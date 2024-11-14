@@ -7,8 +7,8 @@ import { ColorSchemeScript, MantineProvider } from '@mantine/core';
 import { theme } from '../theme';
 
 export const metadata = {
-  title: 'Mantine Next.js template',
-  description: 'I am using Mantine with Next.js!',
+  title: 'KC3WNY',
+  description: 'Mason Matich\'s personal website',
 };
 
 export default function RootLayout({ children }: { children: any }) {
@@ -16,7 +16,7 @@ export default function RootLayout({ children }: { children: any }) {
     <html lang="en" suppressHydrationWarning>
       <head>
         <ColorSchemeScript />
-        <link rel="shortcut icon" href="/favicon.svg" />
+        <link rel="shortcut icon" href="/favicon.jpg" />
         <meta
           name="viewport"
           content="minimum-scale=1, initial-scale=1, width=device-width, user-scalable=no"

@@ -5,18 +5,16 @@ export function Welcome() {
   return (
     <>
       <Title className={classes.title} ta="center" mt={100}>
-        Welcome to{' '}
-        <Text inherit variant="gradient" component="span" gradient={{ from: 'pink', to: 'yellow' }}>
-          Mantine
+        <Text inherit variant="gradient" component="span" gradient={{ from: '#99242D', to: '#F46F60' }}>
+          KC3WNY
         </Text>
+        {' '} ***** Mason Matich
       </Title>
       <Text c="dimmed" ta="center" size="lg" maw={580} mx="auto" mt="xl">
-        This starter Next.js project includes a minimal setup for server side rendering, if you want
-        to learn more on Mantine + Next.js integration follow{' '}
-        <Anchor href="https://mantine.dev/guides/next/" size="lg">
-          this guide
-        </Anchor>
-        . To get started edit page.tsx file.
+        Welcome to the personal website of Mason Matich (KC3WNY), here I post my projects,
+        photography, and other interesting things. Please excuse the bugs, wet paint, and
+        holes in the wall, this site is under active development. In the meantime, enjoy
+        the buttons!
       </Text>
     </>
   );
