@@ -1,4 +1,6 @@
 import '@mantine/core/styles.css';
+import { SpeedInsights } from "@vercel/speed-insights/next"
+import { Analytics } from "@vercel/analytics/react"
 
 import React from 'react';
 import { ColorSchemeScript, MantineProvider } from '@mantine/core';
