@@ -24,9 +24,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={`${ppEditorialNew.className} ${ppNeueMontreal.className} ${workbench.className}`}>
         <MantineProvider theme={theme}>
           {children}
+          <SpeedInsights />
+          <Analytics />
         </MantineProvider>
-        <SpeedInsights />
-        <Analytics />
       </body>
     </html>
   );
