@@ -2,12 +2,13 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { Burger, Group } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
+import { Burger, Group, Drawer } from '@mantine/core';
+import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import classes from './Header.module.css';
 import { ThemeToggle } from '../ThemeToggle/ThemeToggle';
 
 const links = [
+  { link: '/', label: 'Home' }, // Added Home link here
   { link: '/projects', label: 'Projects' },
   { link: '/radio', label: 'Amateur Radio' },
   { link: '/photos', label: 'Photo Stream' },
@@ -15,7 +16,8 @@ const links = [
 ];
 
 export function Header() {
-  const [opened, { toggle }] = useDisclosure(false);
+  const [opened, { toggle, close }] = useDisclosure(false);
+  const isMobile = useMediaQuery('(max-width: 768px)'); // Adjust the breakpoint as needed
 
   const items = links.map((link) => (
     <Link key={link.label} href={link.link} className={classes.link}>
@@ -27,7 +29,15 @@ export function Header() {
     <header className={classes.header}>
       <div className={classes.inner}>
         <Group>
-          <Burger opened={opened} onClick={toggle} size="sm" hiddenFrom="sm" />
+          {isMobile && (
+            <Burger
+              opened={opened}
+              onClick={toggle}
+              size="sm"
+              className={classes.burger}
+            />
+          )}
+          {/* Logo */}
           <Link href="/home">
             <Image
               src="/images/logo_wide.svg"
@@ -40,12 +50,28 @@ export function Header() {
         </Group>
 
         <Group>
-          <Group ml={50} gap={5} className={classes.links} visibleFrom="sm">
-            {items}
-          </Group>
+          {!isMobile && (
+            <Group ml={50} gap={5} className={classes.links}>
+              {items}
+            </Group>
+          )}
           <ThemeToggle />
         </Group>
       </div>
+
+      {/* Drawer for mobile navigation */}
+      {isMobile && (
+        <Drawer
+          opened={opened}
+          onClose={close}
+          size="auto"
+          padding="md"
+          title="Navigation"
+          className={classes.drawer}
+        >
+          <nav className={classes.mobileNav}>{items}</nav>
+        </Drawer>
+      )}
     </header>
   );
 }
