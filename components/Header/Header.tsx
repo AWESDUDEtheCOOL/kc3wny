@@ -8,7 +8,7 @@ import classes from './Header.module.css';
 import { ThemeToggle } from '../ThemeToggle/ThemeToggle';
 
 const links = [
-  { link: '/', label: 'Home' }, // Added Home link here
+  { link: '/home', label: 'Home' },
   { link: '/projects', label: 'Projects' },
   { link: '/radio', label: 'Amateur Radio' },
   { link: '/photos', label: 'Photo Stream' },
@@ -17,13 +17,17 @@ const links = [
 
 export function Header() {
   const [opened, { toggle, close }] = useDisclosure(false);
-  const isMobile = useMediaQuery('(max-width: 768px)'); // Adjust the breakpoint as needed
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
-  const items = links.map((link) => (
-    <Link key={link.label} href={link.link} className={classes.link}>
-      {link.label}
-    </Link>
-  ));
+  const items = links.map((link) => {
+    if (!isMobile && link.label === 'Home') return null;
+
+    return (
+      <Link key={link.label} href={link.link} className={classes.link}>
+        {link.label}
+      </Link>
+    );
+  });
 
   return (
     <header className={classes.header}>
@@ -37,7 +41,6 @@ export function Header() {
               className={classes.burger}
             />
           )}
-          {/* Logo */}
           <Link href="/home">
             <Image
               src="/images/logo_wide.svg"
@@ -59,7 +62,6 @@ export function Header() {
         </Group>
       </div>
 
-      {/* Drawer for mobile navigation */}
       {isMobile && (
         <Drawer
           opened={opened}
