@@ -15,7 +15,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" suppressHydrationWarning>
       <head>
         <ColorSchemeScript />
-        <link rel="icon" href="./favicon.ico" sizes="128x128" />
+        <link rel="icon" href="./favicon_128x128.ico" sizes="128x128" />
+        <link rel="icon" href="./favicon_16x16.ico" sizes="16x16" />
         <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
         <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
         <meta
