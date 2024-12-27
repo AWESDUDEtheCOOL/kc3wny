@@ -7,14 +7,14 @@ import Image from 'next/image';
 import classes from './Footer.module.css';
 
 const links = [
-  { link: '/contact', label: 'Contact' },
+  { link: 'mailto:mcmatich@gmail.com', label: 'Contact' },
   { link: '/about', label: 'About' },
 ];
 
 export function Footer() {
   const items = links.map((link) => (
     <Link key={link.label} href={link.link} className={classes.link} style={{ textDecoration: 'none' }}>
-      <Text component="span" size="md" color="dimmed" lh={1}>
+      <Text component="span" size="14" color="dimmed" lh={1}>
         {link.label}
       </Text>
     </Link>
@@ -27,7 +27,7 @@ export function Footer() {
           src="/images/logo_wide.svg"
           alt="Logo"
           width={70}
-          height={70}
+          height={30}
         />
 
         <Group className={classes.copyright}>© 2025 Mason Matich. All rights reserved.</Group>
