@@ -27,7 +27,7 @@ export function Footer() {
           src="/images/logo_wide.svg"
           alt="Logo"
           width={70}
-          height={30}
+          height={32.5}
         />
 
         <Group className={classes.copyright}>© 2025 Mason Matich. All rights reserved.</Group>
