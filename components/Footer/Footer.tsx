@@ -14,7 +14,7 @@ const links = [
 export function Footer() {
   const items = links.map((link) => (
     <Link key={link.label} href={link.link} className={classes.link} style={{ textDecoration: 'none' }}>
-      <Text component="span" size="14" color="dimmed" lh={1}>
+      <Text component="span" size="14" lh={1}>
         {link.label}
       </Text>
     </Link>
