@@ -19,7 +19,7 @@ export function Footer() {
       className={classes.link}
       style={{ textDecoration: 'none' }}
     >
-      <Text component="span" size="14l" lh={1}>
+      <Text component="span" size="14" lh={1}>
         {link.label}
       </Text>
     </Link>
