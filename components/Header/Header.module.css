@@ -19,7 +19,7 @@
   line-height: 1;
   padding: 8px 12px;
   border-radius: var(--mantine-radius-sm);
-  font-family: var(--font-ppEditorialNew), sans-serif;
+  font-family: ppEditorialNew, sans-serif;
   font-variation-settings: 'wght' 200;
   text-transform: uppercase;
   text-decoration: none;
