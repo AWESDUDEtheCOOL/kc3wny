@@ -1,9 +1,9 @@
 'use client';
 
+import Image from 'next/image';
+import Link from 'next/link';
 import { IconBrandBluesky, IconBrandGithub, IconBrandLinkedin } from '@tabler/icons-react';
 import { ActionIcon, Group, Text } from '@mantine/core';
-import Link from 'next/link';
-import Image from 'next/image';
 import classes from './Footer.module.css';
 
 const links = [
@@ -13,7 +13,12 @@ const links = [
 
 export function Footer() {
   const items = links.map((link) => (
-    <Link key={link.label} href={link.link} className={classes.link} style={{ textDecoration: 'none' }}>
+    <Link
+      key={link.label}
+      href={link.link}
+      className={classes.link}
+      style={{ textDecoration: 'none' }}
+    >
       <Text component="span" size="14" lh={1}>
         {link.label}
       </Text>
@@ -23,12 +28,7 @@ export function Footer() {
   return (
     <div className={classes.footer}>
       <div className={classes.inner}>
-        <Image
-          src="/images/logo_wide.svg"
-          alt="Logo"
-          width={70}
-          height={32.5}
-        />
+        <Image src="/images/logo_wide.svg" alt="Logo" width={70} height={32.5} />
 
         <Group className={classes.copyright}>© 2025 Mason Matich. All rights reserved.</Group>
 
@@ -37,20 +37,28 @@ export function Footer() {
         <Group className={classes.links}>{items}</Group>
 
         <Group gap="xs" justify="flex-end" wrap="nowrap">
-          <Link href="https://www.linkedin.com/in/mason-matich" target="_blank" rel="noopener noreferrer">
+          <Link
+            href="https://www.linkedin.com/in/mason-matich"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <ActionIcon size="md" variant="default" radius="xl">
               <IconBrandLinkedin size={14} stroke={1.5} />
             </ActionIcon>
           </Link>
-          <Link href="https://bsky.app/profile/kc3wny.com" target="_blank" rel="noopener noreferrer">
-          <ActionIcon size="md" variant="default" radius="xl">
-            <IconBrandBluesky size={14} stroke={1.5} />
-          </ActionIcon>
+          <Link
+            href="https://bsky.app/profile/kc3wny.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <ActionIcon size="md" variant="default" radius="xl">
+              <IconBrandBluesky size={14} stroke={1.5} />
+            </ActionIcon>
           </Link>
           <Link href="https://github.com/AWESDUDEtheCOOL" target="_blank" rel="noopener noreferrer">
-          <ActionIcon size="md" variant="default" radius="xl">
-            <IconBrandGithub size={14} stroke={1.5} />
-          </ActionIcon>
+            <ActionIcon size="md" variant="default" radius="xl">
+              <IconBrandGithub size={14} stroke={1.5} />
+            </ActionIcon>
           </Link>
         </Group>
       </div>
