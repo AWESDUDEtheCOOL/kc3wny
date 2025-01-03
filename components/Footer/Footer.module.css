@@ -3,7 +3,6 @@
   background-color: #101010;
   margin-top: auto;
   padding: 20px 40px;
-  box-shadow: 0 2px 5px rgba(255, 255, 255, 0.1);
 }
 
 .inner {
@@ -27,7 +26,6 @@
   gap: 20px;
   font-family: var(--font-ppEditorialNew), sans-serif;
   font-variation-settings: 'wght' 200;
-  color: #66ffcc;
   text-decoration: none;
   text-transform: uppercase;
 
