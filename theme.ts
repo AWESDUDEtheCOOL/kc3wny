@@ -1,8 +1,8 @@
 'use client';
 
-import { createTheme } from '@mantine/core';
 import { Workbench } from 'next/font/google';
 import localFont from 'next/font/local';
+import { createTheme } from '@mantine/core';
 
 // Google fonts
 export const workbench = Workbench({
