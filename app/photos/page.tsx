@@ -1,6 +1,6 @@
 import { Text } from '@mantine/core';
-import { Header } from '../../components/Header/Header';
 import { Footer } from '../../components/Footer/Footer';
+import { Header } from '../../components/Header/Header';
 
 export default function AboutPage() {
   return (
@@ -16,7 +16,8 @@ export default function AboutPage() {
         style={{
           fontFamily: 'ppEditorialNew',
           fontVariationSettings: '"wght" 200',
-        }}>
+        }}
+      >
         Photos test
       </Text>
       <Footer />

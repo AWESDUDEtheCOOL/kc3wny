@@ -1,13 +1,14 @@
 import '@mantine/core/styles.css';
-import { SpeedInsights } from '@vercel/speed-insights/next';
-import { Analytics } from '@vercel/analytics/react';
+
 import React from 'react';
+import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import { ColorSchemeScript, MantineProvider } from '@mantine/core';
-import { theme, workbench, ppEditorialNew, ppNeueMontreal } from '../theme';
+import { ppEditorialNew, ppNeueMontreal, theme, workbench } from '../theme';
 
 export const metadata = {
   title: 'KC3WNY',
-  description: 'Mason Matich\'s personal website',
+  description: "Mason Matich's personal website",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -24,7 +25,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           content="minimum-scale=1, initial-scale=1, width=device-width, user-scalable=no"
         />
       </head>
-      <body className={`${ppEditorialNew.className} ${ppNeueMontreal.className} ${workbench.className}`}>
+      <body
+        className={`${ppEditorialNew.className} ${ppNeueMontreal.className} ${workbench.className}`}
+      >
         <MantineProvider theme={theme}>
           {children}
           <SpeedInsights />

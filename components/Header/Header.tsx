@@ -2,10 +2,10 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { Burger, Group, Drawer } from '@mantine/core';
+import { Burger, Drawer, Group } from '@mantine/core';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
-import classes from './Header.module.css';
 import { ThemeToggle } from '../ThemeToggle/ThemeToggle';
+import classes from './Header.module.css';
 
 const links = [
   { link: '/home', label: 'Home' },
@@ -34,20 +34,10 @@ export function Header() {
       <div className={classes.inner}>
         <Group>
           {isMobile && (
-            <Burger
-              opened={opened}
-              onClick={toggle}
-              size="sm"
-              className={classes.burger}
-            />
+            <Burger opened={opened} onClick={toggle} size="sm" className={classes.burger} />
           )}
           <Link href="/home">
-            <Image
-              src="/images/logo_wide.svg"
-              alt="Logo"
-              width={110}
-              height={110}
-            />
+            <Image src="/images/logo_wide.svg" alt="Logo" width={110} height={110} />
           </Link>
         </Group>
 
