@@ -31,4 +31,19 @@ export const ppNeueMontreal = localFont({
 
 export const theme = createTheme({
   fontFamily: `${ppNeueMontreal.style.fontFamily}, ${ppEditorialNew.style.fontFamily}, ${workbench.style.fontFamily}, sans-serif`,
+  colors: {
+    dark: [
+      '#f8f9fa', // Lightest
+      '#e9ecef',
+      '#dee2e6',
+      '#ced4da',
+      '#adb5bd',
+      '#6c757d', // Neutral
+      '#495057',
+      '#101010',
+      '#100000', // Darker
+      '#000000', // Darkest
+    ],
+  },
+  primaryColor: 'dark', // Use the custom dark color
 });

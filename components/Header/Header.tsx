@@ -47,7 +47,6 @@ export function Header() {
               alt="Logo"
               width={110}
               height={110}
-              className={classes.logo}
             />
           </Link>
         </Group>

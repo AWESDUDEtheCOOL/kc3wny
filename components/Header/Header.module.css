@@ -15,10 +15,14 @@
 }
 
 .link {
+  
   display: block;
   line-height: 1;
   padding: 8px 12px;
   border-radius: var(--mantine-radius-sm);
+  font-family: 'ppEditorialNew';
+  font-variation-settings: 'wght' 200;
+  text-transform: uppercase;
   text-decoration: none;
   color: light-dark(var(--mantine-color-gray-7), var(--mantine-color-dark-0));
   font-size: var(--mantine-font-size-sm);
