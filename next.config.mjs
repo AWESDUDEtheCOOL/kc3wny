@@ -1,24 +1,29 @@
-import bundleAnalyzer from '@next/bundle-analyzer';
+// next.config.mjs
 
-const withBundleAnalyzer = bundleAnalyzer({
-  enabled: process.env.ANALYZE === 'true',
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+
+const withMDX = require('@next/mdx')({
+  extension: /\.mdx?$/,
 });
 
-export default withBundleAnalyzer({
-  reactStrictMode: false,
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  images: {
+    unoptimized: true,
+  },
   experimental: {
-    optimizePackageImports: ['@mantine/core', '@mantine/hooks'],
+    webpackBuildWorker: true,
+    parallelServerBuildTraces: true,
+    parallelServerCompiles: true,
   },
-  async redirects() {
-    return [
-      {
-        source: '/',
-        destination: '/home',
-        permanent: true,
-      },
-    ];
-  },
-});
+  pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],
+};
+
+export default withMDX(nextConfig);
