@@ -13,9 +13,9 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "baseUrl": ".", // Add this line
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"] // Add this line
+      "@/*": ["./*"]
     },
     "plugins": [
       {
