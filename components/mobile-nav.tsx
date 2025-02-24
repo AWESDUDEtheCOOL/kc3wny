@@ -17,8 +17,7 @@ export function MobileNav({ className, ...props }: MobileNavProps) {
     { href: "/projects", label: "PROJECTS", icon: Cpu },
     { href: "/photography", label: "PHOTOGRAPHY", icon: Camera },
     { href: "/radio", label: "RADIO", icon: Radio },
-    { href: "/about", label: "ABOUT", icon: FileText },
-    { href: "/contact", label: "CONTACT", icon: User },
+    { href: "/card", label: "ABOUT", icon: FileText },
     { href: "/sitemap", label: "SITEMAP", icon: Map },
   ]
 

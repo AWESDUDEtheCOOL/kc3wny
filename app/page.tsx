@@ -106,28 +106,21 @@ export default function Page() {
                     <span className="text-primary">&gt;</span> Technical projects // Amateur radio experiments // Digital & Analog photography
                   </p>
                 </div>
-                <div className="flex gap-4">
-                  <Link href="/projects">  
-                    <Button variant="outline" className="border-primary hover:bg-primary/10 hover:text-primary group">
-                      <div className="h-1.5 w-1.5 bg-primary group-hover:retro-glow mr-2" />
-                      View Projects
-                      <ChevronRight className="w-4 h-4 ml-2" />
-                    </Button>
-                  </Link>
-                  <Link href="/about">  
-                    <Button variant="outline" className="border-primary hover:bg-primary/10 hover:text-primary group">
-                      <div className="h-1.5 w-1.5 bg-primary group-hover:retro-glow mr-2" />
-                      About
-                      <ChevronRight className="w-4 h-4 ml-2" />
-                    </Button>
-                  </Link>
-                  <Link href="/card">
-                    <Button variant="outline" className="border-primary hover:bg-primary/10 hover:text-primary group">
-                      <Terminal className="w-4 h-4 mr-2" />
-                      Contact
-                    </Button>
-                  </Link>
-                </div>
+                <div className="flex flex-col sm:flex-row gap-4">
+                <Link href="/projects" className="w-full sm:w-auto">  
+                  <Button variant="outline" className="w-full sm:w-auto border-primary hover:bg-primary/10 hover:text-primary group">
+                    <div className="h-1.5 w-1.5 bg-primary group-hover:retro-glow mr-2" />
+                    View Projects
+                    <ChevronRight className="w-4 h-4 ml-2" />
+                  </Button>
+                </Link>
+                <Link href="/card" className="w-full sm:w-auto">
+                  <Button variant="outline" className="w-full sm:w-auto border-primary hover:bg-primary/10 hover:text-primary group">
+                    <Terminal className="w-4 h-4 mr-2" />
+                    Contact
+                  </Button>
+                </Link>
+              </div>
               </div>
             </div>
           </div>

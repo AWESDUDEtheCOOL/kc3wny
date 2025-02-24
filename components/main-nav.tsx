@@ -4,10 +4,10 @@ import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 
 const navItems = [
+  { href: "/projects", label: "Projects" },
   { href: "/photography", label: "Photography" },
   { href: "/radio", label: "Amateur Radio" },
-  { href: "/projects", label: "Projects" },
-  
+  { href: "/card", label: "Card" },
   { href: "/sitemap", label: "Sitemap" },
 ]
 
