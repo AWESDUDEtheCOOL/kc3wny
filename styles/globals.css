@@ -1,0 +1,130 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+
+    /* Exact Orange from Logo */
+    --primary: 21 99% 59%;
+    --primary-foreground: 0 0% 100%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 21 99% 59%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 21 99% 59%;
+    --radius: 0px;
+
+    /* New warning colors */
+    --warning: 38 92% 50%;
+    --warning-foreground: 48 96% 89%;
+  }
+
+  .dark {
+    --background: 0 0% 10%;
+    --foreground: 0 0% 98%;
+
+    /* Exact Orange from Logo */
+    --primary: 21 99% 59%;
+    --primary-foreground: 0 0% 100%;
+
+    --card: 0 0% 15%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 15%;
+    --popover-foreground: 0 0% 98%;
+    --muted: 0 0% 20%;
+    --muted-foreground: 0 0% 70%;
+    --accent: 21 99% 59%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 25%;
+    --input: 0 0% 25%;
+    --ring: 21 99% 59%;
+
+    /* New warning colors for dark mode */
+    --warning: 48 96% 89%;
+    --warning-foreground: 38 92% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+@layer utilities {
+  .retro-glow {
+    text-shadow: 0 0 10px hsl(var(--primary) / 0.5), 0 0 20px hsl(var(--primary) / 0.3);
+  }
+
+  .retro-glow-blue {
+    text-shadow: 0 0 10px hsl(var(--secondary) / 0.5), 0 0 20px hsl(var(--secondary) / 0.3);
+  }
+
+  .retro-glow-green {
+    text-shadow: 0 0 10px hsl(var(--accent) / 0.5), 0 0 20px hsl(var(--accent) / 0.3);
+  }
+
+  .satellite-overlay {
+    background: linear-gradient(to bottom, transparent, hsl(var(--background)));
+  }
+
+  .scan-line {
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent 0%,
+      transparent 50%,
+      hsl(var(--primary) / 0.03) 50%,
+      hsl(var(--primary) / 0.03) 100%
+    );
+    background-size: 100% 4px;
+  }
+
+  .retro-terminal::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+    background-size: 100% 4px;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .retro-terminal {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .retro-terminal::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.3) 90%);
+    z-index: 1;
+    pointer-events: none;
+  }
+}
+
