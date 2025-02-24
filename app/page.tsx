@@ -97,32 +97,25 @@ export default function Page() {
                 <div className="space-y-4">
                   <div className="flex items-center gap-2">
                     <div className="h-2 w-2 bg-primary animate-pulse retro-glow" />
-                    <h1 className="text-4xl md:text-6xl font-bold tracking-tighter text-primary retro-glow">
+                    <h1 className="text-4xl md:text-6xl font-bold tracking-tighter text-black dark:text-primary retro-glow">
                       KC3WNY SYSTEMS
                     </h1>
                   </div>
-                  <p className="text-xl text-primary/80 font-mono">
-                    <span className="text-primary">&gt;</span> Personal Website of Mason Matich <br></br>
-                    <span className="text-primary">&gt;</span> Technical projects // Amateur radio experiments // Digital & Analog photography
+                  <p className="text-xl text-black/80 dark:text-primary/80 font-mono">
+                    <span className="text-black dark:text-primary">&gt;</span> Personal Website of Mason Matich <br></br>
+                    <span className="text-black dark:text-primary">&gt;</span> Technical projects // Amateur radio experiments // Digital & Analog photography
                   </p>
                 </div>
-                <div className="flex gap-4">
-                  <Link href="/projects">  
-                    <Button variant="outline" className="border-primary hover:bg-primary/10 hover:text-primary group">
-                      <div className="h-1.5 w-1.5 bg-primary group-hover:retro-glow mr-2" />
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <Link href="/projects" className="w-full sm:w-auto">  
+                    <Button variant="outline" className="w-full sm:w-auto border-black dark:border-primary hover:bg-black/10 dark:hover:bg-primary/10 hover:text-black dark:hover:text-primary group">
+                      <div className="h-1.5 w-1.5 bg-black dark:bg-primary group-hover:retro-glow mr-2" />
                       View Projects
                       <ChevronRight className="w-4 h-4 ml-2" />
                     </Button>
                   </Link>
-                  <Link href="/about">  
-                    <Button variant="outline" className="border-primary hover:bg-primary/10 hover:text-primary group">
-                      <div className="h-1.5 w-1.5 bg-primary group-hover:retro-glow mr-2" />
-                      About
-                      <ChevronRight className="w-4 h-4 ml-2" />
-                    </Button>
-                  </Link>
-                  <Link href="/card">
-                    <Button variant="outline" className="border-primary hover:bg-primary/10 hover:text-primary group">
+                  <Link href="/card" className="w-full sm:w-auto">
+                    <Button variant="outline" className="w-full sm:w-auto border-black dark:border-primary hover:bg-black/10 dark:hover:bg-primary/10 hover:text-black dark:hover:text-primary group">
                       <Terminal className="w-4 h-4 mr-2" />
                       Contact
                     </Button>

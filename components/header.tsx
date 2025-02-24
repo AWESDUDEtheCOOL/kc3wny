@@ -17,22 +17,22 @@ export default function Header() {
       <div className="border-b border-primary/20">
         <div className="container flex h-16 items-center justify-between">
           <div className="flex items-center gap-6">
-          <Link href="/" className="hidden md:block relative w-[120px] h-auto">
-            <div className="relative w-full aspect-[3/1]">
-              <Image
-                src="/dark_tall.svg"
-                alt="Logo"
-                fill
-                className="hidden dark:block object-contain"
-              />
-              <Image
-                src="/light_tall.svg"
-                alt="Logo"
-                fill
-                className="block dark:hidden object-contain"
-              />
-            </div>
-          </Link>
+            <Link href="/" className="relative w-[120px] h-auto">
+              <div className="relative w-full aspect-[3/1]">
+                <Image
+                  src="/dark_tall.svg"
+                  alt="Logo"
+                  fill
+                  className="hidden dark:block object-contain"
+                />
+                <Image
+                  src="/light_tall.svg"
+                  alt="Logo"
+                  fill
+                  className="block dark:hidden object-contain"
+                />
+              </div>
+            </Link>
             <nav className="hidden md:flex items-center gap-6">
               <Link
                 href="/projects"
@@ -87,7 +87,7 @@ export default function Header() {
             </nav>
           </div>
           <div className="flex items-center gap-4">
-            <div className="text-xs font-mono text-primary animate-pulse">SYS_STATUS: ONLINE</div>
+            <div className="hidden md:block text-xs font-mono text-primary animate-pulse">SYS_STATUS: ONLINE</div>
             <ThemeToggle />
             <MobileNav className="md:hidden" />
           </div>
@@ -97,4 +97,3 @@ export default function Header() {
     </header>
   )
 }
-
