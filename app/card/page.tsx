@@ -19,17 +19,17 @@ export default function ContactPage() {
     <div className="min-h-screen bg-background font-mono p-4 md:p-8">
       <div className="max-w-4xl mx-auto border border-primary/20 bg-background/50 backdrop-blur">
         {/* Header */}
-        <div className="border-b border-primary/20 p-4 flex items-center justify-between">
+        <div className="border-b border-primary/20 p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-0">
           <div className="flex items-center gap-4">
-            <Image src="/headshot.jpg" alt="Logo" width={60} height={60}/>
+            <Image src="/headshot.jpg" alt="Logo" width={60} height={60} className="w-12 h-12 sm:w-[60px] sm:h-[60px]"/>
             <div>
-              <h1 className="text-2xl font-bold tracking-tighter text-primary">KC3WNY SYSTEMS</h1>
-              <p className="text-sm text-muted-foreground">PERSONNEL REPORT 001</p>
+              <h1 className="text-xl sm:text-2xl font-bold tracking-tighter text-primary">KC3WNY SYSTEMS</h1>
+              <p className="text-xs sm:text-sm text-muted-foreground">PERSONNEL REPORT 001</p>
             </div>
           </div>
-          <div className="text-right">
-            <p className="text-sm text-muted-foreground">DOCUMENT NO.</p>
-            <p className="text-lg font-bold text-primary">DOC. NO.: KC-PR-{gitInfo.year}-{gitInfo.commitNumber} REV: {gitInfo.commitRev}</p>
+          <div className="text-left sm:text-right w-full sm:w-auto">
+            <p className="text-xs sm:text-sm text-muted-foreground">DOCUMENT NO.</p>
+            <p className="text-sm sm:text-lg font-bold text-primary">DOC. NO.: KC-PR-{gitInfo.year}-{gitInfo.commitNumber} REV: {gitInfo.commitRev}</p>
           </div>
         </div>
 
