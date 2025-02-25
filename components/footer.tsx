@@ -37,7 +37,7 @@ export function Footer() {
             <h3 className="text-lg font-bold text-primary">NAVIGATION</h3>
             <div className="h-px bg-primary/20" />
             <ul className="space-y-2">
-              {['About Us', 'Projects', 'Photography', 'Radio', 'Card'].map((item, index) => (
+              {['Projects', 'Photography', 'Radio', 'Card', 'Sitemap'].map((item, index) => (
                 <li key={index}>
                   <Link 
                     href={`/${item.toLowerCase().replace(' ', '-')}`} 

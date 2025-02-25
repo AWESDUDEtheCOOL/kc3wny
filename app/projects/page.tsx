@@ -31,11 +31,18 @@ export default async function ProjectsPage() {
   const projectFiles = await getProjectFiles();
   const projects = await Promise.all(projectFiles.map(fileName => getProjectData(fileName)));
 
+  // Sort projects by date in descending order (most recent first)
+  const sortedProjects = projects.sort((a, b) => {
+    const dateA = new Date(a.frontmatter.date || 0);
+    const dateB = new Date(b.frontmatter.date || 0);
+    return dateB.getTime() - dateA.getTime();
+  });
+
   return (
     <div className="container py-24">
       <h1 className="text-4xl font-bold tracking-tighter text-primary mb-8">PROJECTS_</h1>
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {projects.map((project, index) => (
+        {sortedProjects.map((project, index) => (
           <Link
             href={`/projects/${project.slug}`}
             key={project.slug}
@@ -45,7 +52,7 @@ export default async function ProjectsPage() {
             <div className="p-6 space-y-4">
               <div className="flex items-center gap-2">
                 <div className="h-1.5 w-1.5 bg-primary group-hover:retro-glow" />
-                <div className="text-xs text-primary">PROJECT_{String(index + 1).padStart(3, "0")}</div>
+                <div className="text-xs text-primary">PROJECT_{String(sortedProjects.length - index).padStart(3, "0")}</div>
               </div>
               <h3 className="text-xl font-bold group-hover:text-primary group-hover:retro-glow">
                 {project.frontmatter.title}

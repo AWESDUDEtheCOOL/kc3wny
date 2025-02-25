@@ -13,29 +13,29 @@ export default function Page() {
     const projectsDirectory = path.join(process.cwd(), "projects")
     const projectFiles = fs.readdirSync(projectsDirectory)
     projects = projectFiles
-    .map((filename) => {
-      const slug = filename.replace(".mdx", "")
-      const fullPath = path.join(projectsDirectory, filename)
-      const fileContents = fs.readFileSync(fullPath, "utf8")
-      const { data: frontmatter } = matter(fileContents)
-      
-      // Format the date
-      const formattedDate = new Intl.DateTimeFormat('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-      }).format(new Date(frontmatter.date))
+      .map((filename) => {
+        const slug = filename.replace(".mdx", "")
+        const fullPath = path.join(projectsDirectory, filename)
+        const fileContents = fs.readFileSync(fullPath, "utf8")
+        const { data: frontmatter } = matter(fileContents)
+        
+        // Format the date
+        const formattedDate = new Intl.DateTimeFormat('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        }).format(new Date(frontmatter.date))
 
-      return { 
-        slug, 
-        frontmatter: {
-          ...frontmatter,
-          date: formattedDate
+        return { 
+          slug, 
+          frontmatter: {
+            ...frontmatter,
+            date: formattedDate
+          }
         }
-      }
-    })
-    .sort((a, b) => new Date(b.frontmatter.date).getTime() - new Date(a.frontmatter.date).getTime())
-    .slice(0, 3)
+      })
+      .sort((a, b) => new Date(b.frontmatter.date) - new Date(a.frontmatter.date)) // Reverse the order
+      .slice(0, 3)
   } catch (error) {
     console.error("Error reading projects:", error)
   }
@@ -149,7 +149,7 @@ export default function Page() {
                       <div className="p-6 space-y-4">
                         <div className="flex items-center gap-2">
                           <div className="h-1.5 w-1.5 bg-primary group-hover:retro-glow" />
-                          <div className="text-xs text-primary">PROJECT_{String(i + 1).padStart(3, "0")}</div>
+                          <div className="text-xs text-primary">PROJECT_{String(projects.length - i).padStart(3, "0")}</div>
                         </div>
                         <h4 className="text-lg font-bold group-hover:text-primary group-hover:retro-glow">
                           {project.frontmatter.title}
