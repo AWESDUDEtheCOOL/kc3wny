@@ -4,42 +4,10 @@ import { Button } from "@/components/ui/button"
 import { ChevronRight, Terminal } from "lucide-react"
 import fs from "fs"
 import path from "path"
-import matter from "gray-matter"
+import ProjectsGrid from "@/components/projects-grid"
+
 
 export default function Page() {
-  // Get recent projects
-  let projects = []
-  try {
-    const projectsDirectory = path.join(process.cwd(), "projects")
-    const projectFiles = fs.readdirSync(projectsDirectory)
-    projects = projectFiles
-      .map((filename) => {
-        const slug = filename.replace(".mdx", "")
-        const fullPath = path.join(projectsDirectory, filename)
-        const fileContents = fs.readFileSync(fullPath, "utf8")
-        const { data: frontmatter } = matter(fileContents)
-        
-        // Format the date
-        const formattedDate = new Intl.DateTimeFormat('en-US', {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric'
-        }).format(new Date(frontmatter.date))
-
-        return { 
-          slug, 
-          frontmatter: {
-            ...frontmatter,
-            date: formattedDate
-          }
-        }
-      })
-      .sort((a, b) => new Date(b.frontmatter.date) - new Date(a.frontmatter.date)) // Reverse the order
-      .slice(0, 3)
-  } catch (error) {
-    console.error("Error reading projects:", error)
-  }
-
   // Get recent photos
   let recentPhotos = []
   try {
@@ -137,38 +105,7 @@ export default function Page() {
             {/* Projects */}
             <section className="mb-12">
               <h3 className="text-xl font-bold text-primary mb-4">Latest Projects</h3>
-              {projects.length > 0 ? (
-                <div className="grid md:grid-cols-3 gap-6">
-                  {projects.map((project, i) => (
-                    <Link
-                      key={project.slug}
-                      href={`/projects/${project.slug}`}
-                      className="group relative border border-primary/20 bg-background/50 backdrop-blur hover:bg-primary/5 transition-colors block"
-                    >
-                      <div className="absolute inset-0 grid-pattern opacity-30" />
-                      <div className="p-6 space-y-4">
-                        <div className="flex items-center gap-2">
-                          <div className="h-1.5 w-1.5 bg-primary group-hover:retro-glow" />
-                          <div className="text-xs text-primary">PROJECT_{String(projects.length - i).padStart(3, "0")}</div>
-                        </div>
-                        <h4 className="text-lg font-bold group-hover:text-primary group-hover:retro-glow">
-                          {project.frontmatter.title}
-                        </h4>
-                        <p className="text-sm text-muted-foreground">{project.frontmatter.date}</p>
-                        <div className="inline-flex items-center text-primary group">
-                          <div className="h-1.5 w-1.5 bg-primary group-hover:retro-glow mr-2" />
-                          View Project
-                          <ChevronRight className="w-4 h-4 ml-1" />
-                        </div>
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-              ) : (
-                <div className="border border-primary/20 p-6 text-center">
-                  <p className="text-muted-foreground">No projects found. Check back soon for updates.</p>
-                </div>
-              )}
+              <ProjectsGrid limit={3} />
               <div className="mt-6">
                 <Link href="/projects" className="text-primary hover:underline group inline-flex items-center">
                   <div className="h-1.5 w-1.5 bg-primary group-hover:retro-glow mr-2" />

@@ -5,6 +5,7 @@ import matter from 'gray-matter';
 import { MDXRemote } from 'next-mdx-remote/rsc';
 import Image from 'next/image';
 import Link from 'next/link';
+import { notFound } from 'next/navigation';
 
 interface ProjectPageProps {
   params: {
@@ -59,7 +60,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   try {
     fileContents = await fs.readFile(fullPath, 'utf8');
   } catch (error) {
-    return <h1>404 - Page Not Found</h1>;
+    notFound();
   }
 
   const { content, data: frontMatter } = matter(fileContents);
