@@ -76,8 +76,8 @@ export default function ContactPage() {
               </div>
               <div className="flex items-center gap-2">
                 <Mail className="h-5 w-5 text-primary" />
-                <Link href="mailto:mcmatich@gmail.com" className="underline">
-                  mcmatich@gmail.com
+                <Link href="mailto:mmatich@kc3wny.com" className="underline">
+                  mmatich@kc3wny.com
                 </Link>              
               </div>
               <div className="flex items-center gap-2">
