@@ -24,10 +24,6 @@ const nextConfig = {
     parallelServerCompiles: true,
   },
   pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],
-  webpack: (config, { isServer }) => {
-    config.optimization.minimize = false;
-    return config;
-  },
 };
 
 export default withMDX(nextConfig);
