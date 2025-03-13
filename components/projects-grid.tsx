@@ -14,7 +14,7 @@ interface ProjectData {
   date: string | null;
 }
 
-const projectsDirectory = path.join(process.cwd(), 'projects');
+const projectsDirectory = path.join(process.cwd(), 'markdown/projects');
 
 function parseDate(dateString: string): Date | null {
   const date = new Date(dateString);

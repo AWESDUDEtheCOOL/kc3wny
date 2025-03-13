@@ -1,6 +1,6 @@
 // next.config.mjs
 
-import { createRequire } from 'module';
+import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 
 const withMDX = require('@next/mdx')({
@@ -24,6 +24,7 @@ const nextConfig = {
     parallelServerCompiles: true,
   },
   pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],
+  transpilePackages: ['next-mdx-remote'],
 };
 
 export default withMDX(nextConfig);
