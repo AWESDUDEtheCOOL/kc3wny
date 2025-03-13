@@ -1,11 +1,14 @@
 // app/projects/[slug]/page.tsx
-import fs from 'fs/promises';
+import fs from 'node:fs/promises';
 import path from 'path';
 import matter from 'gray-matter';
-import { MDXRemote } from 'next-mdx-remote/rsc';
+import { MDXRemote } from 'next-mQdx-remote/rsc';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import type { ComponentPropsWithoutRef } from 'react';
+import type { MDXComponents } from 'mdx/types';
+import type { StaticImageData } from 'next/image';
 
 interface ProjectPageProps {
   params: {
@@ -13,65 +16,116 @@ interface ProjectPageProps {
   };
 }
 
-export async function generateStaticParams() {
-  const projectsDirectory = path.join(process.cwd(), 'projects');
-  const files = await fs.readdir(projectsDirectory);
+const projectsDirectory = path.join(process.cwd(), 'markdown/projects');
 
+export async function generateStaticParams() {
+  const files = await fs.readdir(projectsDirectory);
   return files.map((filename) => ({
     slug: filename.replace('.mdx', ''),
   }));
 }
 
-const components = {
-  h1: (props: any) => <h1 {...props} className="text-3xl font-bold mt-8 mb-4 text-primary" />,
-  h2: (props: any) => <h2 {...props} className="text-2xl font-bold mt-6 mb-3 text-primary" />,
-  h3: (props: any) => <h3 {...props} className="text-xl font-bold mt-4 mb-2 text-primary" />,
-  p: (props: any) => <p {...props} className="my-4 retro-text" />,
-  a: ({ href, children, ...props }: any) => (
-    <Link href={href} {...props} className="text-primary hover:underline cursor-pointer">
-      {children}
-    </Link>
-  ),
-  ul: (props: any) => <ul {...props} className="list-disc list-inside my-4 retro-text" />,
-  ol: (props: any) => <ol {...props} className="list-decimal list-inside my-4 retro-text" />,
-  li: (props: any) => <li {...props} className="ml-4 retro-text" />,
-  blockquote: (props: any) => (
-    <blockquote {...props} className="border-l-4 border-primary pl-4 italic my-4 retro-text" />
-  ),
-  code: (props: any) => <code {...props} className="bg-primary/10 rounded px-1 py-0.5 retro-text" />,
-  pre: (props: any) => <pre {...props} className="bg-primary/10 p-4 rounded my-4 overflow-x-auto retro-text" />,
-  img: (props: any) => (
-    <Image
-      {...props}
-      width={600}
-      height={400}
-      className="my-4"
-      alt={props.alt || 'Project image'}
-    />
-  ),
+type HeadingProps = ComponentPropsWithoutRef<'h1'>;
+type ParagraphProps = ComponentPropsWithoutRef<'p'>;
+type ListProps = ComponentPropsWithoutRef<'ul'>;
+type ListItemProps = ComponentPropsWithoutRef<'li'>;
+type BlockquoteProps = ComponentPropsWithoutRef<'blockquote'>;
+type CodeProps = ComponentPropsWithoutRef<'code'>;
+type PreProps = ComponentPropsWithoutRef<'pre'>;
+type ImageComponentProps = ComponentPropsWithoutRef<'img'> & {
+  src: string | StaticImageData;
+  alt?: string;
+  width?: string | number;
+  height?: string | number;
+  style?: React.CSSProperties;
+  className?: string;
 };
 
-export default async function ProjectPage({ params }: ProjectPageProps) {
-  const { slug } = params;
-  const projectsDirectory = path.join(process.cwd(), 'projects');
+const components: MDXComponents = {
+  h1: (props: HeadingProps) => <h1 {...props} className="text-3xl font-bold mt-8 mb-4 text-primary" />,
+  h2: (props: HeadingProps) => <h2 {...props} className="text-2xl font-bold mt-6 mb-3 text-primary" />,
+  h3: (props: HeadingProps) => <h3 {...props} className="text-xl font-bold mt-4 mb-2 text-primary" />,
+  p: (props: ParagraphProps) => <p {...props} className="my-4 retro-text" />,
+  a: (props) => (
+    <Link 
+      href={props.href || '#'} 
+      className="text-primary hover:underline cursor-pointer"
+      prefetch={false}
+    >
+      {props.children}
+    </Link>
+  ),
+  ul: (props: ListProps) => <ul {...props} className="list-disc list-inside my-4 retro-text" />,
+  ol: (props: ListProps) => <ol {...props} className="list-decimal list-inside my-4 retro-text" />,
+  li: (props: ListItemProps) => <li {...props} className="ml-4 retro-text" />,
+  blockquote: (props: BlockquoteProps) => (
+    <blockquote {...props} className="border-l-4 border-primary pl-4 italic my-4 retro-text" />
+  ),
+  code: (props: CodeProps) => <code {...props} className="bg-primary/10 rounded px-1 py-0.5 retro-text" />,
+  pre: (props: PreProps) => <pre {...props} className="bg-primary/10 p-4 rounded my-4 overflow-x-auto retro-text" />,
+  img: ({ src, alt, width, height, style, className, ...props }) => {
+    if (!src) return null;
+    
+    const numericWidth = width ? 
+      (typeof width === 'string' ? Number.parseInt(width, 10) : width) : 600;
+    
+    const numericHeight = height ? 
+      (typeof height === 'string' ? Number.parseInt(height, 10) : height) : 400;
+    
+    const mergedStyle = {
+      ...style,
+      maxHeight: style?.maxHeight || '70vh',
+    };
+    
+    return (
+      <Image
+        src={src as string | StaticImageData}
+        alt={alt || 'Project image'}
+        width={numericWidth}
+        height={numericHeight}
+        className={`${className || ''} max-w-full h-auto object-contain my-4 mx-auto`}
+        style={mergedStyle}
+        loading="lazy"
+        priority={false}
+        {...props}
+      />
+    );
+  },
+};
+
+interface FrontMatter {
+  title: string;
+  date?: string;
+  [key: string]: unknown;
+}
+
+async function getProjectFile(slug: string) {
   const fullPath = path.join(projectsDirectory, `${slug}.mdx`);
   
-  let fileContents;
   try {
-    fileContents = await fs.readFile(fullPath, 'utf8');
+    const fileContents = await fs.readFile(fullPath, 'utf8');
+    return { 
+      fullPath, 
+      fileContents 
+    };
   } catch (error) {
+    return null;
+  }
+}
+
+export default async function ProjectPage({ params }: Readonly<ProjectPageProps>) {
+  const resolvedParams = await params;
+  const { slug } = resolvedParams;
+  
+  const projectFileResult = await getProjectFile(slug);
+  
+  if (!projectFileResult) {
     notFound();
   }
-
-  const { content, data: frontMatter } = matter(fileContents);
-
-  const imagesDirectory = path.join(process.cwd(), 'public', 'images', slug);
-  let imageFiles = [];
-  try {
-    imageFiles = await fs.readdir(imagesDirectory);
-  } catch (error) {
-    // Directory doesn't exist or is empty
-  }
+  
+  const { fullPath, fileContents } = projectFileResult;
+  const { content, data } = matter(fileContents);
+  const frontMatter = data as FrontMatter;
 
   const formattedDate = frontMatter.date 
     ? new Date(frontMatter.date).toLocaleDateString('en-US', {
@@ -101,24 +155,6 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           <MDXRemote source={content} components={components} />
         </div>
       </div>
-      {imageFiles.length > 0 && (
-        <div className="space-y-4">
-          <h2 className="text-2xl font-bold text-primary retro-glow">Project Images</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {imageFiles.map((image, index) => (
-              <div key={index} className="border border-primary/20 p-2 backdrop-blur-sm relative overflow-hidden group">
-                <Image
-                  src={`/images/${slug}/${image}`}
-                  alt={`Project image ${index + 1}`}
-                  width={300}
-                  height={200}
-                  className="w-full h-auto object-cover transition-transform group-hover:scale-105"
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
     </div>
   );
 }
