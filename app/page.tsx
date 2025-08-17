@@ -1,199 +1,165 @@
-import Image from "next/image"
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { ChevronRight, Terminal } from "lucide-react"
-import fs from "fs"
-import path from "path"
-import ProjectsGrid from "@/components/projects-grid"
+import { ArrowRight, Radio, Camera, Code, ExternalLink } from "lucide-react"
 
+export default function HomePage() {
+  const recentProjects = [
+    {
+      title: "ORBITAL_TRACKER_V2",
+      description: "Real-time satellite tracking system with predictive algorithms",
+      status: "OPERATIONAL",
+      date: "2024.01.15",
+    },
+    {
+      title: "RF_ANALYZER_PRO",
+      description: "Advanced spectrum analysis tool for radio frequency monitoring",
+      status: "DEVELOPMENT",
+      date: "2024.01.08",
+    },
+    {
+      title: "MISSION_CONTROL_UI",
+      description: "Command center interface for aerospace operations",
+      status: "TESTING",
+      date: "2023.12.22",
+    },
+  ]
 
-export default function Page() {
-  // Get recent photos
-  let recentPhotos = []
-  try {
-    const photosDirectory = path.join(process.cwd(), "public", "images")
-    const photoFolders = fs.readdirSync(photosDirectory)
-    recentPhotos = photoFolders
-      .flatMap((folder) => {
-        const folderPath = path.join(photosDirectory, folder)
-        if (fs.statSync(folderPath).isDirectory()) {
-          return fs.readdirSync(folderPath).map((file) => ({
-            src: `/images/${folder}/${file}`,
-            folder: folder,
-            file: file,
-          }))
-        }
-        return []
-      })
-      .sort(
-        (a, b) =>
-          fs.statSync(path.join(photosDirectory, b.folder, b.file)).mtime.getTime() -
-          fs.statSync(path.join(photosDirectory, a.folder, a.file)).mtime.getTime(),
-      )
-      .slice(0, 6)
+  const recentPhotos = [
+    { title: "ANTENNA_ARRAY_SUNSET", location: "Site_Alpha", date: "2024.01.12" },
+    { title: "CONTROL_ROOM_NIGHT", location: "Command_Center", date: "2024.01.10" },
+    { title: "SATELLITE_DISH_DAWN", location: "Site_Beta", date: "2024.01.05" },
+  ]
 
-    console.log("Recent Photos:", recentPhotos)
-  } catch (error) {
-    console.error("Error reading photos:", error)
-  }
+  const recentContacts = [
+    { callsign: "W1AW", frequency: "14.205", mode: "CW", date: "2024.01.14", time: "23:45" },
+    { callsign: "JA1XYZ", frequency: "21.074", mode: "FT8", date: "2024.01.14", time: "22:30" },
+    { callsign: "VK2ABC", frequency: "7.032", mode: "PSK31", date: "2024.01.13", time: "19:15" },
+  ]
 
-    return (
-      <div className="min-h-screen bg-background font-mono">
-        {/* Hero with Satellite Image */}
-        <div className="relative h-screen">
-          <Image
-            src="home.gif"
-            alt="Earth from GOES-16 Satellite"
-            fill
-            className="object-cover"
-            priority
-          />
-          <div className="absolute inset-0 satellite-overlay" />
-          <div className="absolute inset-0 scan-line" />
-  
-          {/* Technical Overlay */}
-          <div className="absolute top-4 left-4 text-xs font-mono text-primary/80">
-            GOES-16 - ABI - FULL DISK
-            <br />
-            12:40:22 UTC 06-JUL-2024
+  return (
+    <div className="space-y-12 relative z-10">
+      {/* Hero Section */}
+      <section className="text-center py-16 border-b border-foreground/20">
+        <div className="max-w-4xl mx-auto">
+          <h1 className="font-mono text-4xl md:text-6xl font-bold text-foreground mb-4 tracking-wider">
+            DEFENSE & AEROSPACE
+          </h1>
+          <h2 className="font-mono text-2xl md:text-3xl text-[#FE7F2D] mb-6 tracking-wide">ENGINEERING SYSTEMS</h2>
+          <p className="font-mono text-muted-foreground text-lg max-w-2xl mx-auto leading-relaxed">
+            Advanced technological solutions for mission-critical applications. Specializing in RF systems, orbital
+            mechanics, and command interfaces.
+          </p>
+          <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              href="/projects"
+              className="inline-flex items-center px-6 py-3 border border-[#FE7F2D] text-[#FE7F2D] font-mono hover:bg-[#FE7F2D] hover:text-black transition-colors"
+            >
+              VIEW_PROJECTS <ArrowRight className="ml-2" size={16} />
+            </Link>
+            <Link
+              href="/about"
+              className="inline-flex items-center px-6 py-3 border border-foreground text-foreground font-mono hover:bg-foreground hover:text-background transition-colors"
+            >
+              SYSTEM_INFO <ExternalLink className="ml-2" size={16} />
+            </Link>
           </div>
-  
-          {/* Hero Content */}
-          <div className="absolute inset-0 flex items-center">
-            <div className="container">
-              <div className="max-w-2xl space-y-8 backdrop-blur-sm bg-background/40 p-8 border border-primary/20">
-                <div className="space-y-4">
-                  <div className="flex items-center gap-2">
-                    <div className="h-2 w-2 bg-primary animate-pulse retro-glow" />
-                    <h1 className="text-4xl md:text-6xl font-bold tracking-tighter text-black dark:text-primary retro-glow">
-                      KC3WNY SYSTEMS
-                    </h1>
-                  </div>
-                  <p className="text-xl text-black/80 dark:text-primary/80 font-mono">
-                    <span className="text-black dark:text-primary">&gt;</span> Personal Website of Mason Matich <br></br>
-                    <span className="text-black dark:text-primary">&gt;</span> Technical projects // Amateur radio experiments // Digital & Analog photography
-                  </p>
-                </div>
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <Link href="/projects" className="w-full sm:w-auto">  
-                    <Button variant="outline" className="w-full sm:w-auto border-black dark:border-primary hover:bg-black/10 dark:hover:bg-primary/10 hover:text-black dark:hover:text-primary group">
-                      <div className="h-1.5 w-1.5 bg-black dark:bg-primary group-hover:retro-glow mr-2" />
-                      View Projects
-                      <ChevronRight className="w-4 h-4 ml-2" />
-                    </Button>
-                  </Link>
-                  <Link href="/card" className="w-full sm:w-auto">
-                    <Button variant="outline" className="w-full sm:w-auto border-black dark:border-primary hover:bg-black/10 dark:hover:bg-primary/10 hover:text-black dark:hover:text-primary group">
-                      <Terminal className="w-4 h-4 mr-2" />
-                      Contact
-                    </Button>
-                  </Link>
-                </div>
+        </div>
+      </section>
+
+      {/* Recent Projects */}
+      <section>
+        <div className="flex items-center justify-between mb-8">
+          <h2 className="font-mono text-2xl text-[#FE7F2D] tracking-wider flex items-center">
+            <Code className="mr-3" size={24} />
+            RECENT_PROJECTS
+          </h2>
+          <Link href="/projects" className="font-mono text-foreground hover:text-[#FE7F2D] transition-colors text-sm">
+            VIEW_ALL →
+          </Link>
+        </div>
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {recentProjects.map((project, index) => (
+            <div key={index} className="border border-muted bg-card p-6 hover:border-[#FE7F2D]/50 transition-colors">
+              <div className="flex justify-between items-start mb-3">
+                <h3 className="font-mono text-foreground font-bold">{project.title}</h3>
+                <span
+                  className={`font-mono text-xs px-2 py-1 border ${
+                    project.status === "OPERATIONAL"
+                      ? "text-foreground border-foreground"
+                      : project.status === "DEVELOPMENT"
+                        ? "text-yellow-400 border-yellow-400"
+                        : "text-blue-400 border-blue-400"
+                  }`}
+                >
+                  {project.status}
+                </span>
+              </div>
+              <p className="text-muted-foreground text-sm mb-4">{project.description}</p>
+              <div className="font-mono text-xs text-muted-foreground/50">{project.date}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Recent Photos */}
+      <section>
+        <div className="flex items-center justify-between mb-8">
+          <h2 className="font-mono text-2xl text-[#FE7F2D] tracking-wider flex items-center">
+            <Camera className="mr-3" size={24} />
+            RECENT_CAPTURES
+          </h2>
+          <Link href="/photos" className="font-mono text-foreground hover:text-[#FE7F2D] transition-colors text-sm">
+            VIEW_ALL →
+          </Link>
+        </div>
+        <div className="grid gap-4 md:grid-cols-3">
+          {recentPhotos.map((photo, index) => (
+            <div key={index} className="border border-muted bg-card p-4 hover:border-[#FE7F2D]/50 transition-colors">
+              <div className="aspect-video bg-gradient-to-br from-foreground/10 to-[#FE7F2D]/10 mb-3 flex items-center justify-center">
+                <Camera className="text-foreground/30" size={32} />
+              </div>
+              <h3 className="font-mono text-foreground text-sm font-bold mb-1">{photo.title}</h3>
+              <div className="font-mono text-xs text-muted-foreground">
+                <div>LOC: {photo.location}</div>
+                <div>DATE: {photo.date}</div>
               </div>
             </div>
-          </div>
-  
-          {/* Technical Grid Overlay */}
-          <div className="absolute inset-0 pointer-events-none grid-pattern opacity-20" />
+          ))}
         </div>
-  
-        {/* Recently Added Section */}
-        <div className="bg-background py-24">
-          <div className="container">
-            <h2 className="text-2xl font-bold tracking-tighter text-primary mb-8">RECENTLY ADDED_</h2>
-  
-            {/* Projects */}
-            <section className="mb-12">
-              <h3 className="text-xl font-bold text-primary mb-4">Latest Projects</h3>
-              <ProjectsGrid limit={3} />
-              <div className="mt-6">
-                <Link href="/projects" className="text-primary hover:underline group inline-flex items-center">
-                  <div className="h-1.5 w-1.5 bg-primary group-hover:retro-glow mr-2" />
-                  View All Projects
-                  <ChevronRight className="w-4 h-4 ml-2" />
-                </Link>
-              </div>
-            </section>
-  
-            {/* Photography */}
-            <section className="mb-12">
-              <h3 className="text-xl font-bold text-primary mb-4">Latest Photos</h3>
-              {recentPhotos.length > 0 ? (
-                <div className="grid md:grid-cols-3 gap-6">
-                  {recentPhotos.map((photo, i) => (
-                    <Link
-                      key={i}
-                      href="/photography"
-                      className="group relative border border-primary/20 bg-background/50 backdrop-blur hover:bg-primary/5 transition-colors block aspect-square"
-                    >
-                      <div className="relative w-full h-full">
-                        <Image
-                          src={photo.src}
-                          alt={`Photo ${i + 1}`}
-                          layout="fill"
-                          objectFit="cover"
-                          className="transition-transform group-hover:scale-105"
-                        />
-                      </div>
-                      <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                      <div className="absolute bottom-0 left-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity border-t border-primary/20 bg-background/80 backdrop-blur">
-                        <div className="flex items-center gap-2">
-                          <div className="h-1.5 w-1.5 bg-primary retro-glow" />
-                          <div className="text-xs text-primary">IMG_{String(i + 1).padStart(3, "0")}</div>
-                        </div>
-                        <div className="font-medium text-primary mt-1">{photo.file}</div>
-                        <div className="text-xs text-muted-foreground mt-1 font-mono">{photo.folder}</div>
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-              ) : (
-                <div className="border border-primary/20 p-6 text-center">
-                  <p className="text-muted-foreground">No photos found. Check back soon for updates.</p>
-                </div>
-              )}
-              <div className="mt-6">
-                <Link href="/photography" className="text-primary hover:underline group inline-flex items-center">
-                  <div className="h-1.5 w-1.5 bg-primary group-hover:retro-glow mr-2" />
-                  View All Photos
-                  <ChevronRight className="w-4 h-4 ml-2" />
-                </Link>
-              </div>
-            </section>
-  
-            {/* Radio */}
-            <section>
-              <h3 className="text-xl font-bold text-primary mb-4">Latest Radio Contacts</h3>
-              <div className="border border-primary/20 p-4 bg-background/50 backdrop-blur">
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr className="border-b border-primary/20">
-                      <th className="text-left p-2 text-primary">Date</th>
-                      <th className="text-left p-2 text-primary">Callsign</th>
-                      <th className="text-left p-2 text-primary">Frequency</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {[1, 2, 3].map((i) => (
-                      <tr key={i} className="border-b border-primary/20 hover:bg-primary/5 transition-colors">
-                        <td className="p-2 text-muted-foreground">2025-02-24</td>
-                        <td className="p-2 text-muted-foreground">TEST</td>
-                        <td className="p-2 text-muted-foreground">TEST</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-                <div className="mt-4">
-                  <Link href="/radio" className="text-primary hover:underline group inline-flex items-center">
-                    <div className="h-1.5 w-1.5 bg-primary group-hover:retro-glow mr-2" />
-                    View All Contacts
-                    <ChevronRight className="w-4 h-4 ml-2" />
-                  </Link>
-                </div>
-              </div>
-            </section>
-          </div>
+      </section>
+
+      {/* Recent Radio Contacts */}
+      <section>
+        <div className="flex items-center justify-between mb-8">
+          <h2 className="font-mono text-2xl text-[#FE7F2D] tracking-wider flex items-center">
+            <Radio className="mr-3" size={24} />
+            RECENT_CONTACTS
+          </h2>
+          <Link href="/radio" className="font-mono text-foreground hover:text-[#FE7F2D] transition-colors text-sm">
+            VIEW_LOG →
+          </Link>
         </div>
-      </div>
-    )
-  }
+        <div className="border border-muted bg-card">
+          <div className="grid grid-cols-5 gap-4 p-4 border-b border-foreground/20 font-mono text-xs text-foreground font-bold">
+            <div>CALLSIGN</div>
+            <div>FREQ_MHZ</div>
+            <div>MODE</div>
+            <div>DATE</div>
+            <div>TIME_UTC</div>
+          </div>
+          {recentContacts.map((contact, index) => (
+            <div
+              key={index}
+              className="grid grid-cols-5 gap-4 p-4 border-b border-foreground/10 font-mono text-sm text-foreground hover:bg-foreground/5 transition-colors"
+            >
+              <div className="font-bold">{contact.callsign}</div>
+              <div>{contact.frequency}</div>
+              <div>{contact.mode}</div>
+              <div>{contact.date}</div>
+              <div>{contact.time}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+    </div>
+  )
+}

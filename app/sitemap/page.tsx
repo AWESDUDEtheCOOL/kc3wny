@@ -1,159 +1,136 @@
-"use client";
+"use client"
 
-import { useEffect, useState } from "react";
-import Link from "next/link"
-import { ChevronRight } from "lucide-react"
-
-interface SiteStructure {
-  name: string;
-  path: string;
-  children?: SiteStructure[];
-}
+import { useState } from "react"
+import { FileText, ExternalLink, BarChart3, RefreshCw, Search, Filter } from "lucide-react"
+import { SitemapTree } from "@/components/sitemap-tree"
+import { generateSiteStructure, getSiteStatistics, flattenSiteStructure } from "@/lib/sitemap-generator"
 
 export default function SitemapPage() {
-  const [gitInfo, setGitInfo] = useState({ year: "XXXX", month: "XX", day: "XX", time: "00:00:00"});
-  const [siteStructure, setSiteStructure] = useState<SiteStructure[]>([]);
+  const [searchTerm, setSearchTerm] = useState("")
+  const [filterType, setFilterType] = useState<string>("all")
+  const [filterStatus, setFilterStatus] = useState<string>("all")
 
-  useEffect(() => {
-    fetch("/api/git-info")
-      .then((res) => res.json())
-      .then((data) => setGitInfo(data))
-      .catch(() => setGitInfo({ year: "ERR", month: "ERR", day: "ERR", time: "ERR"}));
+  const siteStructure = generateSiteStructure()
+  const statistics = getSiteStatistics(siteStructure)
+  const flatStructure = flattenSiteStructure(siteStructure)
 
-    fetch("/api/projects")
-      .then((res) => res.json())
-      .then((projects) => {
-        const projectStructure = projects.map((project: { slug: string }) => ({
-          name: `PROJECT_${project.slug.toUpperCase()}`,
-          path: `/projects/${project.slug}`,
-        }));
+  // Filter nodes based on search and filters
+  const filteredNodes = flatStructure.filter((node) => {
+    const matchesSearch =
+      searchTerm === "" ||
+      node.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      node.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      node.path.toLowerCase().includes(searchTerm.toLowerCase())
 
-        setSiteStructure([
-          {
-            name: "HOME",
-            path: "/",
-            children: [
-              {
-                name: "PROJECTS",
-                path: "/projects",
-                children: projectStructure,
-              },
-              {
-                name: "PHOTOGRAPHY",
-                path: "/photography",
-              },
-              {
-                name: "RADIO",
-                path: "/radio",
-              },
-              { name: "CARD", path: "/card" },
-            ],
-          },
-        ]);
-      })
-      .catch((error) => console.error("Error fetching projects:", error));
-  }, []);
+    const matchesType = filterType === "all" || node.type === filterType
+    const matchesStatus = filterStatus === "all" || node.status === filterStatus
 
-  useEffect(() => {
-    fetch("/api/git-info")
-      .then((res) => res.json())
-      .then((data) => setGitInfo(data))
-      .catch(() => setGitInfo({ year: "ERR", month: "ERR", day: "ERR", timepart: "ERR"}));
-  }, []);
-  
+    return matchesSearch && matchesType && matchesStatus
+  })
+ 
   return (
-    <div className="min-h-screen bg-background font-mono">
-      {/* Technical Grid Background */}
-      <div className="fixed inset-0 pointer-events-none">
-        <div className="h-full w-full grid grid-cols-12 opacity-[0.03] dark:opacity-[0.02]">
-          {Array.from({ length: 12 }).map((_, i) => (
-            <div key={i} className="border-r border-foreground" />
-          ))}
-        </div>
-        {/* Diagonal Stripes */}
-        <div
-          className="absolute inset-0 opacity-[0.02] dark:opacity-[0.01]"
-          style={{
-            backgroundImage: `repeating-linear-gradient(45deg, currentColor 0, currentColor 1px, transparent 0, transparent 50%)`,
-            backgroundSize: "16px 16px",
-          }}
-        />
-      </div>
+    <div className="space-y-8 relative z-10">
+      {/* Header */}
+      <section className="text-center py-8 border-b border-green-400/20">
+        <h1 className="font-mono text-4xl font-bold text-[#FE7F2D] mb-4 tracking-wider">SITEMAP</h1>
+      </section>
 
-      <div className="container py-12">
-        <div className="space-y-8">
-          {/* Header */}
-          <div className="border border-foreground/20 bg-background/50 backdrop-blur">
-            <div className="border-b border-foreground/20 p-4">
-              <div className="flex items-center gap-2">
-                <div className="h-2 w-2 bg-foreground/20 animate-pulse" />
-                <h1 className="text-lg font-bold tracking-wider">SYSTEM MAP</h1>
-              </div>
-            </div>
-            <div className="p-4 text-sm text-muted-foreground">
-              <div className="flex items-center gap-2">
-                <span>STATUS:</span>
-                <span className="text-foreground">OPERATIONAL</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span>LAST UPDATE:</span>
-                <span className="text-foreground">{gitInfo.year}-{gitInfo.month}-{gitInfo.day} {gitInfo.time}</span>
-              </div>
-            </div>
+      {/* Controls */}
+      <section className="flex flex-col md:flex-row gap-4 items-center justify-between">
+        {/* Search */}
+        <div className="flex items-center space-x-2 flex-1 max-w-md">
+          <Search size={16} className="text-green-400/60" />
+          <input
+            type="text"
+            placeholder="SEARCH_NODES..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="flex-1 bg-black/40 border border-green-400/30 text-green-400 font-mono text-sm px-3 py-2 focus:border-[#FE7F2D] focus:outline-none"
+          />
+        </div>
+
+        {/* Filters */}
+        <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2">
+            <Filter size={16} className="text-green-400/60" />
+            <select
+              value={filterType}
+              onChange={(e) => setFilterType(e.target.value)}
+              className="bg-black/40 border border-green-400/30 text-green-400 font-mono text-sm px-2 py-1 focus:border-[#FE7F2D] focus:outline-none"
+            >
+              <option value="all">ALL_TYPES</option>
+              <option value="page">PAGES</option>
+              <option value="section">SECTIONS</option>
+              <option value="dynamic">DYNAMIC</option>
+            </select>
           </div>
 
-          {/* Sitemap Tree */}
-          <div className="border border-foreground/20 bg-background/50 backdrop-blur">
-            <div className="border-b border-foreground/20 p-4">
-              <div className="flex items-center gap-2">
-                <div className="h-2 w-2 bg-foreground/20" />
-                <h2 className="font-bold tracking-wider">NAVIGATION TREE</h2>
-              </div>
+          <select
+            value={filterStatus}
+            onChange={(e) => setFilterStatus(e.target.value)}
+            className="bg-black/40 border border-green-400/30 text-green-400 font-mono text-sm px-2 py-1 focus:border-[#FE7F2D] focus:outline-none"
+          >
+            <option value="all">ALL_STATUS</option>
+            <option value="active">ACTIVE</option>
+            <option value="development">DEVELOPMENT</option>
+            <option value="planned">PLANNED</option>
+          </select>
+
+          <button className="p-2 border border-green-400/30 text-green-400 hover:border-[#FE7F2D] hover:text-[#FE7F2D] transition-colors">
+            <RefreshCw size={16} />
+          </button>
+        </div>
+      </section>
+
+      {/* Site Structure */}
+      <section>
+        <h2 className="font-mono text-2xl text-[#FE7F2D] tracking-wider mb-6 flex items-center">
+          <FileText className="mr-3" size={24} />
+          SITE_HIERARCHY
+        </h2>
+
+        {searchTerm || filterType !== "all" || filterStatus !== "all" ? (
+          // Filtered Results
+          <div className="border border-green-400/30 bg-black/40 p-6">
+            <div className="mb-4 font-mono text-sm text-green-400/70">
+              FILTERED_RESULTS: {filteredNodes.length} nodes found
             </div>
-            <div className="p-4">
-              {siteStructure.map((item) => (
-                <SitemapItem key={item.path} item={item} level={0} />
+            <div className="space-y-2">
+              {filteredNodes.map((node, index) => (
+                <div
+                  key={`${node.path}-${index}`}
+                  className="flex items-center space-x-4 py-2 border-b border-green-400/10 last:border-b-0"
+                >
+                  <div className="font-mono text-sm text-green-400 font-bold min-w-0 flex-1">{node.name}</div>
+                  <div className="font-mono text-xs text-green-400/60">{node.path}</div>
+                  <div className="font-mono text-xs px-2 py-1 bg-green-400/10 text-green-400/70 border border-green-400/20">
+                    L{node.level}
+                  </div>
+                  {node.status && (
+                    <div
+                      className={`font-mono text-xs px-2 py-1 border ${
+                        node.status === "active"
+                          ? "text-green-400 border-green-400"
+                          : node.status === "development"
+                            ? "text-yellow-400 border-yellow-400"
+                            : "text-purple-400 border-purple-400"
+                      }`}
+                    >
+                      {node.status.toUpperCase()}
+                    </div>
+                  )}
+                </div>
               ))}
             </div>
           </div>
-        </div>
-      </div>
-    </div>
+        ) : (
+          // Full Hierarchy Tree
+          <div className="border border-green-400/30 bg-black/40 p-6">
+            <SitemapTree node={siteStructure} isRoot={true} />
+          </div>
+        )}
+      </section>
+
+   </div>
   )
 }
-
-interface SitemapItemProps {
-  item: {
-    name: string
-    path: string
-    children?: Array<{
-      name: string
-      path: string
-      children?: Array<{
-        name: string
-        path: string
-      }>
-    }>
-  }
-  level: number
-}
-
-function SitemapItem({ item, level }: SitemapItemProps) {
-  return (
-    <div className="space-y-2">
-      <Link
-        href={item.path}
-        className="group flex items-center gap-2 hover:text-foreground text-muted-foreground"
-        style={{ paddingLeft: `${level * 24}px` }}
-      >
-        <ChevronRight className="h-3 w-3 transition-transform group-hover:translate-x-1" />
-        <span className="text-sm">{item.name}</span>
-        <span className="text-xs text-muted-foreground/50">{item.path}</span>
-      </Link>
-      {item.children?.map((child) => (
-        <SitemapItem key={child.path} item={child} level={level + 1} />
-      ))}
-    </div>
-  )
-}
-

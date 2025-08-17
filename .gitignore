@@ -7,9 +7,6 @@
 /.next/
 /out/
 
-# yarn
-/.yarn/
-
 # production
 /build
 

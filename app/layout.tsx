@@ -1,31 +1,18 @@
-import React from "react";
-import type { Metadata } from 'next';
-import Image from 'next/image';
-import { Analytics } from '@vercel/analytics/react';
-import { SpeedInsights } from '@vercel/speed-insights/next';
-import { ThemeProvider } from '@/components/theme-provider';
-import { ThemeToggle } from '@/components/theme-toggle';
-import { MainNav } from '@/components/main-nav';
-import { Breadcrumb } from '@/components/breadcrumb';
-import { Inter, JetBrains_Mono } from "next/font/google";
-import Header from "@/components/header";
-import { Footer } from "@/components/footer";
-import '@/styles/globals.css';
+import type React from "react"
+import type { Metadata } from "next"
+import { Inter, JetBrains_Mono } from "next/font/google"
+import "./globals.css"
+import Navigation from "@/components/navigation"
+import { ThemeProvider } from "@/components/theme-provider"
 
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-sans",
-});
-
-const mono = JetBrains_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono",
-});
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
+const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono" })
 
 export const metadata: Metadata = {
-  title: 'KC3WNY',
-  description: "Mason Matich's personal website",
-};
+  title: "Personal Command Center",
+  description: "Defense & Aerospace Engineering Portfolio",
+    generator: 'v0.dev'
+}
 
 export default function RootLayout({
   children,
@@ -33,22 +20,21 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <head />
-      <link rel="icon" href="favicon.svg" />
-      <body className={`${inter.variable} ${mono.variable} font-mono flex flex-col min-h-screen`}>
+    <html lang="en" className="dark" suppressHydrationWarning>
+      <body
+        className={`${inter.variable} ${jetbrainsMono.variable} font-sans bg-background text-foreground min-h-screen`}
+      >
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
-          <Header />
-          <main className="flex-grow">{children}</main>
-          <Footer />
+          <div className="min-h-screen bg-gradient-to-b from-background via-muted/20 to-background">
+            <Navigation />
+            <main className="container mx-auto px-4 py-8">{children}</main>
+            <div className="fixed inset-0 pointer-events-none">
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.3)_100%)] dark:bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.3)_100%)]" />
+              <div className="absolute inset-0 bg-[linear-gradient(0deg,transparent_24%,rgba(34,197,94,0.03)_25%,rgba(34,197,94,0.03)_26%,transparent_27%,transparent_74%,rgba(34,197,94,0.03)_75%,rgba(34,197,94,0.03)_76%,transparent_77%)] bg-[length:100%_4px]" />
+            </div>
+          </div>
         </ThemeProvider>
-        <SpeedInsights />
-        <Analytics />
       </body>
     </html>
   )
 }
-
-
-
-import './globals.css'
