@@ -19,7 +19,30 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "@root/*": ["./*"],
+      "@system/*": [
+        "./system/*"
+      ],
+      "@demos/*": [
+        "./demos/*"
+      ],
+      "@common/*": [
+        "./common/*"
+      ],
+      "@data/*": [
+        "./data/*"
+      ],
+      "@components/*": [
+        "./components/*"
+      ],
+      "@pages/*": [
+        "./pages/*"
+      ],
+      "@modules/*": [
+        "./modules/*"
+      ]
+
     }
   },
   "include": [
