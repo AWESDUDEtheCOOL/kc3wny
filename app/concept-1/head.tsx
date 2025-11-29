@@ -1,6 +1,10 @@
 import DefaultMetaTags from '@components/DefaultMetaTags';
 
-export default async function Head({ params }) {
+type HeadProps = {
+  params: { [key: string]: string };
+};
+
+export default async function Head({ params }: HeadProps) {
   return (
     <>
       <DefaultMetaTags />
