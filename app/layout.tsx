@@ -2,6 +2,7 @@ import type React from "react"
 import type { Metadata, Viewport } from "next"
 import { EB_Garamond } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import "./globals.css"
 
 const garamond = EB_Garamond({
@@ -12,14 +13,27 @@ const garamond = EB_Garamond({
 })
 
 export const metadata: Metadata = {
-  title: "PERSONNEL FILE // A. CHEN",
-  description: "Personal website in the style of NASA technical manuals",
+  title: "KC3WNY SYSTEMS // M. MATICH",
+  description: "Personal website of Mason Matich",
   openGraph: {
-    title: "PERSONNEL FILE // A. CHEN",
-    description: "Personal website in the style of NASA technical manuals",
+    title: "KC3WNY SYSTEMS // M. MATICH",
+    description: "Personal website of Mason Matich",
     type: "website",
   },
-    generator: 'v0.app'
+  icons: {
+    icon: [
+      {
+        media: '(prefers-color-scheme: light)',
+        url: 'logo/favicon-light.svg',
+        href: 'logo/favicon-light.svg',
+      },
+      {
+        media: '(prefers-color-scheme: dark)',       
+        url: 'logo/favicon-dark.svg',
+        href: 'logo/favicon-dark.svg',
+      },
+    ],
+  },
 }
 
 export const viewport: Viewport = {
@@ -37,6 +51,7 @@ export default function RootLayout({
     <html lang="en" className={garamond.variable}>
       <body className="font-sans antialiased">
         {children}
+        <SpeedInsights />
         <Analytics />
       </body>
     </html>

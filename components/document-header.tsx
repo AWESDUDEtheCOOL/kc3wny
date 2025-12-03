@@ -19,7 +19,7 @@ export function DocumentHeader() {
         {/* Logo/Badge area */}
         <div className="relative w-20 h-20 md:w-24 md:h-24 border-1 border-foreground flex items-center justify-center">
           <Image
-            src="/v4.svg"
+            src="/logo/v4.svg"
             alt="Logo"
             fill
             className="object-contain" 
