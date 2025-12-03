@@ -1,10 +1,17 @@
 import { ImageResponse } from 'next/og';
+import { readFile } from 'fs/promises';
+import { join } from 'path';
 // App router includes @vercel/og.
 // No need to install it.
  
-export async function GET(request: Request) {
-  // Fetch the SVG from the public folder
-  const logoUrl = new URL('/logo/v4_text.svg', request.url);
+export async function GET() {
+  // Load the SVG file from the filesystem
+  const logoPath = join(process.cwd(), 'public', 'logo', 'v4_text.svg');
+  const logoSvg = await readFile(logoPath, 'utf-8');
+  
+  // Convert SVG to data URL with proper encoding
+  const svgBuffer = Buffer.from(logoSvg);
+  const base64Svg = svgBuffer.toString('base64');
 
   return new ImageResponse(
     (
@@ -20,10 +27,11 @@ export async function GET(request: Request) {
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src={logoUrl.toString()}
+          src={`data:image/svg+xml;base64,${base64Svg}`}
           alt="Logo"
           width="600"
           height="295"
+          style={{ objectFit: 'contain' }}
         />
       </div>
     ),
