@@ -1,18 +1,23 @@
 import Link from "next/link"
 
-export function TableOfContents() {
-  const sections = [
-    { num: "1.0", title: "Biography", page: "2", href: "#section-1.0" },
-    { num: "2.0", title: "Technical Specifications", page: "3", href: "#section-2.0" },
-    { num: "3.0", title: "Mission History", page: "4", href: "#section-3.0" },
-    { num: "4.0", title: "Systems & Capabilities", page: "5", href: "#section-4.0" },
-    { num: "5.0", title: "Communication Protocols", page: "6", href: "#section-5.0" },
-  ]
+type Section = {
+  num: string
+  title: string
+  page: string
+  href: string
+}
 
-  const subpages = [
-    { title: "Project Index", href: "/projects" },
-    { title: "Site Map", href: "/sitemap" },
-  ]
+type Subpage = {
+  title: string
+  href: string
+}
+
+type TableOfContentsProps = {
+  readonly sections: Section[]
+  readonly subpages?: Subpage[]
+}
+
+export function TableOfContents({ sections, subpages }: TableOfContentsProps) {
 
   return (
     <nav className="mb-12 border-2 border-foreground">
@@ -40,22 +45,24 @@ export function TableOfContents() {
         ))}
 
         {/* Subpage links */}
-        <div className="mt-4 pt-4 border-t border-foreground">
-          <div className="text-[9px] tracking-[0.2em] font-sans uppercase text-muted-foreground mb-2">
-            Supplementary Documents
+        {subpages && subpages.length > 0 && (
+          <div className="mt-4 pt-4 border-t border-foreground">
+            <div className="text-[9px] tracking-[0.2em] font-sans uppercase text-muted-foreground mb-2">
+              Supplementary Documents
+            </div>
+            <div className="flex gap-4">
+              {subpages.map((page) => (
+                <Link
+                  key={page.href}
+                  href={page.href}
+                  className="text-xs font-sans uppercase tracking-[0.1em] text-primary hover:underline"
+                >
+                  {page.title} →
+                </Link>
+              ))}
+            </div>
           </div>
-          <div className="flex gap-4">
-            {subpages.map((page) => (
-              <Link
-                key={page.href}
-                href={page.href}
-                className="text-xs font-sans uppercase tracking-[0.1em] text-primary hover:underline"
-              >
-                {page.title} →
-              </Link>
-            ))}
-          </div>
-        </div>
+        )}
       </div>
     </nav>
   )

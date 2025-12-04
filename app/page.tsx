@@ -3,26 +3,22 @@ import dynamic from "next/dynamic"
 import { DocumentHeader } from "@/components/document-header"
 import { TableOfContents } from "@/components/table-of-contents"
 import { DocumentFooter } from "@/components/document-footer"
+import { buildInfo } from "@/lib/build-info"
 
 const BiographySection = dynamic(
   () => import("@/components/biography-section").then((mod) => ({ default: mod.BiographySection })),
-  { loading: () => <SectionSkeleton /> },
 )
 const SpecificationsSection = dynamic(
   () => import("@/components/specifications-section").then((mod) => ({ default: mod.SpecificationsSection })),
-  { loading: () => <SectionSkeleton /> },
 )
 const MissionsSection = dynamic(
   () => import("@/components/missions-section").then((mod) => ({ default: mod.MissionsSection })),
-  { loading: () => <SectionSkeleton /> },
 )
 const SystemsSection = dynamic(
   () => import("@/components/systems-section").then((mod) => ({ default: mod.SystemsSection })),
-  { loading: () => <SectionSkeleton /> },
 )
 const ContactSection = dynamic(
   () => import("@/components/contact-section").then((mod) => ({ default: mod.ContactSection })),
-  { loading: () => <SectionSkeleton /> },
 )
 
 function SectionSkeleton() {
@@ -43,6 +39,19 @@ function SectionSkeleton() {
 }
 
 export default function Home() {
+  const sections = [
+    { num: "1.0", title: "Biography", page: "2", href: "#section-1.0" },
+    { num: "2.0", title: "Technical Specifications", page: "3", href: "#section-2.0" },
+    { num: "3.0", title: "Mission History", page: "4", href: "#section-3.0" },
+    { num: "4.0", title: "Systems & Capabilities", page: "5", href: "#section-4.0" },
+    { num: "5.0", title: "Communication Protocols", page: "6", href: "#section-5.0" },
+  ]
+
+  const subpages = [
+    { title: "Project Index", href: "/projects" },
+    { title: "Site Map", href: "/sitemap" },
+  ]
+
   return (
     <main className="min-h-screen bg-background">
       {/* Page margins like a real document */}
@@ -52,24 +61,32 @@ export default function Home() {
 
         {/* Document content */}
         <div className="pl-8 pr-6 py-8 md:pl-12 md:pr-10 md:py-12">
-          <DocumentHeader />
-          <TableOfContents />
+          <DocumentHeader
+            documentNo={buildInfo.getDocumentNumber("PF")}
+            revision={buildInfo.revision}
+            date={buildInfo.buildDate}
+            pages="1-8"
+          />
+          <TableOfContents sections={sections} subpages={subpages} />
           <Suspense fallback={<SectionSkeleton />}>
-            <BiographySection />
+            <BiographySection sectionNum={sections[0].num} sectionTitle={sections[0].title} />
           </Suspense>
           <Suspense fallback={<SectionSkeleton />}>
-            <SpecificationsSection />
+            <SpecificationsSection sectionNum={sections[1].num} sectionTitle={sections[1].title} />
           </Suspense>
           <Suspense fallback={<SectionSkeleton />}>
-            <MissionsSection />
+            <MissionsSection sectionNum={sections[2].num} sectionTitle={sections[2].title} />
           </Suspense>
           <Suspense fallback={<SectionSkeleton />}>
-            <SystemsSection />
+            <SystemsSection sectionNum={sections[3].num} sectionTitle={sections[3].title} />
           </Suspense>
           <Suspense fallback={<SectionSkeleton />}>
-            <ContactSection />
+            <ContactSection sectionNum={sections[4].num} sectionTitle={sections[4].title} />
           </Suspense>
-          <DocumentFooter />
+          <DocumentFooter
+            documentControl={`${buildInfo.getDocumentNumber("PF")}-R${buildInfo.revision}`}
+            lastUpdated={buildInfo.buildDate}
+          />
         </div>
       </div>
     </main>

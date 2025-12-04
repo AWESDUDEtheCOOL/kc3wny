@@ -1,4 +1,9 @@
-export function SpecificationsSection() {
+type SpecificationsSectionProps = {
+  readonly sectionNum: string
+  readonly sectionTitle: string
+}
+
+export function SpecificationsSection({ sectionNum, sectionTitle }: SpecificationsSectionProps) {
   const skills = [
     { category: "Languages", items: ["TypeScript", "Python", "Rust", "Go"], level: 95 },
     { category: "Frontend", items: ["React", "Next.js", "Vue", "Svelte"], level: 90 },
@@ -7,11 +12,11 @@ export function SpecificationsSection() {
   ]
 
   return (
-    <section id="section-2.0" className="mb-12">
+    <section id={`section-${sectionNum}`} className="mb-12">
       {/* Section header */}
       <div className="flex items-center gap-4 mb-6">
-        <div className="bg-primary text-primary-foreground px-3 py-1 font-mono text-lg font-bold">2.0</div>
-        <h2 className="text-2xl font-sans font-bold uppercase tracking-[0.05em]">Technical Specifications</h2>
+        <div className="bg-primary text-primary-foreground px-3 py-1 font-mono text-lg font-bold">{sectionNum}</div>
+        <h2 className="text-2xl font-sans font-bold uppercase tracking-[0.05em]">{sectionTitle}</h2>
         <div className="flex-1 h-[2px] bg-foreground" />
       </div>
 

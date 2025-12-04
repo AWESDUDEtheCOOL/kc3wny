@@ -3,7 +3,7 @@ import { DocumentWrapper } from "@/components/document-wrapper"
 import { getAllProjects } from "@/lib/projects"
 
 export const metadata = {
-  title: "SITEMAP // A. CHEN",
+  title: "SITEMAP // M. Matich",
   description: "Complete site navigation and document index",
 }
 
@@ -28,16 +28,7 @@ export default function SitemapPage() {
         label: p.title,
         description: `${p.type} documentation`,
       })),
-    },
-    {
-      section: "3.0",
-      title: "External References",
-      items: [
-        { href: "#", label: "GitHub", description: "Source code repository", external: true },
-        { href: "#", label: "LinkedIn", description: "Professional network", external: true },
-        { href: "#", label: "Twitter/X", description: "Social media presence", external: true },
-      ],
-    },
+    }
   ]
 
   return (
@@ -52,51 +43,6 @@ export default function SitemapPage() {
           <p className="font-serif italic text-muted-foreground">
             Complete index of all accessible pages and documentation within this domain.
           </p>
-        </div>
-      </div>
-
-      {/* Visual site diagram */}
-      <div className="mb-8 p-6 border-2 border-dashed border-muted bg-secondary/20">
-        <div className="text-[10px] tracking-[0.3em] font-sans uppercase text-muted-foreground mb-6 text-center">
-          Fig. 1.0 — Site Architecture Diagram
-        </div>
-        <div className="flex flex-col items-center gap-4">
-          {/* Root */}
-          <div className="w-48 border-2 border-primary bg-primary/10 p-3 text-center">
-            <div className="font-mono text-xs text-primary mb-1">/</div>
-            <div className="font-sans text-sm font-bold uppercase">Personnel File</div>
-          </div>
-
-          {/* Connector */}
-          <div className="h-6 w-[2px] bg-foreground" />
-
-          {/* Branches */}
-          <div className="flex gap-8">
-            <div className="flex flex-col items-center gap-2">
-              <div className="w-36 border-2 border-foreground p-2 text-center">
-                <div className="font-mono text-[10px] text-muted-foreground">/projects</div>
-                <div className="font-sans text-xs font-bold uppercase">Index</div>
-              </div>
-              <div className="h-4 w-[2px] bg-muted" />
-              <div className="flex gap-2">
-                {[1, 2, 3].map((i) => (
-                  <div key={i} className="w-8 h-8 border border-muted flex items-center justify-center">
-                    <span className="font-mono text-[8px] text-muted-foreground">{i}</span>
-                  </div>
-                ))}
-                <div className="w-8 h-8 border border-dashed border-muted flex items-center justify-center">
-                  <span className="font-mono text-[8px] text-muted-foreground">...</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex flex-col items-center">
-              <div className="w-36 border-2 border-foreground p-2 text-center">
-                <div className="font-mono text-[10px] text-muted-foreground">/sitemap</div>
-                <div className="font-sans text-xs font-bold uppercase">Navigation</div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
 
@@ -136,31 +82,6 @@ export default function SitemapPage() {
           </div>
         </div>
       ))}
-
-      {/* Document statistics */}
-      <div className="border-2 border-dashed border-muted p-4 bg-secondary/20">
-        <div className="text-[10px] tracking-[0.3em] font-sans uppercase text-muted-foreground mb-3">
-          Document Statistics
-        </div>
-        <div className="grid grid-cols-4 gap-4 text-center">
-          <div>
-            <div className="font-mono text-lg font-bold">{3 + projects.length}</div>
-            <div className="text-[9px] tracking-[0.15em] font-sans uppercase text-muted-foreground">Total Pages</div>
-          </div>
-          <div>
-            <div className="font-mono text-lg font-bold">{projects.length}</div>
-            <div className="text-[9px] tracking-[0.15em] font-sans uppercase text-muted-foreground">Projects</div>
-          </div>
-          <div>
-            <div className="font-mono text-lg font-bold">3</div>
-            <div className="text-[9px] tracking-[0.15em] font-sans uppercase text-muted-foreground">Sections</div>
-          </div>
-          <div>
-            <div className="font-mono text-lg font-bold">∞</div>
-            <div className="text-[9px] tracking-[0.15em] font-sans uppercase text-muted-foreground">Possibilities</div>
-          </div>
-        </div>
-      </div>
 
       {/* Footer */}
       <div className="mt-12 pt-6 border-t-2 border-foreground flex justify-between items-center text-[9px] tracking-[0.2em] text-muted-foreground uppercase">

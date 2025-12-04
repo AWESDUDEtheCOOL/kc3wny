@@ -1,10 +1,15 @@
-export function BiographySection() {
+type BiographySectionProps = {
+  readonly sectionNum: string
+  readonly sectionTitle: string
+}
+
+export function BiographySection({ sectionNum, sectionTitle }: BiographySectionProps) {
   return (
-    <section id="section-1.0" className="mb-12">
+    <section id={`section-${sectionNum}`} className="mb-12">
       {/* Section header */}
       <div className="flex items-center gap-4 mb-6">
-        <div className="bg-primary text-primary-foreground px-3 py-1 font-mono text-lg font-bold">1.0</div>
-        <h2 className="text-2xl font-sans font-bold uppercase tracking-[0.05em]">Biography</h2>
+        <div className="bg-primary text-primary-foreground px-3 py-1 font-mono text-lg font-bold">{sectionNum}</div>
+        <h2 className="text-2xl font-sans font-bold uppercase tracking-[0.05em]">{sectionTitle}</h2>
         <div className="flex-1 h-[2px] bg-foreground" />
       </div>
 

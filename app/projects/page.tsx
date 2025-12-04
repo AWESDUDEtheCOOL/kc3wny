@@ -1,9 +1,10 @@
 import Link from "next/link"
 import { DocumentWrapper } from "@/components/document-wrapper"
 import { getAllProjects } from "@/lib/projects"
+import { DocumentFooter } from "@/components/document-footer"
 
 export const metadata = {
-  title: "PROJECT INDEX // A. CHEN",
+  title: "PROJECT INDEX // M. Matich",
   description: "Complete index of all projects",
 }
 
@@ -11,7 +12,7 @@ export default function ProjectsPage() {
   const projects = getAllProjects()
 
   return (
-    <DocumentWrapper documentNo="PRJ-IDX-001" backLink={{ href: "/", label: "Return to Personnel File" }}>
+    <DocumentWrapper documentNo="PRJ-IDX-001" backLink={{ href: "/", label: "Return to Home" }}>
       {/* Title block */}
       <div className="border-2 border-foreground mb-8">
         <div className="bg-foreground text-card px-4 py-2">
@@ -22,24 +23,6 @@ export default function ProjectsPage() {
           <p className="font-serif italic text-muted-foreground">
             Complete catalog of technical projects and systems, ordered by publication date.
           </p>
-        </div>
-      </div>
-
-      {/* Summary stats */}
-      <div className="grid grid-cols-3 gap-4 mb-8">
-        <div className="border-2 border-foreground p-4 text-center">
-          <div className="font-mono text-2xl font-bold text-primary">{projects.length}</div>
-          <div className="text-[9px] tracking-[0.2em] font-sans uppercase text-muted-foreground">Total Projects</div>
-        </div>
-        <div className="border-2 border-foreground p-4 text-center">
-          <div className="font-mono text-2xl font-bold text-primary">{new Set(projects.map((p) => p.type)).size}</div>
-          <div className="text-[9px] tracking-[0.2em] font-sans uppercase text-muted-foreground">Categories</div>
-        </div>
-        <div className="border-2 border-foreground p-4 text-center">
-          <div className="font-mono text-2xl font-bold text-primary">
-            {projects[0]?.publishedAt ? new Date(projects[0].publishedAt).getFullYear() : "2024"}
-          </div>
-          <div className="text-[9px] tracking-[0.2em] font-sans uppercase text-muted-foreground">Latest Year</div>
         </div>
       </div>
 
@@ -76,23 +59,7 @@ export default function ProjectsPage() {
         </div>
       </div>
 
-      {/* Quick navigation */}
-      <div className="mt-8 flex justify-between items-center text-[10px] tracking-[0.2em] font-sans uppercase text-muted-foreground">
-        <Link href="/" className="hover:text-primary transition-colors">
-          ← Personnel File
-        </Link>
-        <Link href="/sitemap" className="hover:text-primary transition-colors">
-          Sitemap →
-        </Link>
-      </div>
-
-      {/* Footer */}
-      <div className="mt-12 pt-6 border-t-2 border-foreground">
-        <div className="flex justify-between items-center text-[9px] tracking-[0.2em] text-muted-foreground uppercase">
-          <span>Project Index // Rev 1.0</span>
-          <span>Page 1 of 1</span>
-        </div>
-      </div>
+    <DocumentFooter />
     </DocumentWrapper>
   )
 }

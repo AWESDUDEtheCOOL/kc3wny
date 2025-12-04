@@ -1,8 +1,9 @@
 import { notFound } from "next/navigation"
-import Link from "next/link"
 import Image from "next/image"
 import { DocumentWrapper } from "@/components/document-wrapper"
 import { getAllProjects, getProjectBySlug } from "@/lib/projects"
+import { DocumentFooter } from "@/components/document-footer"
+import { buildInfo } from "@/lib/build-info"
 
 export function generateStaticParams() {
   const projects = getAllProjects()
@@ -174,44 +175,17 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
         </div>
       )}
 
-      {/* Navigation */}
-      <div className="mt-12 pt-6 border-t-2 border-foreground">
-        <div className="text-[10px] tracking-[0.2em] font-sans uppercase text-muted-foreground mb-4">
-          Document Navigation
-        </div>
-        <div className="flex justify-between items-center">
-          {prevProject ? (
-            <Link
-              href={`/projects/${prevProject.slug}`}
-              className="group flex items-center gap-2 text-sm font-sans hover:text-primary transition-colors"
-              prefetch={true}
-            >
-              <span className="text-primary">←</span>
-              <span className="uppercase tracking-wide">{prevProject.title}</span>
-            </Link>
-          ) : (
-            <span />
-          )}
-          {nextProject ? (
-            <Link
-              href={`/projects/${nextProject.slug}`}
-              className="group flex items-center gap-2 text-sm font-sans hover:text-primary transition-colors"
-              prefetch={true}
-            >
-              <span className="uppercase tracking-wide">{nextProject.title}</span>
-              <span className="text-primary">→</span>
-            </Link>
-          ) : (
-            <span />
-          )}
-        </div>
-      </div>
-
-      {/* Footer */}
-      <div className="mt-8 pt-4 border-t border-muted flex justify-between items-center text-[9px] tracking-[0.2em] text-muted-foreground uppercase">
-        <span>Project File // Rev 1.0</span>
-        <span>Page 1 of 1</span>
-      </div>
+      <DocumentFooter
+        documentControl={`PRJ-${slug.toUpperCase().slice(0, 8)}-${buildInfo.revision}`}
+        lastUpdated={new Date(project.publishedAt).toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "short",
+        }).toUpperCase()}
+        navigation={{
+          prev: prevProject ? { href: `/projects/${prevProject.slug}`, title: prevProject.title } : undefined,
+          next: nextProject ? { href: `/projects/${nextProject.slug}`, title: nextProject.title } : undefined,
+        }}
+      />
     </DocumentWrapper>
   )
 }

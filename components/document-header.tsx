@@ -1,16 +1,30 @@
 import Image from "next/image"
 
-export function DocumentHeader() {
+type DocumentHeaderProps = {
+  readonly documentNo: string
+  readonly revision: string
+  readonly date: string
+  readonly pages: string
+  readonly classification?: string
+}
+
+export function DocumentHeader({
+  documentNo,
+  revision,
+  date,
+  pages,
+  classification = "Public",
+}: DocumentHeaderProps) {
   return (
     <header className="border-b-2 border-foreground pb-6 mb-8">
       {/* Top classification bar */}
       <div className="flex justify-between items-start mb-6">
         <div className="text-[10px] tracking-[0.3em] text-muted-foreground font-sans uppercase">
-          Unclassified // Public Release
+          Public Release
         </div>
         <div className="text-right">
           <div className="text-[10px] tracking-[0.2em] text-muted-foreground font-sans">DOCUMENT NO.</div>
-          <div className="font-mono text-sm">PF-2024-001</div>
+          <div className="font-mono text-sm">{documentNo}</div>
         </div>
       </div>
 
@@ -41,10 +55,10 @@ export function DocumentHeader() {
 
       {/* Revision info */}
       <div className="mt-6 pt-4 border-t border-muted flex flex-wrap gap-x-8 gap-y-2 text-[10px] tracking-[0.15em] text-muted-foreground font-sans uppercase">
-        <span>Revision: 3.2</span>
-        <span>Effective Date: Dec 2025</span>
-        <span>Classification: Public</span>
-        <span>Pages: 1-8</span>
+        <span>Revision: {revision}</span>
+        <span>Effective Date: {date}</span>
+        <span>Classification: {classification}</span>
+        <span>Pages: {pages}</span>
       </div>
     </header>
   )
