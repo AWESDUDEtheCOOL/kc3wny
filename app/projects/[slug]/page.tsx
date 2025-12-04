@@ -1,160 +1,193 @@
-// app/projects/[slug]/page.tsx
-import fs from 'node:fs/promises';
-import path from 'path';
-import matter from 'gray-matter';
-import { MDXRemote } from 'next-mdx-remote/rsc';
-import Image from 'next/image';
-import Link from 'next/link';
-import { notFound } from 'next/navigation';
-import type { ComponentPropsWithoutRef } from 'react';
-import type { MDXComponents } from 'mdx/types';
-import type { StaticImageData } from 'next/image';
+import { notFound } from "next/navigation"
+import Image from "next/image"
+import { DocumentWrapper } from "@/components/document-wrapper"
+import { getAllProjects, getProjectBySlug } from "@/lib/projects"
+import { DocumentFooter } from "@/components/document-footer"
+import { buildInfo } from "@/lib/build-info"
 
-interface ProjectPageProps {
-  params: {
-    slug: string;
-  };
+export function generateStaticParams() {
+  const projects = getAllProjects()
+  return projects.map((project) => ({ slug: project.slug }))
 }
 
-const projectsDirectory = path.join(process.cwd(), 'markdown/projects');
-
-export async function generateStaticParams() {
-  const files = await fs.readdir(projectsDirectory);
-  return files.map((filename) => ({
-    slug: filename.replace('.mdx', ''),
-  }));
-}
-
-type HeadingProps = ComponentPropsWithoutRef<'h1'>;
-type ParagraphProps = ComponentPropsWithoutRef<'p'>;
-type ListProps = ComponentPropsWithoutRef<'ul'>;
-type ListItemProps = ComponentPropsWithoutRef<'li'>;
-type BlockquoteProps = ComponentPropsWithoutRef<'blockquote'>;
-type CodeProps = ComponentPropsWithoutRef<'code'>;
-type PreProps = ComponentPropsWithoutRef<'pre'>;
-type ImageComponentProps = ComponentPropsWithoutRef<'img'> & {
-  src: string | StaticImageData;
-  alt?: string;
-  width?: string | number;
-  height?: string | number;
-  style?: React.CSSProperties;
-  className?: string;
-};
-
-const components: MDXComponents = {
-  h1: (props: HeadingProps) => <h1 {...props} className="text-3xl font-bold mt-8 mb-4 text-primary" />,
-  h2: (props: HeadingProps) => <h2 {...props} className="text-2xl font-bold mt-6 mb-3 text-primary" />,
-  h3: (props: HeadingProps) => <h3 {...props} className="text-xl font-bold mt-4 mb-2 text-primary" />,
-  p: (props: ParagraphProps) => <p {...props} className="my-4 retro-text" />,
-  a: (props) => (
-    <Link 
-      href={props.href || '#'} 
-      className="text-primary hover:underline cursor-pointer"
-      prefetch={false}
-    >
-      {props.children}
-    </Link>
-  ),
-  ul: (props: ListProps) => <ul {...props} className="list-disc list-inside my-4 retro-text" />,
-  ol: (props: ListProps) => <ol {...props} className="list-decimal list-inside my-4 retro-text" />,
-  li: (props: ListItemProps) => <li {...props} className="ml-4 retro-text" />,
-  blockquote: (props: BlockquoteProps) => (
-    <blockquote {...props} className="border-l-4 border-primary pl-4 italic my-4 retro-text" />
-  ),
-  code: (props: CodeProps) => <code {...props} className="bg-primary/10 rounded px-1 py-0.5 retro-text" />,
-  pre: (props: PreProps) => <pre {...props} className="bg-primary/10 p-4 rounded my-4 overflow-x-auto retro-text" />,
-  img: ({ src, alt, width, height, style, className, ...props }) => {
-    if (!src) return null;
-    
-    const numericWidth = width ? 
-      (typeof width === 'string' ? Number.parseInt(width, 10) : width) : 600;
-    
-    const numericHeight = height ? 
-      (typeof height === 'string' ? Number.parseInt(height, 10) : height) : 400;
-    
-    const mergedStyle = {
-      ...style,
-      maxHeight: style?.maxHeight || '70vh',
-    };
-    
-    return (
-      <Image
-        src={src as string | StaticImageData}
-        alt={alt || 'Project image'}
-        width={numericWidth}
-        height={numericHeight}
-        className={`${className || ''} max-w-full h-auto object-contain my-4 mx-auto`}
-        style={mergedStyle}
-        loading="lazy"
-        priority={false}
-        {...props}
-      />
-    );
-  },
-};
-
-interface FrontMatter {
-  title: string;
-  date?: string;
-  [key: string]: unknown;
-}
-
-async function getProjectFile(slug: string) {
-  const fullPath = path.join(projectsDirectory, `${slug}.mdx`);
-  
-  try {
-    const fileContents = await fs.readFile(fullPath, 'utf8');
-    return { 
-      fullPath, 
-      fileContents 
-    };
-  } catch (error) {
-    return null;
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
+  const project = getProjectBySlug(slug)
+  if (!project) return { title: "Project Not Found" }
+  return {
+    title: `${project.title} // PROJECT FILE`,
+    description: project.description,
+    openGraph: {
+      title: `${project.title} // PROJECT FILE`,
+      description: project.description,
+      type: "article",
+      publishedTime: project.publishedAt,
+    },
   }
 }
 
-export default async function ProjectPage({ params }: Readonly<ProjectPageProps>) {
-  const resolvedParams = await params;
-  const { slug } = resolvedParams;
-  
-  const projectFileResult = await getProjectFile(slug);
-  
-  if (!projectFileResult) {
-    notFound();
+const parseCache = new Map<string, string>()
+
+function parseMarkdownContent(content: string): string {
+  if (parseCache.has(content)) {
+    return parseCache.get(content)!
   }
+
+  const result = content
+    .split("\n")
+    .map((line) => {
+      if (line.startsWith("## ")) {
+        return `<h2 class="text-xl font-sans font-bold uppercase tracking-[0.05em] mt-10 mb-4 flex items-center gap-3"><span class="w-8 h-[2px] bg-primary"></span>${line.slice(3)}</h2>`
+      }
+      if (line.startsWith("- **")) {
+        const match = line.match(/- \*\*(.+?)\*\*:?\s*(.*)/)
+        if (match) {
+          return `<div class="flex gap-2 mb-2"><span class="font-sans font-bold text-primary">▸</span><span><strong class="font-sans">${match[1]}</strong>${match[2] ? `: <span class="font-serif italic">${match[2]}</span>` : ""}</span></div>`
+        }
+      }
+      if (line.match(/^\d+\.\s+\*\*/)) {
+        const match = line.match(/^\d+\.\s+\*\*(.+?)\*\*\s*—?\s*(.*)/)
+        if (match) {
+          return `<div class="flex gap-3 mb-3 pl-4 border-l-2 border-muted"><span class="font-mono text-primary text-sm font-bold">${line.match(/^\d+/)?.[0]}.</span><span><strong class="font-sans">${match[1]}</strong>${match[2] ? ` — <span class="font-serif italic text-muted-foreground">${match[2]}</span>` : ""}</span></div>`
+        }
+      }
+      if (line.trim() === "") return "<div class='h-4'></div>"
+      if (line.startsWith("**") && line.endsWith("**")) {
+        return `<p class="font-sans font-bold text-primary mb-4">${line.slice(2, -2)}</p>`
+      }
+      return `<p class="font-serif italic leading-relaxed mb-4 text-foreground/90">${line}</p>`
+    })
+    .join("")
+
+  parseCache.set(content, result)
+  return result
+}
+
+export default async function ProjectPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
+  const project = getProjectBySlug(slug)
+
+  if (!project) {
+    notFound()
+  }
+
+  const allProjects = getAllProjects()
+  const currentIndex = allProjects.findIndex((p) => p.slug === slug)
+  const prevProject = currentIndex > 0 ? allProjects[currentIndex - 1] : null
+  const nextProject = currentIndex < allProjects.length - 1 ? allProjects[currentIndex + 1] : null
+
+  const contentHtml = parseMarkdownContent(project.content)
   
-  const { fullPath, fileContents } = projectFileResult;
-  const { content, data } = matter(fileContents);
-  const frontMatter = data as FrontMatter;
-
-  const formattedDate = frontMatter.date 
-    ? new Date(frontMatter.date).toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-      })
-    : null;
-
-  const filename = path.basename(fullPath);
+  const pubYear = new Date(project.publishedAt).getFullYear()
 
   return (
-    <div className="container py-12 space-y-8">
-      <div className="space-y-2">
-        <h1 className="text-4xl font-bold tracking-tighter text-primary retro-glow">{frontMatter.title}</h1>
-        {formattedDate && (
-          <p className="text-sm text-primary/70 retro-glow">
-            {formattedDate}
-          </p>
-        )}
-        <p className="text-xs text-primary/50 font-mono">
-          {filename}
-        </p>
-      </div>
-      <div className="border border-primary/20 p-6 backdrop-blur-sm relative">
-        <div className="prose prose-invert max-w-none relative z-10">
-          <MDXRemote source={content} components={components} />
+    <DocumentWrapper
+      documentNo={`PRJ-${pubYear}-${slug.toUpperCase().slice(0, 8)}`}
+      backLink={{ href: "/projects", label: "Return to Index" }}
+    >
+      {/* Project header */}
+      <div className="border-2 border-foreground mb-8">
+        <div className="bg-foreground text-card px-4 py-2 flex justify-between items-center">
+          <span className="font-mono text-sm font-bold">{project.sectionId}</span>
+          <span className="text-[9px] tracking-[0.2em] uppercase">{project.type}</span>
+        </div>
+        <div className="p-6">
+          <h1 className="text-3xl md:text-4xl font-sans font-bold tracking-tight uppercase mb-2">{project.title}</h1>
+          <p className="font-serif italic text-muted-foreground text-lg">{project.description}</p>
+          <div className="mt-4 pt-4 border-t border-dashed border-muted flex flex-wrap gap-6 text-[10px] tracking-[0.15em] font-sans uppercase text-muted-foreground">
+            <span>
+              Published:{" "}
+              <span className="font-mono text-foreground">
+                {new Date(project.publishedAt).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </span>
+            </span>
+            <span>
+              Classification: <span className="font-mono text-foreground">PUBLIC</span>
+            </span>
+          </div>
         </div>
       </div>
-    </div>
-  );
+
+      {project.images?.hero && (
+        <figure className="mb-8 border-2 border-foreground">
+          <div className="bg-muted/30 p-1">
+            <Image
+              src={project.images.hero || "/placeholder.svg"}
+              alt={`${project.title} project overview`}
+              width={800}
+              height={400}
+              priority
+              sizes="(max-width: 768px) 100vw, 800px"
+              className="w-full h-auto"
+            />
+          </div>
+          <figcaption className="bg-foreground text-card px-4 py-2 text-[10px] tracking-[0.15em] uppercase font-sans flex justify-between">
+            <span>FIG-{project.sectionId}-000</span>
+            <span>Primary system visualization</span>
+          </figcaption>
+        </figure>
+      )}
+
+      {/* Metrics panel */}
+      {project.metrics && Object.keys(project.metrics).length > 0 && (
+        <div className="grid grid-cols-3 gap-4 mb-8">
+          {Object.entries(project.metrics).map(([key, value]) => (
+            <div key={key} className="border-2 border-foreground p-4 text-center">
+              <div className="font-mono text-2xl font-bold text-primary">{value}</div>
+              <div className="text-[9px] tracking-[0.2em] font-sans uppercase text-muted-foreground">{key}</div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Content */}
+      <div className="prose prose-sm max-w-none" dangerouslySetInnerHTML={{ __html: contentHtml }} />
+
+      {project.images?.figures && project.images.figures.length > 0 && (
+        <div className="mt-12 pt-8 border-t-2 border-foreground">
+          <h2 className="text-lg font-sans font-bold uppercase tracking-[0.05em] mb-6 flex items-center gap-3">
+            <span className="w-8 h-[2px] bg-primary"></span>
+            Technical Figures
+          </h2>
+          <div className="grid md:grid-cols-2 gap-6">
+            {project.images.figures.map((figure) => (
+              <figure key={figure.id} className="border-2 border-foreground">
+                <div className="bg-muted/30 p-1">
+                  <Image
+                    src={figure.src || "/placeholder.svg"}
+                    alt={figure.caption}
+                    width={500}
+                    height={300}
+                    loading="lazy"
+                    sizes="(max-width: 768px) 100vw, 500px"
+                    className="w-full h-auto"
+                  />
+                </div>
+                <figcaption className="bg-foreground/10 px-4 py-3 border-t-2 border-foreground">
+                  <div className="text-[9px] tracking-[0.2em] uppercase font-mono text-primary mb-1">{figure.id}</div>
+                  <p className="font-serif italic text-sm text-muted-foreground">{figure.caption}</p>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <DocumentFooter
+        documentControl={`PRJ-${slug.toUpperCase().slice(0, 8)}-${buildInfo.revision}`}
+        lastUpdated={new Date(project.publishedAt).toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "short",
+        }).toUpperCase()}
+        navigation={{
+          prev: prevProject ? { href: `/projects/${prevProject.slug}`, title: prevProject.title } : undefined,
+          next: nextProject ? { href: `/projects/${nextProject.slug}`, title: nextProject.title } : undefined,
+        }}
+      />
+    </DocumentWrapper>
+  )
 }

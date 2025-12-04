@@ -1,1 +1,1 @@
-The personal website of Mason Matich (KC3WNY)
+Personal website of Mason Matich (KC3WNY)
