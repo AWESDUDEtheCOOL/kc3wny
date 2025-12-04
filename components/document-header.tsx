@@ -4,7 +4,7 @@ type DocumentHeaderProps = {
   readonly documentNo: string
   readonly revision: string
   readonly date: string
-  readonly pages: string
+  readonly sections: string
   readonly classification?: string
 }
 
@@ -12,7 +12,7 @@ export function DocumentHeader({
   documentNo,
   revision,
   date,
-  pages,
+  sections,
   classification = "Public",
 }: DocumentHeaderProps) {
   return (
@@ -58,7 +58,7 @@ export function DocumentHeader({
         <span>Revision: {revision}</span>
         <span>Effective Date: {date}</span>
         <span>Classification: {classification}</span>
-        <span>Pages: {pages}</span>
+        <span>Sections: {sections}</span>
       </div>
     </header>
   )

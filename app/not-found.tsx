@@ -14,10 +14,10 @@ export default function NotFound() {
         {/* Document content */}
         <div className="pl-8 pr-6 py-8 md:pl-12 md:pr-10 md:py-12">
           <DocumentHeader
-            documentNo={buildInfo.getDocumentNumber("ERR-404")}
+            documentNo={buildInfo.getDocumentNumber("404")}
             revision={buildInfo.revision}
             date={buildInfo.buildDate}
-            pages="1"
+            sections="1-3"
           />
           
           {/* Large 404 Error Display */}
@@ -125,7 +125,7 @@ export default function NotFound() {
           </div>
 
           <DocumentFooter
-            documentControl={buildInfo.getDocumentNumber("ERR-404")}
+            documentControl={buildInfo.getDocumentNumber("404")}
             lastUpdated={buildInfo.buildDate}
           />
         </div>

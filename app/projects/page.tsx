@@ -2,6 +2,8 @@ import Link from "next/link"
 import { DocumentWrapper } from "@/components/document-wrapper"
 import { getAllProjects } from "@/lib/projects"
 import { DocumentFooter } from "@/components/document-footer"
+import { buildInfo } from "@/lib/build-info"
+
 
 export const metadata = {
   title: "PROJECT INDEX // M. Matich",
@@ -12,7 +14,7 @@ export default function ProjectsPage() {
   const projects = getAllProjects()
 
   return (
-    <DocumentWrapper documentNo="PRJ-IDX-001" backLink={{ href: "/", label: "Return to Home" }}>
+    <DocumentWrapper documentNo={buildInfo.getDocumentNumber("IDX")} backLink={{ href: "/", label: "Return to Home" }}>
       {/* Title block */}
       <div className="border-2 border-foreground mb-8">
         <div className="bg-foreground text-card px-4 py-2">
@@ -59,7 +61,10 @@ export default function ProjectsPage() {
         </div>
       </div>
 
-    <DocumentFooter />
+    <DocumentFooter
+        documentControl={buildInfo.getDocumentNumber("IDX")}
+        lastUpdated={buildInfo.buildDate}
+      />
     </DocumentWrapper>
   )
 }

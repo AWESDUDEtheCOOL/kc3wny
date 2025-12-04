@@ -1,6 +1,8 @@
 import Link from "next/link"
 import { DocumentWrapper } from "@/components/document-wrapper"
 import { getAllProjects } from "@/lib/projects"
+import { DocumentFooter } from "@/components/document-footer"
+import { buildInfo } from "@/lib/build-info"
 
 export const metadata = {
   title: "SITEMAP // M. Matich",
@@ -32,7 +34,7 @@ export default function SitemapPage() {
   ]
 
   return (
-    <DocumentWrapper documentNo="NAV-MAP-001" backLink={{ href: "/", label: "Return to Personnel File" }}>
+    <DocumentWrapper documentNo={buildInfo.getDocumentNumber("SM")} backLink={{ href: "/", label: "Return to Home" }}>
       {/* Title block */}
       <div className="border-2 border-foreground mb-8">
         <div className="bg-foreground text-card px-4 py-2">
@@ -83,11 +85,10 @@ export default function SitemapPage() {
         </div>
       ))}
 
-      {/* Footer */}
-      <div className="mt-12 pt-6 border-t-2 border-foreground flex justify-between items-center text-[9px] tracking-[0.2em] text-muted-foreground uppercase">
-        <span>Site Map // Rev 1.0</span>
-        <span>Page 1 of 1</span>
-      </div>
+      <DocumentFooter
+        documentControl={buildInfo.getDocumentNumber("SM")}
+        lastUpdated={buildInfo.buildDate}
+      />
     </DocumentWrapper>
   )
 }

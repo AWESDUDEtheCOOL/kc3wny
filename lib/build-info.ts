@@ -33,10 +33,10 @@ function getRevision(): string {
   // Use commit count or commit hash as revision
   if (process.env.VERCEL_GIT_COMMIT_SHA) {
     const hash = process.env.VERCEL_GIT_COMMIT_SHA.slice(0, 7)
-    return `v${hash}`
+    return `${hash}`
   }
   
-  return process.env.NEXT_PUBLIC_GIT_REVISION || "3.2"
+  return process.env.NEXT_PUBLIC_GIT_REVISION || "REV"
 }
 
 function getDocumentNumber(prefix: string = "PF"): string {
@@ -60,6 +60,6 @@ export function useBuildInfo() {
       year: "numeric", 
       month: "short"
     }).toUpperCase(),
-    revision: process.env.NEXT_PUBLIC_GIT_REVISION || "3.2",
+    revision: process.env.NEXT_PUBLIC_GIT_REVISION || "REV",
   }
 }

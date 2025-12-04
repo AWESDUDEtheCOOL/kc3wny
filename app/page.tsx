@@ -65,7 +65,7 @@ export default function Home() {
             documentNo={buildInfo.getDocumentNumber("PF")}
             revision={buildInfo.revision}
             date={buildInfo.buildDate}
-            pages="1-8"
+            sections="1-5"
           />
           <TableOfContents sections={sections} subpages={subpages} />
           <Suspense fallback={<SectionSkeleton />}>
