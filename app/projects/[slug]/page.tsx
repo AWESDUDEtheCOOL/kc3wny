@@ -77,10 +77,12 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
   const nextProject = currentIndex < allProjects.length - 1 ? allProjects[currentIndex + 1] : null
 
   const contentHtml = parseMarkdownContent(project.content)
+  
+  const pubYear = new Date(project.publishedAt).getFullYear()
 
   return (
     <DocumentWrapper
-      documentNo={`PRJ-${slug.toUpperCase().slice(0, 8)}`}
+      documentNo={`PRJ-${pubYear}-${slug.toUpperCase().slice(0, 8)}`}
       backLink={{ href: "/projects", label: "Return to Index" }}
     >
       {/* Project header */}

@@ -1,10 +1,10 @@
-type MissionsSectionProps = {
+type ExperienceSectionProps = {
   readonly sectionNum: string
   readonly sectionTitle: string
 }
 
-export function MissionsSection({ sectionNum, sectionTitle }: MissionsSectionProps) {
-  const missions = [
+export function ExperienceSection({ sectionNum, sectionTitle }: ExperienceSectionProps) {
+  const experience = [
     {
       code: "MSN-001",
       name: "Project Atlas",
@@ -46,7 +46,7 @@ export function MissionsSection({ sectionNum, sectionTitle }: MissionsSectionPro
 
       {/* Mission cards - horizontal timeline style */}
       <div className="space-y-6">
-        {missions.map((mission, idx) => (
+        {experience.map((mission, idx) => (
           <article key={mission.code} className="relative">
             {/* Mission patch style header */}
             <div className="flex flex-col md:flex-row md:items-stretch border-2 border-foreground overflow-hidden">
@@ -83,7 +83,7 @@ export function MissionsSection({ sectionNum, sectionTitle }: MissionsSectionPro
             </div>
 
             {/* Connector line */}
-            {idx !== missions.length - 1 && (
+            {idx !== experience.length - 1 && (
               <div className="absolute left-16 md:left-16 top-full w-0.5 h-6 bg-muted hidden md:block" />
             )}
           </article>

@@ -29,9 +29,10 @@ export function DocumentHeader({
       </div>
 
       {/* Main title block */}
-      <div className="grid grid-cols-[auto_1fr] gap-6 items-end">
-        {/* Logo/Badge area */}
-        <div className="relative w-20 h-20 md:w-24 md:h-24 border-1 border-foreground flex items-center justify-center">
+      <div className="grid grid-cols-[auto_1fr] gap-x-6 gap-y-4 md:gap-y-0 items-center md:items-end">
+        
+        {/* 1. Logo */}
+        <div className="relative w-20 h-20 md:w-24 md:h-24 border-1 border-foreground flex items-center justify-center row-span-1 md:row-span-2">
           <Image
             src="/logo/v4.svg"
             alt="Logo"
@@ -40,17 +41,21 @@ export function DocumentHeader({
           />
         </div>
 
-        <div>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-sans font-bold tracking-tight leading-none mb-2">
-            KC3WNY SYSTEMS
-          </h1>
-          <div className="flex items-baseline gap-4">
-            <span className="text-2xl md:text-3xl font-serif italic text-primary">Mason Matich</span>
-            <span className="text-xs tracking-[0.2em] text-muted-foreground font-sans uppercase">
-              Mechanical Engineer
-            </span>
-          </div>
+        {/* 2. Main Title */}
+        <h1 className="text-4xl md:text-5xl lg:text-6xl font-sans font-bold tracking-tight leading-[0.9] md:leading-none md:mb-2">
+          KC3WNY SYSTEMS
+        </h1>
+
+        {/* 3. Name & Profession */}
+        <div className="flex items-baseline gap-2 md:gap-4 col-span-2 md:col-span-1 md:col-start-2">
+          <span className="text-xl md:text-3xl font-serif italic text-primary">
+            Mason Matich
+          </span>
+          <span className="text-[10px] md:text-xs tracking-[0.2em] text-muted-foreground font-sans uppercase">
+            Mechanical Engineer
+          </span>
         </div>
+
       </div>
 
       {/* Revision info */}

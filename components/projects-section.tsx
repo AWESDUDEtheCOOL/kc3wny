@@ -1,12 +1,12 @@
 import Link from "next/link"
 import { getRecentProjects } from "@/lib/projects"
 
-type SystemsSectionProps = {
+type projectsSectionProps = {
   readonly sectionNum: string
   readonly sectionTitle: string
 }
 
-export function SystemsSection({ sectionNum, sectionTitle }: SystemsSectionProps) {
+export function projectsSection({ sectionNum, sectionTitle }: projectsSectionProps) {
   const projects = getRecentProjects(3)
 
   return (
@@ -63,32 +63,6 @@ export function SystemsSection({ sectionNum, sectionTitle }: SystemsSectionProps
             </div>
           </Link>
         ))}
-      </div>
-
-      {/* Schematic-style diagram */}
-      <div className="mt-8 p-6 border-2 border-dashed border-muted bg-secondary/20">
-        <div className="text-[10px] tracking-[0.3em] font-sans uppercase text-muted-foreground mb-4 text-center">
-          Fig. 4.1 — System Architecture Overview
-        </div>
-        <div className="flex items-center justify-center gap-4 flex-wrap">
-          <div className="text-center">
-            <div className="w-20 h-20 border-2 border-foreground flex items-center justify-center font-mono text-xs">
-              CLIENT
-            </div>
-          </div>
-          <div className="font-mono text-primary">→</div>
-          <div className="text-center">
-            <div className="w-20 h-20 border-2 border-primary bg-primary/10 flex items-center justify-center font-mono text-xs">
-              API
-            </div>
-          </div>
-          <div className="font-mono text-primary">→</div>
-          <div className="text-center">
-            <div className="w-20 h-20 border-2 border-foreground flex items-center justify-center font-mono text-xs">
-              DB
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   )

@@ -8,14 +8,14 @@ import { buildInfo } from "@/lib/build-info"
 const BiographySection = dynamic(
   () => import("@/components/biography-section").then((mod) => ({ default: mod.BiographySection })),
 )
-const SpecificationsSection = dynamic(
-  () => import("@/components/specifications-section").then((mod) => ({ default: mod.SpecificationsSection })),
+const SkillsSection = dynamic(
+  () => import("@/components/skills-section").then((mod) => ({ default: mod.skillsSection })),
 )
-const MissionsSection = dynamic(
-  () => import("@/components/missions-section").then((mod) => ({ default: mod.MissionsSection })),
+const ExperienceSection = dynamic(
+  () => import("@/components/experience-section").then((mod) => ({ default: mod.ExperienceSection })),
 )
-const SystemsSection = dynamic(
-  () => import("@/components/systems-section").then((mod) => ({ default: mod.SystemsSection })),
+const ProjectsSection = dynamic(
+  () => import("@/components/projects-section").then((mod) => ({ default: mod.projectsSection })),
 )
 const ContactSection = dynamic(
   () => import("@/components/contact-section").then((mod) => ({ default: mod.ContactSection })),
@@ -41,10 +41,10 @@ function SectionSkeleton() {
 export default function Home() {
   const sections = [
     { num: "1.0", title: "Biography", page: "2", href: "#section-1.0" },
-    { num: "2.0", title: "Technical Specifications", page: "3", href: "#section-2.0" },
-    { num: "3.0", title: "Mission History", page: "4", href: "#section-3.0" },
-    { num: "4.0", title: "Systems & Capabilities", page: "5", href: "#section-4.0" },
-    { num: "5.0", title: "Communication Protocols", page: "6", href: "#section-5.0" },
+    { num: "2.0", title: "Projects", page: "5", href: "#section-2.0" },
+    { num: "3.0", title: "Experience", page: "4", href: "#section-3.0" },
+    { num: "4.0", title: "Skills", page: "3", href: "#section-4.0" },
+    { num: "5.0", title: "Contact", page: "6", href: "#section-5.0" },
   ]
 
   const subpages = [
@@ -72,13 +72,13 @@ export default function Home() {
             <BiographySection sectionNum={sections[0].num} sectionTitle={sections[0].title} />
           </Suspense>
           <Suspense fallback={<SectionSkeleton />}>
-            <SpecificationsSection sectionNum={sections[1].num} sectionTitle={sections[1].title} />
+            <ProjectsSection sectionNum={sections[1].num} sectionTitle={sections[1].title} />
           </Suspense>
           <Suspense fallback={<SectionSkeleton />}>
-            <MissionsSection sectionNum={sections[2].num} sectionTitle={sections[2].title} />
+            <ExperienceSection sectionNum={sections[2].num} sectionTitle={sections[2].title} />
           </Suspense>
           <Suspense fallback={<SectionSkeleton />}>
-            <SystemsSection sectionNum={sections[3].num} sectionTitle={sections[3].title} />
+            <SkillsSection sectionNum={sections[3].num} sectionTitle={sections[3].title} />
           </Suspense>
           <Suspense fallback={<SectionSkeleton />}>
             <ContactSection sectionNum={sections[4].num} sectionTitle={sections[4].title} />
