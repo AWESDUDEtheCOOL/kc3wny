@@ -38,6 +38,16 @@ const nextConfig: NextConfig = {
     ignoreBuildErrors: true, // Added update
   },
 
+  async redirects() {
+    return [
+      {
+        source: '/card',
+        destination: '/',
+        permanent: true,
+      },
+    ]
+  },
+
   env: {
     ...getGitInfo(),
   },
