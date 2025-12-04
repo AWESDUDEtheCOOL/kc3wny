@@ -84,7 +84,7 @@ export default function Home() {
             <ContactSection sectionNum={sections[4].num} sectionTitle={sections[4].title} />
           </Suspense>
           <DocumentFooter
-            documentControl={`${buildInfo.getDocumentNumber("PF")}-R${buildInfo.revision}`}
+            documentControl={buildInfo.getDocumentNumber("PF")}
             lastUpdated={buildInfo.buildDate}
           />
         </div>
