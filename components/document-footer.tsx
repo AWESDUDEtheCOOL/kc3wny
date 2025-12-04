@@ -56,7 +56,7 @@ export function DocumentFooter({ documentControl, lastUpdated, navigation }: Doc
       )}
 
       {/* Footer content */}
-      <div className="grid grid-cols-3 gap-2 md:gap-6 text-[10px] font-sans tracking-[0.1em] text-muted-foreground">
+      <div className="grid grid-cols-3 gap-2 md:gap-6 text-[8px] md:text-[10px] font-sans tracking-[0.1em] text-muted-foreground">
         <div>
           <div className="uppercase mb-1">Document No.</div>
           <div className="font-mono text-foreground break-all">{documentControl}</div>

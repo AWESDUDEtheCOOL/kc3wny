@@ -5,10 +5,11 @@ type skillsSectionProps = {
 
 export function skillsSection({ sectionNum, sectionTitle }: skillsSectionProps) {
   const skills = [
-    { category: "Languages", items: ["TypeScript", "Python", "Rust", "Go"] },
-    { category: "Frontend", items: ["React", "Next.js", "Vue", "Svelte"] },
-    { category: "Backend", items: ["Node.js", "PostgreSQL", "Redis", "GraphQL"] },
-    { category: "Infrastructure", items: ["AWS", "Docker", "K8s", "Terraform"] },
+    { category: "CAD", items: ["Siemens NX", "Fusion360", "SolidWorks", "KiCad"] },
+    { category: "Programming", items: ["Simulink", "MatLab", "Python", "Git"] },
+    { category: "Manufacturing", items: ["3D Printing (FDM/SLA)", "CNC Milling", "Fiber Laser Cutting", "Sheet Metal Fabrication", "Acetylene Welding"] },
+    { category: "Prototyping", items: ["Motor Control", "Soldering (SMD/THT)", "Circuit Debugging", "Real-Time Microcontrollers", "Embedded systems (Arduino/RP2040)", "UART/i2c/SPI"] },
+    { category: "Amateur Radio", items: ["Amateur Extra Class", "LoRa SatCom", "Mesh Networks"] },
   ]
 
   return (
@@ -22,7 +23,7 @@ export function skillsSection({ sectionNum, sectionTitle }: skillsSectionProps) 
 
       {/* Spec table like a technical manual */}
       <div className="border-2 border-foreground">
-        <div className="bg-foreground text-card px-4 py-2 grid grid-cols-[100px_1fr] gap-4 text-[10px] tracking-[0.2em] font-sans uppercase">
+        <div className="bg-foreground text-card px-2 py-2 md:px-4 grid grid-cols-[100px_1fr] md:grid-cols-[140px_1fr] gap-2 md:gap-4 text-[8px] md:text-[10px] tracking-[0.15em] md:tracking-[0.2em] font-sans uppercase">
           <span>System</span>
           <span>Components</span>
         </div>
@@ -30,11 +31,11 @@ export function skillsSection({ sectionNum, sectionTitle }: skillsSectionProps) 
         {skills.map((skill, idx) => (
           <div
             key={skill.category}
-            className={`px-4 py-4 grid grid-cols-[100px_1fr] gap-4 items-center ${
+            className={`px-2 py-4 md:px-4 grid grid-cols-[100px_1fr] md:grid-cols-[140px_1fr] gap-2 md:gap-4 items-center ${
               idx % 2 === 0 ? "bg-secondary/30" : ""
             } ${idx !== skills.length - 1 ? "border-b border-muted" : ""}`}
           >
-            <span className="font-mono text-sm font-bold text-primary">{skill.category}</span>
+            <span className="font-mono text-xs md:text-sm font-bold text-primary">{skill.category}</span>
             <div className="flex flex-wrap gap-2">
               {skill.items.map((item) => (
                 <span

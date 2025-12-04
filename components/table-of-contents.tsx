@@ -40,7 +40,6 @@ export function TableOfContents({ sections, subpages }: TableOfContentsProps) {
               {section.title}
             </span>
             <span className="flex-1 border-b border-dotted border-muted-foreground mx-2 mb-1" />
-            <span className="font-mono text-xs text-muted-foreground">{section.page}</span>
           </a>
         ))}
 

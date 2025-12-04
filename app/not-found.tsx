@@ -83,7 +83,7 @@ export default function NotFound() {
                     href="/"
                     className="inline-block bg-foreground text-background px-6 py-3 font-sans font-bold text-sm tracking-wide uppercase hover:bg-primary transition-colors"
                   >
-                    → Return to Main Document
+                    → Return to Home
                   </Link>
                 </div>
               </div>

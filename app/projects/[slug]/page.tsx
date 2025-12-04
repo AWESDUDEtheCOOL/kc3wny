@@ -127,7 +127,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
           </div>
           <figcaption className="bg-foreground text-card px-4 py-2 text-[10px] tracking-[0.15em] uppercase font-sans flex justify-between">
             <span>FIG-{project.sectionId}-000</span>
-            <span>Primary system interface visualization</span>
+            <span>Primary system visualization</span>
           </figcaption>
         </figure>
       )}
