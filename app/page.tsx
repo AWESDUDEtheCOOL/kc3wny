@@ -49,7 +49,7 @@ export default function Home() {
 
   const subpages = [
     { title: "Project Index", href: "/projects" },
-    { title: "Resume", href: "/resume.pdf" },
+    { title: "Resume", href: "/MMatich_Resume.pdf" },
     { title: "Site Map", href: "/sitemap" },
   ]
 

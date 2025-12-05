@@ -6,6 +6,14 @@ type ExperienceSectionProps = {
 export function ExperienceSection({ sectionNum, sectionTitle }: ExperienceSectionProps) {
   const workExperience = [
     {
+      role: "Hardware Development Intern, Starshield",
+      org: "SpaceX",
+      location: "Hawthorne, CA",
+      duration: "March 2026 — June 2026",
+      description:
+        "Incoming Starshield Hardware Development Intern for Spring 2026.",
+    },
+    {
       role: "Build Reliability Engineering (BRE) Intern, Starship",
       org: "SpaceX",
       location: "Brownsville, TX",

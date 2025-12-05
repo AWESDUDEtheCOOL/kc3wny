@@ -1,15 +1,11 @@
 import { ImageResponse } from 'next/og';
 import { readFile } from 'fs/promises';
 import { join } from 'path';
-// App router includes @vercel/og.
-// No need to install it.
  
 export async function GET() {
-  // Load the SVG file from the filesystem
   const logoPath = join(process.cwd(), 'public', 'logo', 'v4_text.svg');
   const logoSvg = await readFile(logoPath, 'utf-8');
   
-  // Convert SVG to data URL with proper encoding
   const svgBuffer = Buffer.from(logoSvg);
   const base64Svg = svgBuffer.toString('base64');
 
