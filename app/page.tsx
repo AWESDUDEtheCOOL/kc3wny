@@ -17,6 +17,9 @@ const ExperienceSection = dynamic(
 const ProjectsSection = dynamic(
   () => import("@/components/projects-section").then((mod) => ({ default: mod.projectsSection })),
 )
+const ProfessionalMembershipsSection = dynamic(
+  () => import("@/components/professional-memberships-section").then((mod) => ({ default: mod.ProfessionalMembershipsSection })),
+)
 const ContactSection = dynamic(
   () => import("@/components/contact-section").then((mod) => ({ default: mod.ContactSection })),
 )
@@ -44,7 +47,8 @@ export default function Home() {
     { num: "2.0", title: "Projects", page: "5", href: "#section-2.0" },
     { num: "3.0", title: "Experience", page: "4", href: "#section-3.0" },
     { num: "4.0", title: "Skills", page: "3", href: "#section-4.0" },
-    { num: "5.0", title: "Contact", page: "6", href: "#section-5.0" },
+    { num: "5.0", title: "Professional Memberships", page: "7", href: "#section-5.0" },
+    { num: "6.0", title: "Contact", page: "6", href: "#section-6.0" },
   ]
 
   const subpages = [
@@ -66,7 +70,7 @@ export default function Home() {
             documentNo={buildInfo.getDocumentNumber("PF")}
             revision={buildInfo.revision}
             date={buildInfo.buildDate}
-            sections="1-5"
+            sections="1-6"
           />
           <TableOfContents sections={sections} subpages={subpages} />
           <Suspense fallback={<SectionSkeleton />}>
@@ -82,7 +86,10 @@ export default function Home() {
             <SkillsSection sectionNum={sections[3].num} sectionTitle={sections[3].title} />
           </Suspense>
           <Suspense fallback={<SectionSkeleton />}>
-            <ContactSection sectionNum={sections[4].num} sectionTitle={sections[4].title} />
+            <ProfessionalMembershipsSection sectionNum={sections[4].num} sectionTitle={sections[4].title} />
+          </Suspense>
+          <Suspense fallback={<SectionSkeleton />}>
+            <ContactSection sectionNum={sections[5].num} sectionTitle={sections[5].title} />
           </Suspense>
           <DocumentFooter
             documentControl={buildInfo.getDocumentNumber("PF")}
