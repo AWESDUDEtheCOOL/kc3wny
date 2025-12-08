@@ -4,6 +4,7 @@ import { DocumentWrapper } from "@/components/document-wrapper"
 import { getAllProjects, getProjectBySlug } from "@/lib/projects"
 import { DocumentFooter } from "@/components/document-footer"
 import { buildInfo } from "@/lib/build-info"
+import { TechnicalFigureLightbox } from "@/components/technical-figure-lightbox"
 
 export function generateStaticParams() {
   const projects = getAllProjects()
@@ -22,6 +23,26 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       description: project.description,
       type: "article",
       publishedTime: project.publishedAt,
+      url: `https://kc3wny.com/projects/${project.slug}`,
+      images: [
+      {
+        url: "https://kc3wny.com/api/og",
+      },
+    ],
+    },
+    icons: {
+      icon: [
+        {
+          media: '(prefers-color-scheme: light)',
+          url: '/logo/favicon-light.svg',
+          href: '/logo/favicon-light.svg',
+        },
+        {
+          media: '(prefers-color-scheme: dark)',       
+          url: '/logo/favicon-dark.svg',
+          href: '/logo/favicon-dark.svg',
+        },
+      ],
     },
   }
 }
@@ -155,23 +176,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
           </h2>
           <div className="grid md:grid-cols-2 gap-6">
             {project.images.figures.map((figure) => (
-              <figure key={figure.id} className="border-2 border-foreground">
-                <div className="bg-muted/30 p-1">
-                  <Image
-                    src={figure.src || "/placeholder.svg"}
-                    alt={figure.caption}
-                    width={500}
-                    height={300}
-                    loading="lazy"
-                    sizes="(max-width: 768px) 100vw, 500px"
-                    className="w-full h-auto"
-                  />
-                </div>
-                <figcaption className="bg-foreground/10 px-4 py-3 border-t-2 border-foreground">
-                  <div className="text-[9px] tracking-[0.2em] uppercase font-mono text-primary mb-1">{figure.id}</div>
-                  <p className="font-serif italic text-sm text-muted-foreground">{figure.caption}</p>
-                </figcaption>
-              </figure>
+              <TechnicalFigureLightbox key={figure.id} figure={figure} />
             ))}
           </div>
         </div>
