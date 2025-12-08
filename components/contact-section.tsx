@@ -8,6 +8,7 @@ export function ContactSection({ sectionNum, sectionTitle }: ContactSectionProps
     { protocol: "EMAIL", address: "mmatich@kc3wny.com", href: "mailto:mmatich@kc3wny.com", status: "PRIMARY" },
     { protocol: "GITHUB", address: "github.com/AWESDUDEtheCOOL", href: "https://github.com/AWESDUDEtheCOOL", status: "ACTIVE" },
     { protocol: "LINKEDIN", address: "linkedin.com/in/mason-matich", href: "https://linkedin.com/in/mason-matich", status: "ACTIVE" },
+    { protocol: "MAIL", address: "531 Lasuen Mall #20012, Stanford, CA 94309", href: "https://maps.google.com/?q=531+Lasuen+Mall+20012+Stanford+CA+94309", status: "ACTIVE" },
   ]
 
   return (
@@ -34,14 +35,18 @@ export function ContactSection({ sectionNum, sectionTitle }: ContactSectionProps
             } ${idx !== channels.length - 1 ? "border-b border-muted" : ""}`}
           >
             <span className="font-mono text-xs font-bold text-primary">{channel.protocol}</span>
-            <a 
-              href={channel.href}
-              target={channel.protocol !== "EMAIL" ? "_blank" : undefined}
-              rel={channel.protocol !== "EMAIL" ? "noopener noreferrer" : undefined}
-              className="font-mono text-sm truncate hover:text-primary transition-colors"
-            >
-              {channel.address}
-            </a>
+            {channel.href ? (
+              <a 
+                href={channel.href}
+                target={channel.protocol !== "EMAIL" ? "_blank" : undefined}
+                rel={channel.protocol !== "EMAIL" ? "noopener noreferrer" : undefined}
+                className="font-mono text-sm truncate hover:text-primary transition-colors"
+              >
+                {channel.address}
+              </a>
+            ) : (
+              <span className="font-mono text-sm">{channel.address}</span>
+            )}
             <span
               className={`text-[9px] tracking-[0.1em] text-right ${
                 channel.status === "PRIMARY" ? "text-primary" : "text-muted-foreground"
