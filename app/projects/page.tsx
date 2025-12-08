@@ -10,6 +10,37 @@ export const metadata = {
   description: "Complete index of all projects",
 }
 
+export const metadata = {
+  title: "PROJECT INDEX // M. Matich",
+  description: "Project index and catalog",
+  openGraph: {
+    title: "PROJECT INDEX // M. Matich",
+    description: "Project index and catalog",
+    type: "website",
+    url: "https://kc3wny.com/projects",
+    images: [
+      {
+        url: "https://kc3wny.com/api/og",
+      },
+    ],
+  },
+  icons: {
+    icon: [
+      {
+        media: '(prefers-color-scheme: light)',
+        url: '/logo/favicon-light.svg',
+        href: '/logo/favicon-light.svg',
+      },
+      {
+        media: '(prefers-color-scheme: dark)',       
+        url: '/logo/favicon-dark.svg',
+        href: '/logo/favicon-dark.svg',
+      },
+    ],
+  },
+}
+
+
 export default function ProjectsPage() {
   const projects = getAllProjects()
 
