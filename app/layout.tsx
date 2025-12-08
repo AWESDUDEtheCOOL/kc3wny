@@ -30,13 +30,13 @@ export const metadata: Metadata = {
     icon: [
       {
         media: '(prefers-color-scheme: light)',
-        url: 'logo/favicon-light.svg',
-        href: 'logo/favicon-light.svg',
+        url: '/logo/favicon-light.svg',
+        href: '/logo/favicon-light.svg',
       },
       {
         media: '(prefers-color-scheme: dark)',       
-        url: 'logo/favicon-dark.svg',
-        href: 'logo/favicon-dark.svg',
+        url: '/logo/favicon-dark.svg',
+        href: '/logo/favicon-dark.svg',
       },
     ],
   },
