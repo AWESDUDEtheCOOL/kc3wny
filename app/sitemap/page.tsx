@@ -6,7 +6,32 @@ import { buildInfo } from "@/lib/build-info"
 
 export const metadata = {
   title: "SITEMAP // M. Matich",
-  description: "Complete site navigation and document index",
+  description: "Site navigation and document index",
+  openGraph: {
+    title: "SITEMAP // M. Matich",
+    description: "Site navigation and document index",
+    type: "website",
+    url: "https://kc3wny.com/sitemap",
+    images: [
+      {
+        url: "https://kc3wny.com/api/og",
+      },
+    ],
+  },
+  icons: {
+    icon: [
+      {
+        media: '(prefers-color-scheme: light)',
+        url: '/logo/favicon-light.svg',
+        href: '/logo/favicon-light.svg',
+      },
+      {
+        media: '(prefers-color-scheme: dark)',       
+        url: '/logo/favicon-dark.svg',
+        href: '/logo/favicon-dark.svg',
+      },
+    ],
+  },
 }
 
 export default function SitemapPage() {

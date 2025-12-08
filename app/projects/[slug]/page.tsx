@@ -23,6 +23,26 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       description: project.description,
       type: "article",
       publishedTime: project.publishedAt,
+      url: `https://kc3wny.com/projects/${project.slug}`,
+      images: [
+      {
+        url: "https://kc3wny.com/api/og",
+      },
+    ],
+    },
+    icons: {
+      icon: [
+        {
+          media: '(prefers-color-scheme: light)',
+          url: '/logo/favicon-light.svg',
+          href: '/logo/favicon-light.svg',
+        },
+        {
+          media: '(prefers-color-scheme: dark)',       
+          url: '/logo/favicon-dark.svg',
+          href: '/logo/favicon-dark.svg',
+        },
+      ],
     },
   }
 }
