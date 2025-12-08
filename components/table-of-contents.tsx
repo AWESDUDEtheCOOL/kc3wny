@@ -29,16 +29,21 @@ export function TableOfContents({ sections, subpages }: TableOfContentsProps) {
 
       {/* TOC Entries */}
       <div className="p-4">
-        {sections.map((section) => (
+        {sections.map((section, index) => (
           <a
             key={section.num}
             href={section.href}
-            className="group flex items-baseline gap-2 py-2 border-b border-dashed border-muted last:border-0 hover:bg-secondary/50 transition-colors -mx-2 px-2"
+            // Patched: We conditionally apply the border classes based on the index
+            // rather than using 'last:border-0', which fails if subpages are present.
+            className={`group flex items-baseline gap-2 py-2 hover:bg-secondary/50 transition-colors -mx-2 px-2 ${
+              index !== sections.length - 1 ? "border-b border-dashed border-muted" : ""
+            }`}
           >
             <span className="font-mono text-primary text-sm font-bold w-10 shrink-0">{section.num}</span>
             <span className="font-sans text-sm uppercase tracking-[0.1em] group-hover:text-primary transition-colors">
               {section.title}
             </span>
+            {/* Leader line (dots) */}
             <span className="flex-1 border-b border-dotted border-muted-foreground mx-2 mb-1" />
           </a>
         ))}

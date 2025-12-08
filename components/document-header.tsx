@@ -1,4 +1,5 @@
 import Image from "next/image"
+import Link from "next/link"
 
 type DocumentHeaderProps = {
   readonly documentNo: string
@@ -32,14 +33,14 @@ export function DocumentHeader({
       <div className="grid grid-cols-[auto_1fr] gap-x-6 gap-y-4 md:gap-y-0 items-center md:items-end">
         
         {/* 1. Logo */}
-        <div className="relative w-20 h-20 md:w-24 md:h-24 border-1 border-foreground flex items-center justify-center row-span-1 md:row-span-2">
+        <Link href="/" className="relative w-20 h-20 md:w-24 md:h-24 border-1 border-foreground flex items-center justify-center row-span-1 md:row-span-2 hover:bg-secondary/30 transition-colors cursor-pointer">
           <Image
             src="/logo/v4.svg"
             alt="Logo"
             fill
             className="object-contain" 
           />
-        </div>
+        </Link>
 
         {/* 2. Main Title */}
         <h1 className="text-4xl md:text-5xl lg:text-6xl font-sans font-bold tracking-tight leading-[0.9] md:leading-none md:mb-2">

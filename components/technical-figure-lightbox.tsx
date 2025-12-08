@@ -1,0 +1,26 @@
+"use client"
+
+import { useState } from "react"
+import { TechnicalFigureThumbnail } from "./technical-figure-thumbnail"
+import { TechnicalFigureModal } from "./technical-figure-modal"
+
+type TechnicalFigure = {
+  id: string
+  src: string
+  caption: string
+}
+
+type TechnicalFigureLightboxProps = {
+  figure: TechnicalFigure
+}
+
+export function TechnicalFigureLightbox({ figure }: TechnicalFigureLightboxProps) {
+  const [isOpen, setIsOpen] = useState(false)
+
+  return (
+    <>
+      <TechnicalFigureThumbnail figure={figure} onClick={() => setIsOpen(true)} />
+      <TechnicalFigureModal figure={figure} isOpen={isOpen} onClose={() => setIsOpen(false)} />
+    </>
+  )
+}
