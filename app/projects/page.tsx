@@ -4,12 +4,6 @@ import { getAllProjects } from "@/lib/projects"
 import { DocumentFooter } from "@/components/document-footer"
 import { buildInfo } from "@/lib/build-info"
 
-
-export const metadata = {
-  title: "PROJECT INDEX // M. Matich",
-  description: "Complete index of all projects",
-}
-
 export const metadata = {
   title: "PROJECT INDEX // M. Matich",
   description: "Project index and catalog",
