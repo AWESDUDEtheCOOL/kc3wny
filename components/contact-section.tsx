@@ -5,10 +5,10 @@ type ContactSectionProps = {
 
 export function ContactSection({ sectionNum, sectionTitle }: ContactSectionProps) {
   const channels = [
-    { protocol: "EMAIL", address: "mmatich@kc3wny.com", href: "mailto:mmatich@kc3wny.com", status: "PRIMARY" },
-    { protocol: "GITHUB", address: "github.com/AWESDUDEtheCOOL", href: "https://github.com/AWESDUDEtheCOOL", status: "ACTIVE" },
-    { protocol: "LINKEDIN", address: "linkedin.com/in/mason-matich", href: "https://linkedin.com/in/mason-matich", status: "ACTIVE" },
-    { protocol: "MAIL", address: "531 Lasuen Mall #20012, Stanford, CA 94309", href: "https://maps.google.com/?q=531+Lasuen+Mall+20012+Stanford+CA+94309", status: "ACTIVE" },
+    { protocol: "EMAIL", address: "mmatich@kc3wny.com", href: "mailto:mmatich@kc3wny.com" },
+    { protocol: "GITHUB", address: "github.com/AWESDUDEtheCOOL", href: "https://github.com/AWESDUDEtheCOOL" },
+    { protocol: "LINKEDIN", address: "linkedin.com/in/mason-matich", href: "https://linkedin.com/in/mason-matich" },
+    { protocol: "MAIL", address: "531 Lasuen Mall #20012, Stanford, CA 94309", href: "https://maps.google.com/?q=531+Lasuen+Mall+20012+Stanford+CA+94309" },
   ]
 
   return (
@@ -22,38 +22,30 @@ export function ContactSection({ sectionNum, sectionTitle }: ContactSectionProps
 
       {/* Contact channels table - full width */}
       <div className="border-2 border-foreground">
-        <div className="bg-foreground text-card px-4 py-2 grid grid-cols-[80px_1fr_60px] gap-4 text-[10px] tracking-[0.2em] font-sans uppercase">
+        <div className="bg-foreground text-card px-4 py-2 grid grid-cols-[100px_1fr] gap-4 text-[10px] tracking-[0.2em] font-sans uppercase">
           <span>Protocol</span>
           <span>Address</span>
-          <span className="text-right">Status</span>
         </div>
         {channels.map((channel, idx) => (
           <div
             key={channel.protocol}
-            className={`px-4 py-3 grid grid-cols-[80px_1fr_60px] gap-4 items-center ${
+            className={`px-4 py-3 grid grid-cols-[100px_1fr] gap-4 ${
               idx % 2 === 0 ? "bg-secondary/30" : ""
             } ${idx !== channels.length - 1 ? "border-b border-muted" : ""}`}
           >
-            <span className="font-mono text-xs font-bold text-primary">{channel.protocol}</span>
+            <span className="font-mono text-xs font-bold text-primary self-start pt-1">{channel.protocol}</span>
             {channel.href ? (
               <a 
                 href={channel.href}
                 target={channel.protocol !== "EMAIL" ? "_blank" : undefined}
                 rel={channel.protocol !== "EMAIL" ? "noopener noreferrer" : undefined}
-                className="font-mono text-sm truncate hover:text-primary transition-colors"
+                className="font-mono text-sm hover:text-primary transition-colors break-words"
               >
                 {channel.address}
               </a>
             ) : (
-              <span className="font-mono text-sm">{channel.address}</span>
+              <span className="font-mono text-sm break-words">{channel.address}</span>
             )}
-            <span
-              className={`text-[9px] tracking-[0.1em] text-right ${
-                channel.status === "PRIMARY" ? "text-primary" : "text-muted-foreground"
-              }`}
-            >
-              {channel.status}
-            </span>
           </div>
         ))}
       </div>
