@@ -1,0 +1,44 @@
+---
+title: "meshbase"
+type: "Project"
+description: "Custom Meshtastic base station for indoor/outdoor use"
+publishedAt: "2025-12-18"
+heroImage: "/api/content-image?path=meshbase_complete.jpg"
+figures:
+  - src: "/api/content-image?path=meshbase_powder-coat.jpg"
+    caption: "Case powder coat"
+    id: "FIG-TP-001"
+  - src: "/api/content-image?path=meshbase_case-milling1.jpg"
+    caption: "Connector hole milling"
+    id: "FIG-TP-002"
+  - src: "/api/content-image?path=meshbase_case-milling2.jpg"
+    caption: "Connector hole boring (ethernet connector only)"
+    id: "FIG-TP-003"
+  - src: "/api/content-image?path=meshbase_electronic-fitup.jpg"
+    caption: "Electronics fitup"
+    id: "FIG-TP-004"
+  - src: "/api/content-image?path=meshbase_connectors1.jpg"
+    caption: "IP-67 Ethernet & USB-C data connectors"
+    id: "FIG-TP-005"
+  - src: "/api/content-image?path=meshbase_connectors2.jpg"
+    caption: "N-type RF connector"
+    id: "FIG-TP-006"
+
+---
+
+## Overview
+Weatherized Meshtastic base station designed for indoor/outdoor use
+## Technical Specifications
+- **Frequency**: 915 MHz (ISM)
+- **Preset**: Medium Fast (MF)
+- **Designed IP Rating**: IP-67
+- **Platform**: Linux (Ubuntu Server 22.xx)
+## Architectural Overview
+This node is based on the [Luckyfox Lyra Ultra](https://wiki.luckfox.com/Luckfox-Lyra/Luckfox-Lyra-Ultra/), which is a highly integrated linux SBC that can be powered over PoE or USB-C. Connected over I2C is an E22P 1 watt LoRa modem on a hat designed by the wonderful [wehooper4](https://github.com/wehooper4/Meshtastic-Hardware/tree/main/Luckfox%20Ultra%20Hat). The antenna is a fairly standard [Alfa AOA-915-5ACM](https://www.alfa.com.tw/products/aoa-915-5acm?variant=36473963020360), though this may be changed to allow for more flexible antenna pointing. All components are placed inside a [McMaster 4270N14](https://www.mcmaster.com/4270N14/) EMI enclosure, which is NEMA 4x and IP-67 rated, along with a frequency reduction of 70 dB @ 1 GHz. The case was custom powdercoated and modified to fit the IP-67 rated [RJ-45](https://www.mouser.com/ProductDetail/200-SCRESG00.25DC5E), [USB-C](https://www.mouser.com/ProductDetail/200-BPCU-CS-025-UC-P), and [N-type](https://store.rokland.com/products/uflipex-ipx-mini-pci-to-n-female-bulkhead-pigtail-cable-extension-rg178) connectors. 
+## Key Features
+- **Weatherproof Design**: IP-67 rated enclosure with green powder coating ensures reliable outdoor deployment in harsh environmental conditions
+- **High Power Transmission**: 1 watt E22P LoRa modem provides improved range and link budget compared to standard handheld nodes in noisy environments
+- **POE+ Powered**: Single-cable deployment via PoE eliminates need for separate power supply, allowing for faster deployment and maintenance
+- **EMI Shielded**: EMI-shielded enclosure minimizes RF interference and improves signal integrity in electrically noisy environments (like the inside of a college dorm)
+## Status
+Deployed over POE+ with secure remote access enabled. Further qualification ongoing, but preliminary results show low (<10%) packet loss across BayMesh system

@@ -1,8 +1,8 @@
 ---
-title: "TestPost"
-type: "Internal"
-description: "A test of markdown blogpost static page compliation"
-publishedAt: "2025-12-04"
+title: "Orbital DX/270"
+type: "Project"
+description: "ME 103 Final Project- Portable Dual-Band Satellite Antenna"
+publishedAt: "2025-12-14"
 heroImage: "/images/joby.png"
 figures:
   - src: "/images/bay.jpg"

@@ -14,7 +14,7 @@ type TechnicalFigureThumbnailProps = {
 export function TechnicalFigureThumbnail({ figure, onClick }: TechnicalFigureThumbnailProps) {
   return (
     <figure 
-      className="border-2 border-foreground cursor-pointer hover:border-primary transition-colors group" 
+      className="border-2 border-foreground cursor-pointer hover:border-primary transition-colors group flex flex-col h-full" 
       onClick={onClick}
       role="button"
       tabIndex={0}
@@ -25,7 +25,7 @@ export function TechnicalFigureThumbnail({ figure, onClick }: TechnicalFigureThu
         }
       }}
     >
-      <div className="bg-muted/30 p-1 relative overflow-hidden">
+      <div className="bg-muted/30 p-1 relative overflow-hidden flex-1 flex items-center justify-center">
         <Image
           src={figure.src || "/placeholder.svg"}
           alt={figure.caption}
@@ -33,7 +33,7 @@ export function TechnicalFigureThumbnail({ figure, onClick }: TechnicalFigureThu
           height={300}
           loading="lazy"
           sizes="(max-width: 768px) 100vw, 500px"
-          className="w-full h-auto"
+          className="w-full h-full object-contain"
         />
         <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/5 transition-colors flex items-center justify-center">
           <span className="opacity-0 group-hover:opacity-100 transition-opacity bg-primary text-primary-foreground px-4 py-2 text-xs font-mono tracking-wider uppercase">
