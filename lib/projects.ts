@@ -42,8 +42,8 @@ function findProjectFiles(): { slug: string; filePath: string }[] {
       if (fs.existsSync(indexPath)) {
         projects.push({ slug: entry.name, filePath: indexPath })
       }
-    } else if (entry.isFile() && entry.name.endsWith(".md")) {
-      // Legacy flat file structure
+    } else if (entry.isFile() && entry.name.endsWith(".md") && entry.name !== "home.md") {
+      // Legacy flat file structure (exclude home.md which is for the home page)
       projects.push({
         slug: entry.name.replace(/\.md$/, ""),
         filePath: path.join(projectsDirectory, entry.name),
