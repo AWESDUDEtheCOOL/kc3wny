@@ -35,7 +35,21 @@ function getContentPath(src: string): string | null {
 export function TechnicalFigureModal({ figure, isOpen, onClose }: Readonly<TechnicalFigureModalProps>) {
   const [metadata, setMetadata] = useState<ImageMetadata | null>(null)
   const [isLoading, setIsLoading] = useState(true)
-  const [fullResSrc, setFullResSrc] = useState<string | null>(null)
+  
+  // Compute fullResSrc based on figure.src
+  const contentPath = getContentPath(figure.src)
+  const initialFullResSrc = contentPath ? null : figure.src
+  const [fullResSrc, setFullResSrc] = useState<string | null>(initialFullResSrc)
+
+  // Reset loading state when modal closes
+  useEffect(() => {
+    if (!isOpen) {
+      // Use a cleanup pattern instead of setting state in effect body
+      return () => {
+        setIsLoading(true)
+      }
+    }
+  }, [isOpen])
 
   useEffect(() => {
     if (!isOpen) return
@@ -55,17 +69,7 @@ export function TechnicalFigureModal({ figure, isOpen, onClose }: Readonly<Techn
 
   // Load full resolution image when modal opens
   useEffect(() => {
-    if (!isOpen) {
-      setIsLoading(true)
-      return
-    }
-
-    const contentPath = getContentPath(figure.src)
-    if (!contentPath) {
-      // For non-content images, use original source
-      setFullResSrc(figure.src)
-      return
-    }
+    if (!isOpen || !contentPath) return
 
     // Fetch metadata for blur placeholder
     fetch(`/api/content-image?path=${encodeURIComponent(contentPath)}&mode=blur`)
@@ -79,22 +83,27 @@ export function TechnicalFigureModal({ figure, isOpen, onClose }: Readonly<Techn
         console.error('Failed to load image metadata:', err)
         setFullResSrc(figure.src)
       })
-  }, [isOpen, figure.src])
+  }, [isOpen, figure.src, contentPath])
 
   if (!isOpen) return null
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-background/95 backdrop-blur-sm p-4 animate-in fade-in duration-200"
-      onClick={onClose}
-      role="dialog"
+    <dialog
+      open
+      className="fixed inset-0 z-50 flex items-center justify-center bg-background/95 backdrop-blur-sm p-4 animate-in fade-in duration-200 w-full h-full max-w-none max-h-none m-0"
       aria-modal="true"
       aria-labelledby={`figure-${figure.id}-title`}
     >
-      <div 
-        className="relative max-w-fit max-h-[90vh] flex flex-col mx-auto" 
-        onClick={(e) => e.stopPropagation()}
-        role="document"
+      {/* Backdrop button for click-to-close */}
+      <button
+        type="button"
+        className="absolute inset-0 w-full h-full cursor-default bg-transparent"
+        onClick={onClose}
+        aria-label="Close modal"
+      />
+      <section 
+        className="relative max-w-fit max-h-[90vh] flex flex-col mx-auto z-10"
+        aria-labelledby={`figure-${figure.id}-title`}
       >
         {/* Header */}
         <div className="bg-foreground text-card border-2 border-foreground mb-2 px-4 py-3 flex justify-between items-center">
@@ -149,7 +158,7 @@ export function TechnicalFigureModal({ figure, isOpen, onClose }: Readonly<Techn
         <div className="bg-foreground text-card border-2 border-foreground border-t-0 px-4 py-3">
           <p className="font-serif italic text-sm">{figure.caption}</p>
         </div>
-      </div>
-    </div>
+      </section>
+    </dialog>
   )
 }

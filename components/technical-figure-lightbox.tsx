@@ -14,7 +14,7 @@ type TechnicalFigureLightboxProps = {
   figure: TechnicalFigure
 }
 
-export function TechnicalFigureLightbox({ figure }: TechnicalFigureLightboxProps) {
+export function TechnicalFigureLightbox({ figure }: Readonly<TechnicalFigureLightboxProps>) {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
