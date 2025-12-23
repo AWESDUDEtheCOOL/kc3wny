@@ -31,7 +31,7 @@ export async function GET() {
     .map(
       (project) => {
         const date = new Date(project.publishedAt)
-        const lastmod = isNaN(date.getTime()) ? new Date().toISOString() : date.toISOString()
+        const lastmod = Number.isNaN(date.getTime()) ? new Date().toISOString() : date.toISOString()
         return `<url>
     <loc>${baseUrl}/projects/${project.slug}</loc>
     <lastmod>${lastmod}</lastmod>

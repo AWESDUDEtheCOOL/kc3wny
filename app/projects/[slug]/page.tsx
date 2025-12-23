@@ -59,21 +59,21 @@ function parseLocalDate(dateString: string): Date {
 function parseInlineMarkdown(text: string): string {
   // Store links temporarily to protect them from other parsing
   const links: string[] = []
-  text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (match, linkText, url) => {
+  text = text.replaceAll(/\[([^\]]+)\]\(([^)]+)\)/g, (_match, linkText, url) => {
     const placeholder = `§§§LINK${links.length}§§§`
     links.push(`<a href="${url}" class="text-primary hover:underline font-medium" target="_blank" rel="noopener noreferrer">${linkText}</a>`)
     return placeholder
   })
   
   // Parse bold **text** (but not if it's part of a link placeholder)
-  text = text.replace(/\*\*([^*]+)\*\*/g, '<strong class="font-sans font-bold">$1</strong>')
+  text = text.replaceAll(/\*\*([^*]+)\*\*/g, '<strong class="font-sans font-bold">$1</strong>')
   
   // Parse italic *text* or _text_
-  text = text.replace(/\*([^*]+)\*/g, '<em class="italic">$1</em>')
-  text = text.replace(/_([^_]+)_/g, '<em class="italic">$1</em>')
+  text = text.replaceAll(/\*([^*]+)\*/g, '<em class="italic">$1</em>')
+  text = text.replaceAll(/_([^_]+)_/g, '<em class="italic">$1</em>')
   
   // Parse inline code `code`
-  text = text.replace(/`([^`]+)`/g, '<code class="font-mono text-sm bg-muted px-1.5 py-0.5 rounded">$1</code>')
+  text = text.replaceAll(/`([^`]+)`/g, '<code class="font-mono text-sm bg-muted px-1.5 py-0.5 rounded">$1</code>')
   
   // Restore links
   links.forEach((link, index) => {
@@ -81,6 +81,30 @@ function parseInlineMarkdown(text: string): string {
   })
   
   return text
+}
+
+function parseBulletLine(line: string): string | null {
+  const bulletRegex = /- \*\*(.+?)\*\*:?\s*(.*)/
+  const match = bulletRegex.exec(line)
+  if (match) {
+    const rest = match[2] ? `: <span class="font-serif text-lg">${parseInlineMarkdown(match[2])}</span>` : ""
+    return `<div class="flex gap-2 mb-2"><span class="font-sans font-bold text-primary">▸</span><span><strong class="font-sans text-lg">${parseInlineMarkdown(match[1])}</strong>${rest}</span></div>`
+  }
+  return null
+}
+
+function parseNumberedLine(line: string): string | null {
+  const numberCheckRegex = /^\d+\.\s+\*\*/
+  if (!numberCheckRegex.exec(line)) return null
+  
+  const numberedRegex = /^\d+\.\s+\*\*(.+?)\*\*\s*—?\s*(.*)/
+  const match = numberedRegex.exec(line)
+  if (match) {
+    const numMatch = /^\d+/.exec(line)
+    const rest = match[2] ? ` — <span class="font-serif text-muted-foreground text-lg">${parseInlineMarkdown(match[2])}</span>` : ""
+    return `<div class="flex gap-3 mb-3 pl-4 border-l-2 border-muted"><span class="font-mono text-primary text-sm font-bold">${numMatch?.[0]}.</span><span><strong class="font-sans text-lg">${parseInlineMarkdown(match[1])}</strong>${rest}</span></div>`
+  }
+  return null
 }
 
 function parseMarkdownContent(content: string): string {
@@ -96,19 +120,11 @@ function parseMarkdownContent(content: string): string {
         return `<h2 class="text-xl font-sans font-bold uppercase tracking-[0.05em] mt-10 mb-4 flex items-center gap-3"><span class="w-8 h-[2px] bg-primary"></span>${headerText}</h2>`
       }
       if (line.startsWith("- **")) {
-        const match = line.match(/- \*\*(.+?)\*\*:?\s*(.*)/)
-        if (match) {
-          const rest = match[2] ? `: <span class="font-serif text-lg">${parseInlineMarkdown(match[2])}</span>` : ""
-          return `<div class="flex gap-2 mb-2"><span class="font-sans font-bold text-primary">▸</span><span><strong class="font-sans text-lg">${parseInlineMarkdown(match[1])}</strong>${rest}</span></div>`
-        }
+        const parsed = parseBulletLine(line)
+        if (parsed) return parsed
       }
-      if (line.match(/^\d+\.\s+\*\*/)) {
-        const match = line.match(/^\d+\.\s+\*\*(.+?)\*\*\s*—?\s*(.*)/)
-        if (match) {
-          const rest = match[2] ? ` — <span class="font-serif text-muted-foreground text-lg">${parseInlineMarkdown(match[2])}</span>` : ""
-          return `<div class="flex gap-3 mb-3 pl-4 border-l-2 border-muted"><span class="font-mono text-primary text-sm font-bold">${line.match(/^\d+/)?.[0]}.</span><span><strong class="font-sans text-lg">${parseInlineMarkdown(match[1])}</strong>${rest}</span></div>`
-        }
-      }
+      const numberedResult = parseNumberedLine(line)
+      if (numberedResult) return numberedResult
       if (line.trim() === "") return "<div class='h-4'></div>"
       if (line.startsWith("**") && line.endsWith("**")) {
         return `<p class="font-sans font-bold text-primary mb-4 text-lg">${parseInlineMarkdown(line.slice(2, -2))}</p>`
@@ -121,7 +137,7 @@ function parseMarkdownContent(content: string): string {
   return result
 }
 
-export default async function ProjectPage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function ProjectPage({ params }: Readonly<{ params: Promise<{ slug: string }> }>) {
   const { slug } = await params
   const project = getProjectBySlug(slug)
 
@@ -197,7 +213,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
       {project.images?.figures && project.images.figures.length > 0 && (
         <div className="mt-12 pt-8 border-t-2 border-foreground">
           <h2 className="text-lg font-sans font-bold uppercase tracking-[0.05em] mb-6 flex items-center gap-3">
-            <span className="w-8 h-[2px] bg-primary"></span>
+            <span className="w-8 h-[2px] bg-primary" />{" "}
             Technical Figures
           </h2>
           <div className="grid md:grid-cols-2 gap-6">

@@ -49,8 +49,6 @@ export interface ContactChannel {
 
 export interface HomeContent {
   title: string
-  sections: Section[]
-  subpages: Subpage[]
   biography: Biography
   skills: Skill[]
   workExperience: WorkExperience[]

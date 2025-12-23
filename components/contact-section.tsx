@@ -31,14 +31,14 @@ export function ContactSection({ sectionNum, sectionTitle, data }: ContactSectio
             key={channel.protocol}
             className={`px-4 py-3 grid grid-cols-[100px_1fr] gap-4 ${
               idx % 2 === 0 ? "bg-secondary/30" : ""
-            } ${idx !== data.length - 1 ? "border-b border-muted" : ""}`}
+            } ${idx === data.length - 1 ? "" : "border-b border-muted"}`}
           >
             <span className="font-mono text-xs font-bold text-primary self-start pt-1">{channel.protocol}</span>
             {channel.href ? (
               <a 
                 href={channel.href}
-                target={channel.protocol !== "EMAIL" ? "_blank" : undefined}
-                rel={channel.protocol !== "EMAIL" ? "noopener noreferrer" : undefined}
+                target={channel.protocol === "EMAIL" ? undefined : "_blank"}
+                rel={channel.protocol === "EMAIL" ? undefined : "noopener noreferrer"}
                 className="font-mono text-sm hover:text-primary transition-colors break-words"
               >
                 {channel.address}
