@@ -139,7 +139,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
 
   return (
     <DocumentWrapper
-      documentNo={`PRJ-${pubYear}-${slug.toUpperCase().slice(0, 8)}`}
+      documentNo={`PRJ-${pubYear}-${slug.toUpperCase()}-${buildInfo.revision}`}
       backLink={{ href: "/projects", label: "Return to Index" }}
     >
       {/* Project header */}
