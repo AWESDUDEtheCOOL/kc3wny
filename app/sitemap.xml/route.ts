@@ -29,12 +29,16 @@ export async function GET() {
   </url>
   ${projects
     .map(
-      (project) => `<url>
+      (project) => {
+        const date = new Date(project.publishedAt)
+        const lastmod = isNaN(date.getTime()) ? new Date().toISOString() : date.toISOString()
+        return `<url>
     <loc>${baseUrl}/projects/${project.slug}</loc>
-    <lastmod>${new Date(project.publishedAt).toISOString()}</lastmod>
+    <lastmod>${lastmod}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>`
+      }
     )
     .join("\n  ")}
 </urlset>`
