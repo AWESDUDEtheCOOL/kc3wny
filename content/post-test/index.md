@@ -12,7 +12,6 @@ figures:
     caption: "Yosemite Falls, 05/10/2025"
     id: "FIG-002"
 ---
-
 ## Overview
 This is a test of markdown loading for static rendering of blog posts
 ## Technical Specifications

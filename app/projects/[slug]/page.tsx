@@ -98,22 +98,22 @@ function parseMarkdownContent(content: string): string {
       if (line.startsWith("- **")) {
         const match = line.match(/- \*\*(.+?)\*\*:?\s*(.*)/)
         if (match) {
-          const rest = match[2] ? `: <span class="font-serif italic">${parseInlineMarkdown(match[2])}</span>` : ""
-          return `<div class="flex gap-2 mb-2"><span class="font-sans font-bold text-primary">▸</span><span><strong class="font-sans">${parseInlineMarkdown(match[1])}</strong>${rest}</span></div>`
+          const rest = match[2] ? `: <span class="font-serif text-lg">${parseInlineMarkdown(match[2])}</span>` : ""
+          return `<div class="flex gap-2 mb-2"><span class="font-sans font-bold text-primary">▸</span><span><strong class="font-sans text-lg">${parseInlineMarkdown(match[1])}</strong>${rest}</span></div>`
         }
       }
       if (line.match(/^\d+\.\s+\*\*/)) {
         const match = line.match(/^\d+\.\s+\*\*(.+?)\*\*\s*—?\s*(.*)/)
         if (match) {
-          const rest = match[2] ? ` — <span class="font-serif italic text-muted-foreground">${parseInlineMarkdown(match[2])}</span>` : ""
-          return `<div class="flex gap-3 mb-3 pl-4 border-l-2 border-muted"><span class="font-mono text-primary text-sm font-bold">${line.match(/^\d+/)?.[0]}.</span><span><strong class="font-sans">${parseInlineMarkdown(match[1])}</strong>${rest}</span></div>`
+          const rest = match[2] ? ` — <span class="font-serif text-muted-foreground text-lg">${parseInlineMarkdown(match[2])}</span>` : ""
+          return `<div class="flex gap-3 mb-3 pl-4 border-l-2 border-muted"><span class="font-mono text-primary text-sm font-bold">${line.match(/^\d+/)?.[0]}.</span><span><strong class="font-sans text-lg">${parseInlineMarkdown(match[1])}</strong>${rest}</span></div>`
         }
       }
       if (line.trim() === "") return "<div class='h-4'></div>"
       if (line.startsWith("**") && line.endsWith("**")) {
-        return `<p class="font-sans font-bold text-primary mb-4">${parseInlineMarkdown(line.slice(2, -2))}</p>`
+        return `<p class="font-sans font-bold text-primary mb-4 text-lg">${parseInlineMarkdown(line.slice(2, -2))}</p>`
       }
-      return `<p class="font-serif italic leading-relaxed mb-4 text-foreground/90">${parseInlineMarkdown(line)}</p>`
+      return `<p class="font-serif leading-relaxed mb-4 text-foreground/90 text-lg">${parseInlineMarkdown(line)}</p>`
     })
     .join("")
 
