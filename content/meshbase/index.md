@@ -25,7 +25,6 @@ figures:
     id: "FIG-006"
 
 ---
-
 ## Overview
 The Bay Area has several developed mesh networks, including the Meshtastic-based [BayMesh](https://bayme.sh/) in which I've been active for the past two years. This has mainly been through low-cost portable nodes, however due to terrain and node density in the area surrounding Stanford's campus coverage is spotty, especially indoors. To get better reception in my dorm room I built this weatherized base station node, designed with a higher power radio and larger antenna for lower packet loss.
 ## Technical Specifications
