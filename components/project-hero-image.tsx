@@ -15,8 +15,8 @@ export async function ProjectHeroImage({ src, alt, sectionId }: Readonly<Project
   
   if (contentPath) {
     metadata = await getImageBlurData(contentPath)
-    // Use full resolution API URL
-    imageSrc = `/api/content-image?path=${encodeURIComponent(contentPath)}&mode=full`
+    // Use optimized resolution (1200px width) for faster loading
+    imageSrc = `/api/content-image?path=${encodeURIComponent(contentPath)}&mode=full&width=1200`
   }
 
   return (

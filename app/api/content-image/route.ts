@@ -103,9 +103,14 @@ export async function GET(request: NextRequest) {
         .resize(thumbnailWidth, null, { withoutEnlargement: true })
         .jpeg({ quality: 75, progressive: true })
     } else {
-      // Full resolution - optimize but keep quality high
+      // Full/optimized resolution - resize if width specified, keep quality high
+      if (width) {
+        const targetWidth = Number.parseInt(width, 10)
+        sharpImage = sharpImage
+          .resize(targetWidth, null, { withoutEnlargement: true })
+      }
       sharpImage = sharpImage
-        .jpeg({ quality: 90, progressive: true })
+        .jpeg({ quality: 85, progressive: true })
     }
 
     const outputBuffer = await sharpImage.toBuffer()
