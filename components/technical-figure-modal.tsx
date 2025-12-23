@@ -1,13 +1,19 @@
 "use client"
 
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import Image from "next/image"
-import { X } from "lucide-react"
+import { X, Loader2 } from "lucide-react"
 
 type TechnicalFigure = {
   id: string
   src: string
   caption: string
+}
+
+type ImageMetadata = {
+  width: number
+  height: number
+  blurDataUrl: string
 }
 
 type TechnicalFigureModalProps = {
@@ -16,7 +22,21 @@ type TechnicalFigureModalProps = {
   onClose: () => void
 }
 
-export function TechnicalFigureModal({ figure, isOpen, onClose }: TechnicalFigureModalProps) {
+// Helper to convert image src to API path
+function getContentPath(src: string): string | null {
+  // Handle /api/content-image paths
+  if (src.startsWith('/api/content-image')) {
+    const url = new URL(src, 'http://localhost')
+    return url.searchParams.get('path')
+  }
+  return null
+}
+
+export function TechnicalFigureModal({ figure, isOpen, onClose }: Readonly<TechnicalFigureModalProps>) {
+  const [metadata, setMetadata] = useState<ImageMetadata | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [fullResSrc, setFullResSrc] = useState<string | null>(null)
+
   useEffect(() => {
     if (!isOpen) return
 
@@ -32,6 +52,34 @@ export function TechnicalFigureModal({ figure, isOpen, onClose }: TechnicalFigur
       document.body.style.overflow = "unset"
     }
   }, [isOpen, onClose])
+
+  // Load full resolution image when modal opens
+  useEffect(() => {
+    if (!isOpen) {
+      setIsLoading(true)
+      return
+    }
+
+    const contentPath = getContentPath(figure.src)
+    if (!contentPath) {
+      // For non-content images, use original source
+      setFullResSrc(figure.src)
+      return
+    }
+
+    // Fetch metadata for blur placeholder
+    fetch(`/api/content-image?path=${encodeURIComponent(contentPath)}&mode=blur`)
+      .then(res => res.json())
+      .then((data: ImageMetadata) => {
+        setMetadata(data)
+        // Set full resolution source
+        setFullResSrc(`/api/content-image?path=${encodeURIComponent(contentPath)}&mode=full`)
+      })
+      .catch(err => {
+        console.error('Failed to load image metadata:', err)
+        setFullResSrc(figure.src)
+      })
+  }, [isOpen, figure.src])
 
   if (!isOpen) return null
 
@@ -64,17 +112,37 @@ export function TechnicalFigureModal({ figure, isOpen, onClose }: TechnicalFigur
         </div>
 
         {/* Image Container */}
-        <div className="border-2 border-foreground bg-muted/30 p-4">
-          <Image
-            src={figure.src}
-            alt={figure.caption}
-            width={1920}
-            height={1080}
-            quality={95}
-            className="max-w-[85vw] max-h-[70vh] w-auto h-auto object-contain"
-            sizes="85vw"
-            priority
-          />
+        <div className="border-2 border-foreground bg-muted/30 p-4 relative min-h-[200px] flex items-center justify-center">
+          {/* Blur placeholder background */}
+          {metadata?.blurDataUrl && isLoading && (
+            <div 
+              className="absolute inset-4 bg-cover bg-center blur-md scale-110"
+              style={{ backgroundImage: `url(${metadata.blurDataUrl})` }}
+            />
+          )}
+          
+          {/* Loading indicator */}
+          {isLoading && (
+            <div className="absolute inset-0 flex items-center justify-center z-10">
+              <Loader2 className="w-8 h-8 animate-spin text-primary" />
+            </div>
+          )}
+          
+          {/* Full resolution image */}
+          {fullResSrc && (
+            <Image
+              src={fullResSrc}
+              alt={figure.caption}
+              width={metadata?.width || 1920}
+              height={metadata?.height || 1080}
+              quality={95}
+              className={`max-w-[85vw] max-h-[70vh] w-auto h-auto object-contain transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
+              sizes="85vw"
+              priority
+              onLoad={() => setIsLoading(false)}
+              unoptimized // We're handling optimization in our API
+            />
+          )}
         </div>
 
         {/* Caption */}
