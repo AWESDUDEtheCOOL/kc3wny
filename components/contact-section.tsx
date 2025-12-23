@@ -1,16 +1,16 @@
+type ContactChannel = {
+  protocol: string
+  address: string
+  href: string
+}
+
 type ContactSectionProps = {
   readonly sectionNum: string
   readonly sectionTitle: string
+  readonly data: ContactChannel[]
 }
 
-export function ContactSection({ sectionNum, sectionTitle }: ContactSectionProps) {
-  const channels = [
-    { protocol: "EMAIL", address: "mmatich@kc3wny.com", href: "mailto:mmatich@kc3wny.com" },
-    { protocol: "GITHUB", address: "github.com/AWESDUDEtheCOOL", href: "https://github.com/AWESDUDEtheCOOL" },
-    { protocol: "LINKEDIN", address: "linkedin.com/in/mason-matich", href: "https://linkedin.com/in/mason-matich" },
-    { protocol: "MAIL", address: "531 Lasuen Mall #20012, Stanford, CA 94309", href: "https://maps.google.com/?q=531+Lasuen+Mall+20012+Stanford+CA+94309" },
-  ]
-
+export function ContactSection({ sectionNum, sectionTitle, data }: ContactSectionProps) {
   return (
     <section id={`section-${sectionNum}`} className="mb-12">
       {/* Section header */}
@@ -26,12 +26,12 @@ export function ContactSection({ sectionNum, sectionTitle }: ContactSectionProps
           <span>Protocol</span>
           <span>Address</span>
         </div>
-        {channels.map((channel, idx) => (
+        {data.map((channel, idx) => (
           <div
             key={channel.protocol}
             className={`px-4 py-3 grid grid-cols-[100px_1fr] gap-4 ${
               idx % 2 === 0 ? "bg-secondary/30" : ""
-            } ${idx !== channels.length - 1 ? "border-b border-muted" : ""}`}
+            } ${idx !== data.length - 1 ? "border-b border-muted" : ""}`}
           >
             <span className="font-mono text-xs font-bold text-primary self-start pt-1">{channel.protocol}</span>
             {channel.href ? (

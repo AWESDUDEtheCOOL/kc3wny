@@ -1,17 +1,15 @@
-type skillsSectionProps = {
-  readonly sectionNum: string
-  readonly sectionTitle: string
+type Skill = {
+  category: string
+  items: string[]
 }
 
-export function skillsSection({ sectionNum, sectionTitle }: skillsSectionProps) {
-  const skills = [
-    { category: "CAD", items: ["Siemens NX", "Fusion360", "SolidWorks", "KiCad"] },
-    { category: "Programming", items: ["Simulink", "MatLab", "Python", "Git"] },
-    { category: "Manufacturing", items: ["3D Printing (FDM/SLA)", "CNC Milling", "Fiber Laser Cutting", "Sheet Metal Fabrication", "Acetylene Welding"] },
-    { category: "Prototyping", items: ["Motor Control", "Soldering (SMD/THT)", "Circuit Debugging", "Real-Time Microcontrollers", "Embedded systems (Arduino/RP2040)", "UART/i2c/SPI"] },
-    { category: "Amateur Radio", items: ["Amateur Extra Class", "LoRa SatCom", "Mesh Networks"] },
-  ]
+type SkillsSectionProps = {
+  readonly sectionNum: string
+  readonly sectionTitle: string
+  readonly data: Skill[]
+}
 
+export function SkillsSection({ sectionNum, sectionTitle, data }: SkillsSectionProps) {
   return (
     <section id={`section-${sectionNum}`} className="mb-12">
       {/* Section header */}
@@ -28,12 +26,12 @@ export function skillsSection({ sectionNum, sectionTitle }: skillsSectionProps) 
           <span>Components</span>
         </div>
 
-        {skills.map((skill, idx) => (
+        {data.map((skill, idx) => (
           <div
             key={skill.category}
             className={`px-2 py-4 md:px-4 grid grid-cols-[100px_1fr] md:grid-cols-[140px_1fr] gap-2 md:gap-4 items-center ${
               idx % 2 === 0 ? "bg-secondary/30" : ""
-            } ${idx !== skills.length - 1 ? "border-b border-muted" : ""}`}
+            } ${idx < data.length - 1 ? "border-b border-muted" : ""}`}
           >
             <span className="font-mono text-xs md:text-sm font-bold text-primary">{skill.category}</span>
             <div className="flex flex-wrap gap-2">

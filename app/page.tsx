@@ -4,18 +4,19 @@ import { DocumentHeader } from "@/components/document-header"
 import { TableOfContents } from "@/components/table-of-contents"
 import { DocumentFooter } from "@/components/document-footer"
 import { buildInfo } from "@/lib/build-info"
+import { getHomeContent } from "@/lib/home"
 
 const BiographySection = dynamic(
   () => import("@/components/biography-section").then((mod) => ({ default: mod.BiographySection })),
 )
 const SkillsSection = dynamic(
-  () => import("@/components/skills-section").then((mod) => ({ default: mod.skillsSection })),
+  () => import("@/components/skills-section").then((mod) => ({ default: mod.SkillsSection })),
 )
 const ExperienceSection = dynamic(
   () => import("@/components/experience-section").then((mod) => ({ default: mod.ExperienceSection })),
 )
 const ProjectsSection = dynamic(
-  () => import("@/components/projects-section").then((mod) => ({ default: mod.projectsSection })),
+  () => import("@/components/projects-section").then((mod) => ({ default: mod.ProjectsSection })),
 )
 const ProfessionalMembershipsSection = dynamic(
   () => import("@/components/professional-memberships-section").then((mod) => ({ default: mod.ProfessionalMembershipsSection })),
@@ -42,6 +43,9 @@ function SectionSkeleton() {
 }
 
 export default function Home() {
+  const content = getHomeContent()
+  const { biography, skills, workExperience, projectExperience, memberships, contact } = content
+
   const sections = [
     { num: "1.0", title: "Biography", page: "2", href: "#section-1.0" },
     { num: "2.0", title: "Projects", page: "5", href: "#section-2.0" },
@@ -74,22 +78,22 @@ export default function Home() {
           />
           <TableOfContents sections={sections} subpages={subpages} />
           <Suspense fallback={<SectionSkeleton />}>
-            <BiographySection sectionNum={sections[0].num} sectionTitle={sections[0].title} />
+            <BiographySection sectionNum={sections[0].num} sectionTitle={sections[0].title} data={biography} />
           </Suspense>
           <Suspense fallback={<SectionSkeleton />}>
             <ProjectsSection sectionNum={sections[1].num} sectionTitle={sections[1].title} />
           </Suspense>
           <Suspense fallback={<SectionSkeleton />}>
-            <ExperienceSection sectionNum={sections[2].num} sectionTitle={sections[2].title} />
+            <ExperienceSection sectionNum={sections[2].num} sectionTitle={sections[2].title} workData={workExperience} projectData={projectExperience} />
           </Suspense>
           <Suspense fallback={<SectionSkeleton />}>
-            <SkillsSection sectionNum={sections[3].num} sectionTitle={sections[3].title} />
+            <SkillsSection sectionNum={sections[3].num} sectionTitle={sections[3].title} data={skills} />
           </Suspense>
           <Suspense fallback={<SectionSkeleton />}>
-            <ProfessionalMembershipsSection sectionNum={sections[4].num} sectionTitle={sections[4].title} />
+            <ProfessionalMembershipsSection sectionNum={sections[4].num} sectionTitle={sections[4].title} data={memberships} />
           </Suspense>
           <Suspense fallback={<SectionSkeleton />}>
-            <ContactSection sectionNum={sections[5].num} sectionTitle={sections[5].title} />
+            <ContactSection sectionNum={sections[5].num} sectionTitle={sections[5].title} data={contact} />
           </Suspense>
           <DocumentFooter
             documentControl={buildInfo.getDocumentNumber("PF")}
