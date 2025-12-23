@@ -49,6 +49,38 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 const parseCache = new Map<string, string>()
 
+function parseLocalDate(dateString: string): Date {
+  const [year, month, day] = dateString.split('-').map(Number)
+  return new Date(year, month - 1, day)
+}
+
+function parseInlineMarkdown(text: string): string {
+  // Store links temporarily to protect them from other parsing
+  const links: string[] = []
+  text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (match, linkText, url) => {
+    const placeholder = `§§§LINK${links.length}§§§`
+    links.push(`<a href="${url}" class="text-primary hover:underline font-medium" target="_blank" rel="noopener noreferrer">${linkText}</a>`)
+    return placeholder
+  })
+  
+  // Parse bold **text** (but not if it's part of a link placeholder)
+  text = text.replace(/\*\*([^*]+)\*\*/g, '<strong class="font-sans font-bold">$1</strong>')
+  
+  // Parse italic *text* or _text_
+  text = text.replace(/\*([^*]+)\*/g, '<em class="italic">$1</em>')
+  text = text.replace(/_([^_]+)_/g, '<em class="italic">$1</em>')
+  
+  // Parse inline code `code`
+  text = text.replace(/`([^`]+)`/g, '<code class="font-mono text-sm bg-muted px-1.5 py-0.5 rounded">$1</code>')
+  
+  // Restore links
+  links.forEach((link, index) => {
+    text = text.replace(`§§§LINK${index}§§§`, link)
+  })
+  
+  return text
+}
+
 function parseMarkdownContent(content: string): string {
   if (parseCache.has(content)) {
     return parseCache.get(content)!
@@ -58,25 +90,28 @@ function parseMarkdownContent(content: string): string {
     .split("\n")
     .map((line) => {
       if (line.startsWith("## ")) {
-        return `<h2 class="text-xl font-sans font-bold uppercase tracking-[0.05em] mt-10 mb-4 flex items-center gap-3"><span class="w-8 h-[2px] bg-primary"></span>${line.slice(3)}</h2>`
+        const headerText = parseInlineMarkdown(line.slice(3))
+        return `<h2 class="text-xl font-sans font-bold uppercase tracking-[0.05em] mt-10 mb-4 flex items-center gap-3"><span class="w-8 h-[2px] bg-primary"></span>${headerText}</h2>`
       }
       if (line.startsWith("- **")) {
         const match = line.match(/- \*\*(.+?)\*\*:?\s*(.*)/)
         if (match) {
-          return `<div class="flex gap-2 mb-2"><span class="font-sans font-bold text-primary">▸</span><span><strong class="font-sans">${match[1]}</strong>${match[2] ? `: <span class="font-serif italic">${match[2]}</span>` : ""}</span></div>`
+          const rest = match[2] ? `: <span class="font-serif italic">${parseInlineMarkdown(match[2])}</span>` : ""
+          return `<div class="flex gap-2 mb-2"><span class="font-sans font-bold text-primary">▸</span><span><strong class="font-sans">${parseInlineMarkdown(match[1])}</strong>${rest}</span></div>`
         }
       }
       if (line.match(/^\d+\.\s+\*\*/)) {
         const match = line.match(/^\d+\.\s+\*\*(.+?)\*\*\s*—?\s*(.*)/)
         if (match) {
-          return `<div class="flex gap-3 mb-3 pl-4 border-l-2 border-muted"><span class="font-mono text-primary text-sm font-bold">${line.match(/^\d+/)?.[0]}.</span><span><strong class="font-sans">${match[1]}</strong>${match[2] ? ` — <span class="font-serif italic text-muted-foreground">${match[2]}</span>` : ""}</span></div>`
+          const rest = match[2] ? ` — <span class="font-serif italic text-muted-foreground">${parseInlineMarkdown(match[2])}</span>` : ""
+          return `<div class="flex gap-3 mb-3 pl-4 border-l-2 border-muted"><span class="font-mono text-primary text-sm font-bold">${line.match(/^\d+/)?.[0]}.</span><span><strong class="font-sans">${parseInlineMarkdown(match[1])}</strong>${rest}</span></div>`
         }
       }
       if (line.trim() === "") return "<div class='h-4'></div>"
       if (line.startsWith("**") && line.endsWith("**")) {
-        return `<p class="font-sans font-bold text-primary mb-4">${line.slice(2, -2)}</p>`
+        return `<p class="font-sans font-bold text-primary mb-4">${parseInlineMarkdown(line.slice(2, -2))}</p>`
       }
-      return `<p class="font-serif italic leading-relaxed mb-4 text-foreground/90">${line}</p>`
+      return `<p class="font-serif italic leading-relaxed mb-4 text-foreground/90">${parseInlineMarkdown(line)}</p>`
     })
     .join("")
 
@@ -99,7 +134,8 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
 
   const contentHtml = parseMarkdownContent(project.content)
   
-  const pubYear = new Date(project.publishedAt).getFullYear()
+  const publishedDate = parseLocalDate(project.publishedAt)
+  const pubYear = publishedDate.getFullYear()
 
   return (
     <DocumentWrapper
@@ -119,7 +155,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
             <span>
               Published:{" "}
               <span className="font-mono text-foreground">
-                {new Date(project.publishedAt).toLocaleDateString("en-US", {
+                {publishedDate.toLocaleDateString("en-US", {
                   year: "numeric",
                   month: "long",
                   day: "numeric",
@@ -184,7 +220,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
 
       <DocumentFooter
         documentControl={`PRJ-${slug.toUpperCase().slice(0, 8)}-${buildInfo.revision}`}
-        lastUpdated={new Date(project.publishedAt).toLocaleDateString("en-US", {
+        lastUpdated={publishedDate.toLocaleDateString("en-US", {
           year: "numeric",
           month: "short",
         }).toUpperCase()}

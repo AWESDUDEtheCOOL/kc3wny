@@ -23,7 +23,7 @@ export interface Project {
   sectionId: string
 }
 
-const projectsDirectory = path.join(process.cwd(), "content/projects")
+const projectsDirectory = path.join(process.cwd(), "content")
 
 export function getAllProjects(): Project[] {
   const fileNames = fs.readdirSync(projectsDirectory)
@@ -49,11 +49,12 @@ export function getAllProjects(): Project[] {
         content,
       }
     })
-    .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
+    .sort((a, b) => new Date(a.publishedAt).getTime() - new Date(b.publishedAt).getTime())
     .map((project, index) => ({
       ...project,
       sectionId: `PRJ-${String(index + 1).padStart(3, "0")}`,
     }))
+    .reverse()
 
   return projects
 }
