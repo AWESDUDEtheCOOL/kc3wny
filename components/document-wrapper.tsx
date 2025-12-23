@@ -8,7 +8,7 @@ interface DocumentWrapperProps {
   backLink?: { href: string; label: string }
 }
 
-export function DocumentWrapper({ children, documentNo = "UNKNOWN", title, backLink }: DocumentWrapperProps) {
+export function DocumentWrapper({ children, documentNo = "UNKNOWN", title, backLink }: Readonly<DocumentWrapperProps>) {
   return (
     <main className="min-h-screen bg-background">
       <div className="max-w-[8.5in] mx-auto bg-card shadow-[0_0_40px_rgba(0,0,0,0.1)] min-h-screen relative">

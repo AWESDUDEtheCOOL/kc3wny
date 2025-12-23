@@ -96,11 +96,9 @@ export default function SitemapPage() {
                 key={item.href + idx}
                 href={item.href}
                 className="grid grid-cols-[auto_1fr_auto] gap-4 px-4 py-3 border-t border-muted hover:bg-secondary/50 transition-colors items-center group"
-                target={item.external ? "_blank" : undefined}
               >
                 <span className="font-mono text-sm text-primary group-hover:underline">
                   {item.href}
-                  {item.external && " ↗"}
                 </span>
                 <span className="font-serif text-sm text-muted-foreground">{item.description}</span>
                 <span className="font-mono text-[10px] text-green-600">ACTIVE</span>
