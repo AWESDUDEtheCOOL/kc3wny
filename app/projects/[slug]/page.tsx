@@ -16,17 +16,19 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const project = getProjectBySlug(slug)
   if (!project) return { title: "Project Not Found" }
   return {
-    title: `${project.title} // PROJECT FILE`,
+    title: `${project.title}`,
     description: project.description,
     openGraph: {
-      title: `${project.title} // PROJECT FILE`,
+      title: `${project.title}`,
       description: project.description,
       type: "article",
       publishedTime: project.publishedAt,
       url: `https://kc3wny.com/projects/${project.slug}`,
       images: [
       {
-        url: "https://kc3wny.com/api/og",
+        url: project.images?.hero 
+          ? `https://kc3wny.com${project.images.hero}` 
+          : "https://kc3wny.com/api/og",
       },
     ],
     },
@@ -139,7 +141,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
 
   return (
     <DocumentWrapper
-      documentNo={`PRJ-${pubYear}-${slug.toUpperCase().slice(0, 8)}`}
+      documentNo={`PRJ-${pubYear}-${slug.toUpperCase()}-${buildInfo.revision}`}
       backLink={{ href: "/projects", label: "Return to Index" }}
     >
       {/* Project header */}

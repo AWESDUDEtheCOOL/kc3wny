@@ -25,14 +25,40 @@ export interface Project {
 
 const projectsDirectory = path.join(process.cwd(), "content")
 
+/**
+ * Find all project directories and markdown files.
+ * Supports both:
+ * - Subdirectory structure: content/project-name/index.md
+ * - Flat file structure: content/project-name.md (legacy)
+ */
+function findProjectFiles(): { slug: string; filePath: string }[] {
+  const entries = fs.readdirSync(projectsDirectory, { withFileTypes: true })
+  const projects: { slug: string; filePath: string }[] = []
+
+  for (const entry of entries) {
+    if (entry.isDirectory()) {
+      // Check for index.md in subdirectory
+      const indexPath = path.join(projectsDirectory, entry.name, "index.md")
+      if (fs.existsSync(indexPath)) {
+        projects.push({ slug: entry.name, filePath: indexPath })
+      }
+    } else if (entry.isFile() && entry.name.endsWith(".md") && entry.name !== "home.md") {
+      // Legacy flat file structure (exclude home.md which is for the home page)
+      projects.push({
+        slug: entry.name.replace(/\.md$/, ""),
+        filePath: path.join(projectsDirectory, entry.name),
+      })
+    }
+  }
+
+  return projects
+}
+
 export function getAllProjects(): Project[] {
-  const fileNames = fs.readdirSync(projectsDirectory)
-  const projects = fileNames
-    .filter((fileName) => fileName.endsWith(".md"))
-    .map((fileName) => {
-      const slug = fileName.replace(/\.md$/, "")
-      const fullPath = path.join(projectsDirectory, fileName)
-      const fileContents = fs.readFileSync(fullPath, "utf8")
+  const projectFiles = findProjectFiles()
+  const projects = projectFiles
+    .map(({ slug, filePath }) => {
+      const fileContents = fs.readFileSync(filePath, "utf8")
       const { data, content } = matter(fileContents)
 
       return {
@@ -68,6 +94,5 @@ export function getProjectBySlug(slug: string): Project | undefined {
 }
 
 export function getAllProjectSlugs(): string[] {
-  const fileNames = fs.readdirSync(projectsDirectory)
-  return fileNames.filter((fileName) => fileName.endsWith(".md")).map((fileName) => fileName.replace(/\.md$/, ""))
+  return findProjectFiles().map(({ slug }) => slug)
 }

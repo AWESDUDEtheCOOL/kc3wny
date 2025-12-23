@@ -2,13 +2,13 @@
 title: "TestPost"
 type: "Internal"
 description: "A test of markdown blogpost static page compliation"
-publishedAt: "2025-1-04"
-heroImage: "/api/content-image?path=post-test_joby.png"
+publishedAt: "2025-01-04"
+heroImage: "/api/content-image?path=post-test/post-test_joby.png"
 figures:
-  - src: "/api/content-image?path=post-test_bay.jpg"
+  - src: "/api/content-image?path=post-test/post-test_bay.jpg"
     caption: "101-S, Exit 357, 05/09/2025"
     id: "FIG-001"
-  - src: "/api/content-image?path=post-test_yosemite.jpg"
+  - src: "/api/content-image?path=post-test/post-test_yosemite.jpg"
     caption: "Yosemite Falls, 05/10/2025"
     id: "FIG-002"
 ---

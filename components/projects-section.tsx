@@ -1,12 +1,12 @@
 import Link from "next/link"
 import { getRecentProjects } from "@/lib/projects"
 
-type projectsSectionProps = {
+type ProjectsSectionProps = {
   readonly sectionNum: string
   readonly sectionTitle: string
 }
 
-export function projectsSection({ sectionNum, sectionTitle }: projectsSectionProps) {
+export function ProjectsSection({ sectionNum, sectionTitle }: ProjectsSectionProps) {
   const projects = getRecentProjects(3)
 
   return (
