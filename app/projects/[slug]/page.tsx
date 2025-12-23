@@ -1,10 +1,10 @@
 import { notFound } from "next/navigation"
-import Image from "next/image"
 import { DocumentWrapper } from "@/components/document-wrapper"
 import { getAllProjects, getProjectBySlug } from "@/lib/projects"
 import { DocumentFooter } from "@/components/document-footer"
 import { buildInfo } from "@/lib/build-info"
 import { TechnicalFigureLightbox } from "@/components/technical-figure-lightbox"
+import { ProjectHeroImage } from "@/components/project-hero-image"
 
 export function generateStaticParams() {
   const projects = getAllProjects()
@@ -170,23 +170,11 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
       </div>
 
       {project.images?.hero && (
-        <figure className="mb-8 border-2 border-foreground">
-          <div className="bg-muted/30 p-1">
-            <Image
-              src={project.images.hero || "/placeholder.svg"}
-              alt={`${project.title} project overview`}
-              width={800}
-              height={400}
-              priority
-              sizes="(max-width: 768px) 100vw, 800px"
-              className="w-full h-auto"
-            />
-          </div>
-          <figcaption className="bg-foreground text-card px-4 py-2 text-[10px] tracking-[0.15em] uppercase font-sans flex justify-between">
-            <span>FIG-{project.sectionId}-000</span>
-            <span>Primary system visualization</span>
-          </figcaption>
-        </figure>
+        <ProjectHeroImage
+          src={project.images.hero}
+          alt={`${project.title} project overview`}
+          sectionId={project.sectionId}
+        />
       )}
 
       {/* Metrics panel */}
