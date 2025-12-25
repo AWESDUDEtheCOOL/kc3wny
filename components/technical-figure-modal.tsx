@@ -112,6 +112,7 @@ export function TechnicalFigureModal({ figure, isOpen, onClose }: Readonly<Techn
             <span className="text-[9px] tracking-[0.2em] uppercase">Technical Figure</span>
           </div>
           <button
+            type="button"
             onClick={onClose}
             className="hover:bg-card/20 p-1 rounded transition-colors"
             aria-label="Close"
