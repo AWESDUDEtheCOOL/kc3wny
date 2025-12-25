@@ -1,6 +1,6 @@
 import { ImageResponse } from 'next/og';
-import { readFile } from 'node:fs/promises';
-import { join } from 'node:path';
+import { readFile } from 'fs/promises';
+import { join } from 'path';
  
 export async function GET() {
   const logoPath = join(process.cwd(), 'public', 'logo', 'v4_text.svg');

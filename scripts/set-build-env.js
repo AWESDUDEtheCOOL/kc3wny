@@ -43,7 +43,7 @@ if (gitInfo) {
     .map(([key, value]) => `${key}=${value}`)
     .join("\n")
 
-  fs.writeFileSync(envPath, envContent + "\n")
+  fs.writeFileSync(envPath, `${envContent}\n`)
   console.log(`\nWritten to ${envPath}`)
 } else {
   console.error("Could not retrieve git information")
