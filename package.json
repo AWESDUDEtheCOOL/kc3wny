@@ -3,12 +3,14 @@
   "version": "1.1.0",
   "private": true,
   "scripts": {
+    "prebuild": "node scripts/generate-blur-placeholders.js",
     "build": "next build",
     "dev": "next dev --turbopack",
     "lint": "biome lint .",
     "format": "biome format --write .",
     "check": "biome check --write .",
-    "start": "next start"
+    "start": "next start",
+    "generate:blur": "node scripts/generate-blur-placeholders.js"
   },
   "dependencies": {
     "@radix-ui/react-slot": "1.2.4",
