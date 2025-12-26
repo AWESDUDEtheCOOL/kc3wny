@@ -2,7 +2,7 @@
 title: "TestPost"
 type: "Internal"
 description: "A test of markdown blogpost static page compliation"
-publishedAt: "2025-01-04"
+publishedAt: "1976-01-01"
 heroImage: "/api/content-image?path=testpost/testpost_joby.jpg"
 figures:
   - src: "/api/content-image?path=testpost/testpost_bay.jpg"

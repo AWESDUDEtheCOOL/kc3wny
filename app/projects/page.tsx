@@ -4,6 +4,11 @@ import { getAllProjects } from "@/lib/projects"
 import { DocumentFooter } from "@/components/document-footer"
 import { buildInfo } from "@/lib/build-info"
 
+function parseLocalDate(dateString: string): Date {
+  const [year, month, day] = dateString.split('-').map(Number)
+  return new Date(year, month - 1, day)
+}
+
 export const metadata = {
   title: "PROJECT INDEX // M. Matich",
   description: "Project index and catalog",
@@ -79,7 +84,7 @@ export default function ProjectsPage() {
               <div className="flex items-center gap-2 md:flex-1">
                 <span className="hidden md:block flex-1 border-b border-dotted border-muted-foreground mx-2 mb-1" />
                 <span className="font-mono text-[10px] md:text-xs text-muted-foreground shrink-0">
-                  {new Date(project.publishedAt).toLocaleDateString("en-US", {
+                  {parseLocalDate(project.publishedAt).toLocaleDateString("en-US", {
                     year: "numeric",
                     month: "short",
                   })}
