@@ -8,6 +8,7 @@
 
 import fs from 'node:fs'
 import path from 'node:path'
+import crypto from 'node:crypto'
 import sharp from 'sharp'
 import { fileURLToPath } from 'node:url'
 
@@ -16,6 +17,15 @@ const contentDir = path.join(__dirname, '..', 'content')
 const cacheFile = path.join(__dirname, '..', '.blur-cache.json')
 
 const IMAGE_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.webp', '.avif']
+
+/**
+ * Generate a hash of file contents for cache invalidation.
+ * This works across git clones (unlike mtime which resets on checkout).
+ */
+function getFileHash(filePath) {
+  const buffer = fs.readFileSync(filePath)
+  return crypto.createHash('md5').update(buffer).digest('hex')
+}
 
 /**
  * Recursively find all image files in content directory
@@ -87,15 +97,14 @@ async function main() {
   // Check which images need processing
   const toProcess = []
   for (const { relativePath, fullPath } of images) {
-    const stat = fs.statSync(fullPath)
-    const mtime = stat.mtimeMs
+    const hash = getFileHash(fullPath)
 
-    // Skip if cached and file hasn't changed
-    if (cache[relativePath] && cache[relativePath].mtime === mtime) {
+    // Skip if cached and file content hasn't changed (using hash, not mtime)
+    if (cache[relativePath] && cache[relativePath].hash === hash) {
       continue
     }
 
-    toProcess.push({ relativePath, fullPath, mtime })
+    toProcess.push({ relativePath, fullPath, hash })
   }
 
   if (toProcess.length === 0) {
@@ -110,10 +119,10 @@ async function main() {
   for (let i = 0; i < toProcess.length; i += BATCH_SIZE) {
     const batch = toProcess.slice(i, i + BATCH_SIZE)
     
-    await Promise.all(batch.map(async ({ relativePath, fullPath, mtime }) => {
+    await Promise.all(batch.map(async ({ relativePath, fullPath, hash }) => {
       try {
         const blurData = await generateBlurData(fullPath)
-        cache[relativePath] = { ...blurData, mtime }
+        cache[relativePath] = { ...blurData, hash }
         console.log(`   ✓ ${relativePath}`)
       } catch (error) {
         console.error(`   ✗ ${relativePath}: ${error.message}`)
