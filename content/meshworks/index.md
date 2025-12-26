@@ -62,4 +62,4 @@ The limited RAM and storage of microcontrollers made it more difficult to record
 - Add a high-speed 2.4 GHz LoRa network to allow for voice communication between first responders in a localized area
 - Integrate the microcontroller and LoRa modules onto a single board with GPS to improve ease of transportation and reliability
 ## Status
-**COMPLETE** — 1st Place, Intel: Best Use of Intel Developer Cloud at TreeHacks 2024
+**COMPLETE** — 1st Place, Intel: Best Use of Intel Developer Cloud at TreeHacks 2024 ([Devpost](https://devpost.com/software/meshworks-nlp-lora-mesh-network-for-emergency-response))
