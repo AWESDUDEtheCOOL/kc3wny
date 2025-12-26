@@ -169,6 +169,16 @@ export default async function ProjectPage({ params }: Readonly<{ params: Promise
         <div className="p-6">
           <h1 className="text-3xl md:text-4xl font-sans font-bold tracking-tight uppercase mb-2">{project.title}</h1>
           <p className="font-serif italic text-muted-foreground text-lg">{project.description}</p>
+          {project.award && (
+            <div className="mt-4 border-2 border-primary">
+              <div className="bg-primary text-primary-foreground px-3 py-1 flex items-center gap-2">
+                <span className="text-[9px] tracking-[0.2em] uppercase">Recognition</span>
+              </div>
+              <div className="px-3 py-2">
+                <span className="font-mono text-sm text-foreground">{project.award}</span>
+              </div>
+            </div>
+          )}
           <div className="mt-4 pt-4 border-t border-dashed border-muted flex flex-wrap gap-6 text-[10px] tracking-[0.15em] font-sans uppercase text-muted-foreground">
             <span>
               Published:{" "}
