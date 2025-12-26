@@ -35,6 +35,9 @@ function findAllImages(dir, baseDir = dir) {
   const entries = fs.readdirSync(dir, { withFileTypes: true })
 
   for (const entry of entries) {
+    // Skip backup/originals folders
+    if (entry.name === '.originals') continue
+    
     const fullPath = path.join(dir, entry.name)
     if (entry.isDirectory()) {
       images.push(...findAllImages(fullPath, baseDir))

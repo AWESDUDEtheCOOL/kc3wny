@@ -3,7 +3,7 @@ title: "TestPost"
 type: "Internal"
 description: "A test of markdown blogpost static page compliation"
 publishedAt: "2025-01-04"
-heroImage: "/api/content-image?path=post-test/post-test_joby.png"
+heroImage: "/api/content-image?path=post-test/post-test_joby.jpg"
 figures:
   - src: "/api/content-image?path=post-test/post-test_bay.jpg"
     caption: "101-S, Exit 357, 05/09/2025"
