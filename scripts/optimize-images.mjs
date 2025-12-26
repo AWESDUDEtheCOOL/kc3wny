@@ -9,16 +9,19 @@
  * - Resize images to max 2400px width (sufficient for most displays)
  * - Compress JPEGs to quality 85
  * - Create backups of originals in content/.originals/ (local only, not on CI)
+ * - Track optimized files in .optimized-images.json to skip on subsequent runs
  */
 
 import fs from 'node:fs'
 import path from 'node:path'
+import crypto from 'node:crypto'
 import sharp from 'sharp'
 import { fileURLToPath } from 'node:url'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const contentDir = path.join(__dirname, '..', 'content')
 const backupDir = path.join(contentDir, '.originals')
+const cacheFile = path.join(__dirname, '..', '.optimized-images.json')
 
 // Detect if running in CI environment (Vercel, GitHub Actions, etc.)
 const isCI = process.env.CI === 'true' || process.env.VERCEL === '1'
@@ -30,6 +33,35 @@ const WEBP_QUALITY = 85
 
 // Size threshold - only optimize images larger than this (in bytes)
 const SIZE_THRESHOLD = 500 * 1024  // 500 KB
+
+/**
+ * Generate a hash of file contents for cache tracking
+ */
+function getFileHash(filePath) {
+  const buffer = fs.readFileSync(filePath)
+  return crypto.createHash('md5').update(buffer).digest('hex')
+}
+
+/**
+ * Load the optimization cache
+ */
+function loadCache() {
+  try {
+    if (fs.existsSync(cacheFile)) {
+      return JSON.parse(fs.readFileSync(cacheFile, 'utf8'))
+    }
+  } catch {
+    // Ignore cache read errors
+  }
+  return {}
+}
+
+/**
+ * Save the optimization cache
+ */
+function saveCache(cache) {
+  fs.writeFileSync(cacheFile, JSON.stringify(cache, null, 2))
+}
 
 function findAllImages(dir, baseDir = dir) {
   const images = []
@@ -95,11 +127,24 @@ async function optimizeImage(fullPath, relativePath) {
 async function main() {
   console.log('🔍 Finding images to optimize...')
   const images = findAllImages(contentDir)
+  const cache = loadCache()
   
-  // Filter to only large images
-  const toOptimize = images.filter(img => img.size > SIZE_THRESHOLD)
+  // Filter to images that need optimization:
+  // 1. Over size threshold AND
+  // 2. Not already in cache with matching hash
+  const toOptimize = images.filter(img => {
+    if (img.size <= SIZE_THRESHOLD) return false
+    
+    const cached = cache[img.relativePath]
+    if (cached) {
+      // Quick check: if size matches cached size, skip hash calculation
+      if (cached.size === img.size) return false
+    }
+    return true
+  })
   
-  console.log(`   Found ${images.length} images, ${toOptimize.length} are over ${SIZE_THRESHOLD / 1024}KB`)
+  const alreadyOptimized = images.length - toOptimize.length - images.filter(img => img.size <= SIZE_THRESHOLD).length
+  console.log(`   Found ${images.length} images, ${toOptimize.length} need optimization (${alreadyOptimized} already optimized)`)
   
   if (toOptimize.length === 0) {
     console.log('✅ All images are already optimized!')
@@ -131,26 +176,38 @@ async function main() {
           fs.copyFileSync(fullPath, backupPath)
         }
         
-        // Write optimized
+        // Write optimized and update cache
+        let finalPath = fullPath
         if (formatChange) {
           // Extension changed (PNG -> JPG), delete old and write new
           const newPath = fullPath.replace(ext, newExt)
           fs.writeFileSync(newPath, buffer)
           fs.unlinkSync(fullPath)
+          finalPath = newPath
+          const newRelativePath = relativePath.replace(ext, newExt)
+          cache[newRelativePath] = { size: buffer.length, optimized: true }
+          // Remove old path from cache if it exists
+          delete cache[relativePath]
           console.log(`   ✓ ${relativePath} → ${path.basename(newPath)} (${(size/1024/1024).toFixed(1)}MB → ${(buffer.length/1024/1024).toFixed(1)}MB, saved ${(saved/1024/1024).toFixed(1)}MB)`)
         } else {
           fs.writeFileSync(fullPath, buffer)
+          cache[relativePath] = { size: buffer.length, optimized: true }
           console.log(`   ✓ ${relativePath} (${(size/1024/1024).toFixed(1)}MB → ${(buffer.length/1024/1024).toFixed(1)}MB, saved ${(saved/1024/1024).toFixed(1)}MB)`)
         }
         
         totalSaved += saved
       } else {
+        // Mark as already optimal in cache
+        cache[relativePath] = { size, optimized: true }
         console.log(`   - ${relativePath} (already optimal)`)
       }
     } catch (error) {
       console.error(`   ✗ ${relativePath}: ${error.message}`)
     }
   }
+
+  // Save the updated cache
+  saveCache(cache)
 
   console.log(`\n✅ Optimization complete! Total saved: ${(totalSaved/1024/1024).toFixed(1)}MB`)
   if (!isCI) {
