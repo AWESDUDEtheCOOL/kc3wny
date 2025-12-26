@@ -79,7 +79,7 @@ async function generateBlurData(fullPath) {
 }
 
 async function main() {
-  console.log('🔍 Finding images in content directory...')
+  console.log('Finding new images in content directory...')
   const images = findAllImages(contentDir)
   console.log(`   Found ${images.length} images`)
 
@@ -88,9 +88,9 @@ async function main() {
   if (fs.existsSync(cacheFile)) {
     try {
       cache = JSON.parse(fs.readFileSync(cacheFile, 'utf8'))
-      console.log(`📦 Loaded existing cache with ${Object.keys(cache).length} entries`)
+      console.log(`Loaded existing cache with ${Object.keys(cache).length} entries`)
     } catch {
-      console.log('⚠️  Could not read existing cache, starting fresh')
+      console.log('Could not read existing cache, starting fresh')
     }
   }
 
@@ -108,12 +108,11 @@ async function main() {
   }
 
   if (toProcess.length === 0) {
-    console.log('✅ All images already cached, nothing to do!')
+    console.log('All images already cached, nothing to do!')
     return
   }
 
-  console.log(`🖼️  Processing ${toProcess.length} images...`)
-
+  console.log(`Processing ${toProcess.length} images...`)
   // Process images in parallel batches for speed
   const BATCH_SIZE = 5
   for (let i = 0; i < toProcess.length; i += BATCH_SIZE) {
@@ -135,13 +134,13 @@ async function main() {
   for (const cachedPath of Object.keys(cache)) {
     if (!currentPaths.has(cachedPath)) {
       delete cache[cachedPath]
-      console.log(`   🗑️  Removed stale entry: ${cachedPath}`)
+      console.log(`   Removed stale entry: ${cachedPath}`)
     }
   }
 
   // Write cache
   fs.writeFileSync(cacheFile, JSON.stringify(cache, null, 2))
-  console.log(`\n✅ Cache saved to .blur-cache.json (${Object.keys(cache).length} entries)`)
+  console.log(`\nCache saved to .blur-cache.json (${Object.keys(cache).length} entries)`)
 }
 
 main().catch(console.error)
