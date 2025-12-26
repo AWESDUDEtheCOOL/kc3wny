@@ -14,6 +14,7 @@ export interface Project {
   type: string
   description: string
   publishedAt: string
+  award?: string
   metrics: Record<string, string>
   images: {
     hero: string
@@ -67,6 +68,7 @@ export function getAllProjects(): Project[] {
         type: data.type,
         description: data.description,
         publishedAt: data.publishedAt,
+        award: data.award,
         metrics: data.metrics,
         images: {
           hero: data.heroImage,
