@@ -24,6 +24,9 @@
 .DS_Store
 *.pem
 
+# original unoptimized images (backups from optimize-images script)
+/content/.originals/
+
 # debug
 npm-debug.log*
 yarn-debug.log*

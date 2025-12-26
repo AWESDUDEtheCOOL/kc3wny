@@ -3,12 +3,15 @@
   "version": "1.1.0",
   "private": true,
   "scripts": {
+    "prebuild": "node scripts/optimize-images.mjs && node scripts/generate-blur-placeholders.mjs",
     "build": "next build",
     "dev": "next dev --turbopack",
     "lint": "biome lint .",
     "format": "biome format --write .",
     "check": "biome check --write .",
-    "start": "next start"
+    "start": "next start",
+    "optimize:images": "node scripts/optimize-images.mjs",
+    "generate:blur": "node scripts/generate-blur-placeholders.mjs"
   },
   "dependencies": {
     "@radix-ui/react-slot": "1.2.4",

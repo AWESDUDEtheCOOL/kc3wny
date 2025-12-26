@@ -1,0 +1,154 @@
+{
+  "meshbase/meshbase_case-milling1.jpg": {
+    "size": 951809,
+    "optimized": true
+  },
+  "meshbase/meshbase_case-milling2.jpg": {
+    "size": 709335,
+    "optimized": true
+  },
+  "meshbase/meshbase_complete.jpg": {
+    "size": 759577,
+    "optimized": true
+  },
+  "meshbase/meshbase_connectors1.jpg": {
+    "size": 986743,
+    "optimized": true
+  },
+  "meshbase/meshbase_connectors2.jpg": {
+    "size": 1087547,
+    "optimized": true
+  },
+  "meshbase/meshbase_electronic-fitup.jpg": {
+    "size": 1460815,
+    "optimized": true
+  },
+  "meshbase/meshbase_powder-coat.jpg": {
+    "size": 1037739,
+    "optimized": true
+  },
+  "meshbase/meshbase_stickers.jpg": {
+    "size": 914149,
+    "optimized": true
+  },
+  "orbital-dx270/orbital-dx270_assembly1.jpg": {
+    "size": 559319,
+    "optimized": true
+  },
+  "orbital-dx270/orbital-dx270_assembly2.jpg": {
+    "size": 862686,
+    "optimized": true
+  },
+  "orbital-dx270/orbital-dx270_assembly3.jpg": {
+    "size": 729993,
+    "optimized": true
+  },
+  "orbital-dx270/orbital-dx270_deployed1.jpg": {
+    "size": 1527684,
+    "optimized": true
+  },
+  "orbital-dx270/orbital-dx270_deployed2.jpg": {
+    "size": 815884,
+    "optimized": true
+  },
+  "orbital-dx270/orbital-dx270_element-cutting.jpg": {
+    "size": 524432,
+    "optimized": true
+  },
+  "orbital-dx270/orbital-dx270_folded.jpg": {
+    "size": 632666,
+    "optimized": true
+  },
+  "orbital-dx270/orbital-dx270_folding-test.jpg": {
+    "size": 684422,
+    "optimized": true
+  },
+  "orbital-dx270/orbital-dx270_frame-milling.jpg": {
+    "size": 1372284,
+    "optimized": true
+  },
+  "orbital-dx270/orbital-dx270_frame-powdercoat.jpg": {
+    "size": 878653,
+    "optimized": true
+  },
+  "orbital-dx270/orbital-dx270_frame-tapping.jpg": {
+    "size": 1329782,
+    "optimized": true
+  },
+  "orbital-dx270/orbital-dx270_handle-assembly1.jpg": {
+    "size": 979775,
+    "optimized": true
+  },
+  "orbital-dx270/orbital-dx270_handle-assembly2.jpg": {
+    "size": 895698,
+    "optimized": true
+  },
+  "orbital-dx270/orbital-dx270_hinge-fit-check.jpg": {
+    "size": 591988,
+    "optimized": true
+  },
+  "orbital-dx270/orbital-dx270_hinge-milling1.jpg": {
+    "size": 1007081,
+    "optimized": true
+  },
+  "orbital-dx270/orbital-dx270_hinge-milling2.jpg": {
+    "size": 1474736,
+    "optimized": true
+  },
+  "orbital-dx270/orbital-dx270_hinge.jpg": {
+    "size": 769854,
+    "optimized": true
+  },
+  "orbital-dx270/orbital-dx270_plaque-casting1.jpg": {
+    "size": 1690286,
+    "optimized": true
+  },
+  "orbital-dx270/orbital-dx270_plaque-casting2.jpg": {
+    "size": 728162,
+    "optimized": true
+  },
+  "orbital-dx270/orbital-dx270_plaque-facing1.jpg": {
+    "size": 750103,
+    "optimized": true
+  },
+  "orbital-dx270/orbital-dx270_plaque-facing2.jpg": {
+    "size": 709036,
+    "optimized": true
+  },
+  "orbital-dx270/orbital-dx270_prototype1.jpg": {
+    "size": 953473,
+    "optimized": true
+  },
+  "orbital-dx270/orbital-dx270_prototype2.jpg": {
+    "size": 1124810,
+    "optimized": true
+  },
+  "orbital-dx270/orbital-dx270_shaft-milling.jpg": {
+    "size": 1093880,
+    "optimized": true
+  },
+  "orbital-dx270/orbital-dx270_shaft.jpg": {
+    "size": 857238,
+    "optimized": true
+  },
+  "orbital-dx270/orbital-dx270_tuning1.jpg": {
+    "size": 1145223,
+    "optimized": true
+  },
+  "orbital-dx270/orbital-dx270_tuning2.jpg": {
+    "size": 1548925,
+    "optimized": true
+  },
+  "orbital-dx270/orbital-dx270_tuning3.jpg": {
+    "size": 1176260,
+    "optimized": true
+  },
+  "post-test/post-test_joby.jpg": {
+    "size": 551929,
+    "optimized": true
+  },
+  "post-test/post-test_yosemite.jpg": {
+    "size": 728361,
+    "optimized": true
+  }
+}
